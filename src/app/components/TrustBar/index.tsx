@@ -27,7 +27,7 @@ export default function TrustBar() {
           {doubled.map((logo, i) => (
             <span
               key={`${logo}-${i}`}
-              className="shrink-0 text-2xl font-bold tracking-tight text-white/20 sm:text-3xl lg:text-4xl"
+              className="shrink-0 text-2xl font-bold tracking-tight text-[var(--algovia-muted)]/25 sm:text-3xl lg:text-4xl"
             >
               {logo}
             </span>

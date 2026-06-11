@@ -3,7 +3,7 @@
   width: 100%;
   height: 100svh;
   overflow: hidden;
-  background: var(--surface);
+  background: var(--background);
   color: var(--foreground);
 }
 
@@ -92,7 +92,7 @@
   padding: 0.5rem 0.75rem;
   border-radius: 9999px;
   background: var(--algovia-green-muted);
-  color: var(--algovia-green-light);
+  color: var(--algovia-purple);
 }
 
 .sticky-cards-section__icon {
@@ -106,34 +106,35 @@
   width: 4rem;
   height: 4rem;
   border: 1px solid var(--algovia-border-strong);
-  color: var(--algovia-green);
+  color: var(--algovia-purple);
 }
 
 .sticky-cards-section__card--back .sticky-cards-section__icon {
   width: 5rem;
   height: 5rem;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.15);
   color: inherit;
 }
 
 .sticky-cards-section__card--card-1 {
-  background: var(--algovia-green);
+  background: var(--algovia-purple);
   color: var(--algovia-white);
 }
 
 .sticky-cards-section__card--card-2 {
   background: var(--surface-card);
   color: var(--foreground);
+  border-color: var(--algovia-border);
 }
 
 .sticky-cards-section__card--card-3 {
-  background: #024840;
-  color: var(--foreground);
+  background: var(--algovia-navy-alt);
+  color: var(--foreground-on-dark);
 }
 
 .sticky-cards-section__card--card-4 {
-  background: var(--algovia-yellow);
-  color: var(--algovia-dark-green);
+  background: var(--algovia-purple-light);
+  color: var(--algovia-navy);
 }
 
 @media (max-width: 1000px) {

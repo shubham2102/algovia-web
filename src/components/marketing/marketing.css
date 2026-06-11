@@ -13,7 +13,7 @@
   background:
     radial-gradient(
       ellipse 70% 50% at 20% 0%,
-      rgba(2, 187, 115, 0.15),
+      rgba(99, 102, 241, 0.15),
       transparent 55%
     ),
     var(--background);
@@ -111,8 +111,8 @@
 }
 
 .page-card:hover {
-  border-color: rgba(2, 187, 115, 0.35);
-  box-shadow: 0 8px 32px rgba(2, 187, 115, 0.1);
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
 }
 
 .page-card__title {

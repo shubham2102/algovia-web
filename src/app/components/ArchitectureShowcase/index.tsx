@@ -75,9 +75,9 @@ export default function ArchitectureShowcase() {
       className="section-band--dark border-y border-[var(--algovia-border)]"
     >
       <div ref={sectionRef} className="relative w-full">
-        <div className="pointer-events-none absolute -inset-x-[50vw] inset-y-0 left-1/2 w-screen -translate-x-1/2 bg-[var(--surface-elevated)]" />
-        <div className="pointer-events-none absolute -inset-x-[50vw] inset-y-0 left-1/2 w-screen -translate-x-1/2 opacity-30 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 30 Q15 0 30 30 T60 30\' fill=\'none\' stroke=\'%2302bb73\' stroke-opacity=\'0.15\'/%3E%3C/svg%3E')]" />
-        <div className="pointer-events-none absolute top-1/2 left-1/2 h-[min(80vw,500px)] w-[min(80vw,500px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[rgba(2,187,115,0.2)] blur-[120px]" />
+        <div className="pointer-events-none absolute -inset-x-[50vw] inset-y-0 left-1/2 w-screen -translate-x-1/2 bg-[var(--surface-dark)]" />
+        <div className="pointer-events-none absolute -inset-x-[50vw] inset-y-0 left-1/2 w-screen -translate-x-1/2 opacity-30 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 30 Q15 0 30 30 T60 30\' fill=\'none\' stroke=\'%236366f1\' stroke-opacity=\'0.15\'/%3E%3C/svg%3E')]" />
+        <div className="pointer-events-none absolute top-1/2 left-1/2 h-[min(80vw,500px)] w-[min(80vw,500px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[rgba(99,102,241,0.18)] blur-[120px]" />
 
         <div className="relative section-grid section-grid--2 w-full items-center">
           <Reveal>
@@ -92,7 +92,7 @@ export default function ArchitectureShowcase() {
               </p>
               <Link
                 href="/platform"
-                className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--algovia-green-light)] hover:text-white"
+                className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--algovia-purple-light)] hover:text-[var(--foreground-on-dark)]"
               >
                 Explore our platform
                 <ArrowRight className="h-4 w-4" />
@@ -110,12 +110,12 @@ export default function ArchitectureShowcase() {
               fill="none"
               aria-hidden
             >
-              <line data-arch-line x1="120" y1="80" x2="200" y2="120" stroke="rgba(2,187,115,0.4)" strokeWidth="1" strokeDasharray="6 6" />
-              <line data-arch-line x1="120" y1="320" x2="200" y2="280" stroke="rgba(2,187,115,0.4)" strokeWidth="1" strokeDasharray="6 6" />
-              <line data-arch-line x1="280" y1="80" x2="200" y2="120" stroke="rgba(2,187,115,0.4)" strokeWidth="1" strokeDasharray="6 6" />
-              <line data-arch-line x1="280" y1="320" x2="200" y2="280" stroke="rgba(2,187,115,0.4)" strokeWidth="1" strokeDasharray="6 6" />
-              <line data-arch-line x1="200" y1="120" x2="200" y2="200" stroke="rgba(2,187,115,0.5)" strokeWidth="1" strokeDasharray="6 6" />
-              <line data-arch-line x1="200" y1="200" x2="200" y2="280" stroke="rgba(2,187,115,0.5)" strokeWidth="1" strokeDasharray="6 6" />
+              <line data-arch-line x1="120" y1="80" x2="200" y2="120" stroke="rgba(99,102,241,0.4)" strokeWidth="1" strokeDasharray="6 6" />
+              <line data-arch-line x1="120" y1="320" x2="200" y2="280" stroke="rgba(99,102,241,0.4)" strokeWidth="1" strokeDasharray="6 6" />
+              <line data-arch-line x1="280" y1="80" x2="200" y2="120" stroke="rgba(99,102,241,0.4)" strokeWidth="1" strokeDasharray="6 6" />
+              <line data-arch-line x1="280" y1="320" x2="200" y2="280" stroke="rgba(99,102,241,0.4)" strokeWidth="1" strokeDasharray="6 6" />
+              <line data-arch-line x1="200" y1="120" x2="200" y2="200" stroke="rgba(99,102,241,0.5)" strokeWidth="1" strokeDasharray="6 6" />
+              <line data-arch-line x1="200" y1="200" x2="200" y2="280" stroke="rgba(99,102,241,0.5)" strokeWidth="1" strokeDasharray="6 6" />
             </svg>
 
             <div className="grid h-full grid-cols-3 grid-rows-3 gap-3 p-4 sm:gap-4 sm:p-5">
@@ -141,14 +141,14 @@ export default function ArchitectureShowcase() {
                     <div
                       className={`glass-panel-dark relative rounded-xl px-2 py-2 text-center text-[9px] font-medium leading-tight text-slate-200 sm:px-3 sm:py-2.5 sm:text-xs ${
                         node.highlight
-                          ? "border-[rgba(2,187,115,0.4)] bg-[rgba(1,42,45,0.4)] shadow-lg shadow-[rgba(2,187,115,0.2)]"
+                          ? "border-[rgba(99,102,241,0.45)] bg-[rgba(5,7,20,0.55)] shadow-lg shadow-[rgba(99,102,241,0.2)]"
                           : ""
                       }`}
                     >
                       {node.highlight && (
                         <span
                           data-arch-glow
-                          className="absolute inset-0 rounded-xl bg-[rgba(2,187,115,0.2)] blur-md"
+                          className="absolute inset-0 rounded-xl bg-[rgba(99,102,241,0.2)] blur-md"
                         />
                       )}
                       <span className="relative">{node.label}</span>

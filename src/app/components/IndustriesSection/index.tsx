@@ -39,7 +39,7 @@ export default function IndustriesSection() {
             onClick={() => setActive(i)}
             className={`rounded-full px-4 py-2 text-sm font-medium transition-all sm:px-5 sm:py-2.5 ${
               active === i
-                ? "bg-[var(--gradient-brand)] text-white shadow-lg shadow-[rgba(2,187,115,0.25)]"
+                ? "bg-[var(--gradient-brand)] text-white shadow-lg shadow-[rgba(99,102,241,0.25)]"
                 : "card-surface text-[var(--algovia-muted)] hover:text-[var(--foreground)]"
             }`}
           >
@@ -62,7 +62,7 @@ export default function IndustriesSection() {
                 {industry.description}
               </p>
             </div>
-            <div className="shrink-0 rounded-xl border border-[rgba(2,187,115,0.2)] bg-[var(--algovia-green-muted)] px-8 py-5">
+            <div className="shrink-0 rounded-xl border border-[rgba(99,102,241,0.2)] bg-[var(--algovia-green-muted)] px-8 py-5">
               <p className="text-2xl font-bold text-[var(--algovia-green)] sm:text-3xl">
                 {industry.metric}
               </p>

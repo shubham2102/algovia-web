@@ -2,49 +2,64 @@
 @import "./components/HeroSection/hero.css";
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  /* Brand palette */
-  --algovia-dark-green: #012a2d;
-  --algovia-bright-green: #02bb73;
-  --algovia-yellow: #eead2b;
+  /* Mockup brand palette */
+  --algovia-navy: #050714;
+  --algovia-navy-alt: #0a0b1e;
+  --algovia-purple: #6366f1;
+  --algovia-purple-light: #818cf8;
+  --algovia-purple-dark: #4f46e5;
+  --algovia-slate: #4b5563;
   --algovia-white: #ffffff;
+  --algovia-off-white: #f8f9fb;
+  --algovia-border-light: #e5e7eb;
+  --algovia-border-muted: #d1d5db;
 
-  /* Semantic surfaces — dark-first on green base */
-  --background: var(--algovia-dark-green);
-  --foreground: var(--algovia-white);
-  --surface: #023033;
-  --surface-elevated: #033538;
-  --surface-card: #04363a;
-  --surface-hover: #053d42;
+  /* Legacy aliases — keep existing component tokens working */
+  --algovia-dark-green: var(--algovia-navy);
+  --algovia-bright-green: var(--algovia-purple);
+  --algovia-yellow: var(--algovia-purple-light);
+  --algovia-green: var(--algovia-purple);
+  --algovia-green-light: var(--algovia-purple-light);
+  --algovia-green-muted: rgba(99, 102, 241, 0.12);
+  --algovia-accent: var(--algovia-purple);
+  --algovia-dark: var(--algovia-navy);
 
-  /* Brand aliases */
-  --algovia-green: var(--algovia-bright-green);
-  --algovia-green-light: #35d49a;
-  --algovia-green-muted: rgba(2, 187, 115, 0.15);
-  --algovia-accent: var(--algovia-yellow);
-  --algovia-dark: var(--algovia-dark-green);
-  --algovia-dark-elevated: var(--surface-elevated);
-  --algovia-dark-card: var(--surface-card);
-  --algovia-muted: #8ba8ab;
-  --algovia-border: rgba(255, 255, 255, 0.08);
-  --algovia-border-strong: rgba(255, 255, 255, 0.14);
-  --algovia-glass: rgba(255, 255, 255, 0.06);
+  /* Light-mode surfaces */
+  --background: var(--algovia-off-white);
+  --foreground: var(--algovia-navy);
+  --surface: var(--algovia-white);
+  --surface-elevated: var(--algovia-off-white);
+  --surface-card: var(--algovia-white);
+  --surface-hover: #f3f4f6;
+  --algovia-muted: var(--algovia-slate);
+  --algovia-border: var(--algovia-border-light);
+  --algovia-border-strong: var(--algovia-border-muted);
+  --algovia-glass: rgba(255, 255, 255, 0.88);
+
+  /* Dark band surfaces (platform, CTA) */
+  --surface-dark: var(--algovia-navy);
+  --surface-dark-elevated: var(--algovia-navy-alt);
+  --surface-dark-card: #121528;
+  --foreground-on-dark: var(--algovia-white);
+  --algovia-dark-elevated: var(--surface-dark-elevated);
+  --algovia-dark-card: var(--surface-dark-card);
 
   --gradient-brand: linear-gradient(
     135deg,
-    var(--algovia-bright-green) 0%,
-    var(--algovia-yellow) 100%
+    var(--algovia-purple) 0%,
+    var(--algovia-purple-light) 100%
   );
   --gradient-cta: linear-gradient(
     135deg,
-    var(--algovia-dark-green) 0%,
-    #024840 45%,
-    var(--algovia-bright-green) 100%
+    var(--algovia-navy) 0%,
+    var(--algovia-navy-alt) 45%,
+    #1e1b4b 100%
   );
   --gradient-hero: radial-gradient(
     ellipse 80% 50% at 50% -20%,
-    rgba(2, 187, 115, 0.18),
+    rgba(99, 102, 241, 0.12),
     transparent
   );
   --font-sans: var(--font-poppins), system-ui, sans-serif;
@@ -62,8 +77,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-algovia-green: var(--algovia-green);
-  --color-algovia-yellow: var(--algovia-yellow);
+  --color-algovia-green: var(--algovia-purple);
+  --color-algovia-yellow: var(--algovia-purple-light);
   --color-algovia-dark: var(--algovia-dark);
   --color-algovia-muted: var(--algovia-muted);
   --font-sans: var(--font-sans);
@@ -109,7 +124,7 @@ body {
 }
 
 ::selection {
-  background: rgba(2, 187, 115, 0.4);
+  background: rgba(99, 102, 241, 0.25);
   color: var(--foreground);
 }
 
@@ -146,7 +161,7 @@ body {
 
 .transition-block {
   flex: 1;
-  background-color: var(--surface-elevated);
+  background-color: var(--surface-dark);
   will-change: transform;
 }
 
@@ -162,22 +177,22 @@ body {
   overflow: hidden;
 }
 
-/* Glass panels — dark default */
+/* Glass panels */
 .glass-panel {
   background: var(--algovia-glass);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--algovia-border-strong);
   box-shadow:
-    0 4px 32px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(2, 187, 115, 0.06) inset;
+    0 4px 24px rgba(5, 7, 20, 0.06),
+    0 0 0 1px rgba(99, 102, 241, 0.04) inset;
 }
 
 .glass-panel-dark {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(5, 7, 20, 0.72);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--algovia-border);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .gradient-text {
@@ -215,11 +230,12 @@ h3 .copy-word {
 .card-surface {
   background: var(--surface-card);
   border: 1px solid var(--algovia-border);
+  box-shadow: 0 1px 3px rgba(5, 7, 20, 0.04);
 }
 
 .card-surface:hover {
-  border-color: rgba(2, 187, 115, 0.35);
-  box-shadow: 0 8px 32px rgba(2, 187, 115, 0.12);
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
 }
 
 /* Architecture diagram connectors */
@@ -339,7 +355,7 @@ h3 .copy-word {
 /* Subtle scrollbar for in-section overflow */
 .section-scroll {
   scrollbar-width: thin;
-  scrollbar-color: rgba(2, 187, 115, 0.4) transparent;
+  scrollbar-color: rgba(99, 102, 241, 0.35) transparent;
 }
 
 .section-scroll::-webkit-scrollbar {
@@ -347,7 +363,7 @@ h3 .copy-word {
 }
 
 .section-scroll::-webkit-scrollbar-thumb {
-  background: rgba(2, 187, 115, 0.35);
+  background: rgba(99, 102, 241, 0.35);
   border-radius: 4px;
 }
 
@@ -367,8 +383,17 @@ h3 .copy-word {
 .section-band--dark {
   background: linear-gradient(
     165deg,
-    #011f22 0%,
-    var(--surface-elevated) 50%,
-    var(--surface) 100%
+    var(--surface-dark) 0%,
+    var(--surface-dark-elevated) 50%,
+    #121528 100%
   );
+  color: var(--foreground-on-dark);
+}
+
+.section-band--dark .section-intro h2 {
+  color: var(--foreground-on-dark);
+}
+
+.section-band--dark .section-intro p {
+  color: rgba(255, 255, 255, 0.72);
 }

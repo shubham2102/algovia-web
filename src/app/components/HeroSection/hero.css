@@ -14,19 +14,19 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 90% 60% at 15% -10%, rgba(2, 187, 115, 0.22), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 85% 20%, rgba(238, 173, 43, 0.12), transparent 50%),
-    radial-gradient(ellipse 50% 40% at 50% 100%, rgba(2, 187, 115, 0.08), transparent 45%),
+    radial-gradient(ellipse 90% 60% at 15% -10%, rgba(99, 102, 241, 0.14), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 85% 20%, rgba(99, 102, 241, 0.08), transparent 50%),
+    radial-gradient(ellipse 50% 40% at 50% 100%, rgba(99, 102, 241, 0.06), transparent 45%),
     var(--background);
 }
 
 .hero__grid {
   position: absolute;
   inset: 0;
-  opacity: 0.35;
+  opacity: 0.5;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(5, 7, 20, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(5, 7, 20, 0.04) 1px, transparent 1px);
   background-size: 64px 64px;
   mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
 }
@@ -34,7 +34,7 @@
 .hero__vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 100% 80% at 50% 50%, transparent 40%, rgba(1, 42, 45, 0.5) 100%);
+  background: radial-gradient(ellipse 100% 80% at 50% 50%, transparent 40%, rgba(248, 249, 251, 0.6) 100%);
   pointer-events: none;
 }
 
@@ -117,7 +117,7 @@
   font-weight: 700;
   line-height: 1.06;
   letter-spacing: -0.03em;
-  color: #f8fafc;
+  color: var(--foreground);
   width: 100%;
 }
 
@@ -128,9 +128,9 @@
 .hero__headline-accent {
   background: linear-gradient(
     135deg,
-    var(--algovia-green-light) 0%,
-    var(--algovia-bright-green) 35%,
-    var(--algovia-yellow) 100%
+    var(--algovia-purple-light) 0%,
+    var(--algovia-purple) 50%,
+    var(--algovia-purple-dark) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -140,7 +140,7 @@
 .hero__lead {
   font-size: clamp(1.0625rem, 1.5vw, 1.1875rem);
   line-height: 1.65;
-  color: #94a3b8;
+  color: var(--algovia-muted);
   width: 100%;
   max-width: 42rem;
 }
@@ -152,22 +152,20 @@
   padding: 0.75rem 1.35rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--algovia-white);
   border-radius: 9999px;
-  background: var(--gradient-brand);
+  background: var(--algovia-navy);
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
-    0 4px 24px rgba(2, 187, 115, 0.45),
-    0 1px 2px rgba(0, 0, 0, 0.2);
+    0 0 0 1px rgba(5, 7, 20, 0.08) inset,
+    0 4px 20px rgba(5, 7, 20, 0.12);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .hero__cta-primary:hover {
   transform: translateY(-1px);
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.15) inset,
-    0 8px 32px rgba(2, 187, 115, 0.55),
-    0 2px 4px rgba(0, 0, 0, 0.2);
+    0 0 0 1px rgba(5, 7, 20, 0.1) inset,
+    0 8px 28px rgba(5, 7, 20, 0.16);
 }
 
 .hero__cta-secondary {
@@ -176,12 +174,12 @@
   gap: 0.4rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--algovia-green-light);
+  color: var(--algovia-purple);
   transition: color 0.2s ease, gap 0.2s ease;
 }
 
 .hero__cta-secondary:hover {
-  color: var(--foreground);
+  color: var(--algovia-purple-dark);
   gap: 0.55rem;
 }
 
@@ -206,13 +204,12 @@
   gap: 0.75rem;
   padding: 0.875rem 1rem;
   border-radius: 0.875rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--algovia-border);
+  background: var(--surface-card);
+  box-shadow: 0 1px 3px rgba(5, 7, 20, 0.04);
   font-size: 0.8125rem;
   font-weight: 500;
-  color: #cbd5e1;
+  color: var(--algovia-slate);
   transition:
     border-color 0.25s ease,
     background 0.25s ease,
@@ -220,8 +217,8 @@
 }
 
 .hero__capability:hover {
-  border-color: rgba(2, 187, 115, 0.35);
-  background: rgba(2, 187, 115, 0.08);
+  border-color: rgba(99, 102, 241, 0.35);
+  background: rgba(99, 102, 241, 0.06);
   transform: translateY(-1px);
 }
 
@@ -260,9 +257,9 @@
   padding: 1px;
   background: linear-gradient(
     145deg,
-    rgba(2, 187, 115, 0.5) 0%,
-    rgba(255, 255, 255, 0.08) 35%,
-    rgba(238, 173, 43, 0.35) 100%
+    rgba(99, 102, 241, 0.35) 0%,
+    rgba(229, 231, 235, 0.9) 35%,
+    rgba(99, 102, 241, 0.2) 100%
   );
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
@@ -285,12 +282,10 @@
   max-height: 100%;
   min-height: 0;
   overflow: hidden;
-  background: rgba(1, 42, 45, 0.75);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: var(--surface-card);
   box-shadow:
-    0 24px 80px rgba(0, 0, 0, 0.5),
-    0 0 120px rgba(2, 187, 115, 0.08);
+    0 24px 64px rgba(5, 7, 20, 0.08),
+    0 0 0 1px var(--algovia-border);
 }
 
 .hero-ai__header {
@@ -299,7 +294,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--algovia-border);
 }
 
 .hero-ai__status {
@@ -307,7 +302,7 @@
   align-items: center;
   gap: 0.35rem;
   font-size: 0.6875rem;
-  color: #64748b;
+  color: var(--algovia-muted);
 }
 
 .hero-ai__status-dot {
@@ -327,7 +322,7 @@
   overscroll-behavior: contain;
   padding: 1.25rem;
   scrollbar-width: thin;
-  scrollbar-color: rgba(2, 187, 115, 0.35) transparent;
+  scrollbar-color: rgba(99, 102, 241, 0.35) transparent;
 }
 
 .hero-ai__body::-webkit-scrollbar {
@@ -335,7 +330,7 @@
 }
 
 .hero-ai__body::-webkit-scrollbar-thumb {
-  background: rgba(2, 187, 115, 0.35);
+  background: rgba(99, 102, 241, 0.35);
   border-radius: 4px;
 }
 
@@ -349,11 +344,11 @@
 .hero-ai__greeting {
   font-size: 0.9375rem;
   line-height: 1.5;
-  color: #94a3b8;
+  color: var(--algovia-muted);
 }
 
 .hero-ai__greeting strong {
-  color: #f1f5f9;
+  color: var(--foreground);
   font-weight: 600;
 }
 
@@ -377,8 +372,8 @@
   padding: 0.875rem;
   text-align: left;
   border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--algovia-border);
+  background: var(--surface-elevated);
   transition:
     border-color 0.2s ease,
     background 0.2s ease,
@@ -386,8 +381,8 @@
 }
 
 .hero-ai__prompt:hover {
-  border-color: rgba(2, 187, 115, 0.35);
-  background: rgba(2, 187, 115, 0.1);
+  border-color: rgba(99, 102, 241, 0.35);
+  background: rgba(99, 102, 241, 0.06);
   transform: translateY(-1px);
 }
 
@@ -395,27 +390,27 @@
   flex: 1;
   font-size: 0.75rem;
   line-height: 1.45;
-  color: #94a3b8;
+  color: var(--algovia-muted);
 }
 
 .hero-ai__prompt:hover .hero-ai__prompt-text {
-  color: #e2e8f0;
+  color: var(--foreground);
 }
 
 .hero-ai__prompt-arrow {
   flex-shrink: 0;
-  color: rgba(255, 255, 255, 0.2);
+  color: var(--algovia-border-muted);
   transition: color 0.2s ease;
 }
 
 .hero-ai__prompt:hover .hero-ai__prompt-arrow {
-  color: var(--algovia-green-light);
+  color: var(--algovia-purple);
 }
 
 .hero-ai__footer {
   flex-shrink: 0;
   padding: 1rem 1.25rem 1.125rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--algovia-border);
 }
 
 .hero-ai__input-wrap {
@@ -424,14 +419,14 @@
   gap: 0.5rem;
   padding: 0.5rem 0.5rem 0.5rem 0.75rem;
   border-radius: 0.875rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--algovia-border);
+  background: var(--surface-elevated);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .hero-ai__input-wrap:focus-within {
-  border-color: rgba(2, 187, 115, 0.5);
-  box-shadow: 0 0 0 3px rgba(2, 187, 115, 0.15);
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
 }
 
 .hero-ai__input {
@@ -440,12 +435,12 @@
   border: none;
   background: transparent;
   font-size: 0.875rem;
-  color: #f1f5f9;
+  color: var(--foreground);
   outline: none;
 }
 
 .hero-ai__input::placeholder {
-  color: #64748b;
+  color: var(--algovia-muted);
 }
 
 .hero-ai__send {
@@ -487,8 +482,8 @@
   border-radius: 1rem 1rem 0.25rem 1rem;
   font-size: 0.8125rem;
   line-height: 1.5;
-  color: #fff;
-  background: linear-gradient(135deg, var(--algovia-bright-green), #019a5f);
+  color: var(--algovia-white);
+  background: var(--algovia-navy);
 }
 
 .hero-ai__message-assistant {
@@ -497,9 +492,9 @@
   border-radius: 1rem 1rem 1rem 0.25rem;
   font-size: 0.8125rem;
   line-height: 1.55;
-  color: #cbd5e1;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.04);
+  color: var(--algovia-slate);
+  border: 1px solid var(--algovia-border);
+  background: var(--surface-elevated);
 }
 
 /* Mobile: stack with panel fixed height below content */

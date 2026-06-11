@@ -16,7 +16,7 @@ interface ButtonProps {
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    "bg-[var(--gradient-brand)] text-white hover:opacity-90 shadow-[0_4px_24px_rgba(2,187,115,0.35)] border border-white/10",
+    "bg-[var(--gradient-brand)] text-white hover:opacity-90 shadow-[0_4px_24px_rgba(99,102,241,0.25)] border border-white/10",
   secondary:
     "bg-[var(--surface-card)] text-[var(--foreground)] hover:bg-[var(--surface-hover)] border border-[var(--algovia-border-strong)]",
   ghost:

@@ -105,11 +105,11 @@ export default function AIAssistantPanel({ className = "" }: AIAssistantPanelPro
       <div className="hero-ai__surface">
         <header className="hero-ai__header">
           <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--gradient-brand)] shadow-lg shadow-[rgba(2,187,115,0.3)]">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--gradient-brand)] shadow-lg shadow-[rgba(99,102,241,0.25)]">
               <Bot className="h-5 w-5 text-white" strokeWidth={2} />
             </span>
             <div>
-              <p className="text-sm font-semibold text-white">Algovia AI</p>
+              <p className="text-sm font-semibold text-[var(--foreground)]">Algovia AI</p>
               <p className="hero-ai__status">
                 <span className="hero-ai__status-dot" />
                 Online
@@ -120,14 +120,14 @@ export default function AIAssistantPanel({ className = "" }: AIAssistantPanelPro
             <button
               type="button"
               onClick={resetChat}
-              className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-white/5 hover:text-slate-300"
+              className="rounded-lg p-2 text-[var(--algovia-muted)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
               aria-label="Reset conversation"
             >
               <RefreshCw className="h-4 w-4" />
             </button>
             <button
               type="button"
-              className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-white/5 hover:text-slate-300"
+              className="rounded-lg p-2 text-[var(--algovia-muted)] transition-colors hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
               aria-label="Expand panel"
             >
               <Maximize2 className="h-4 w-4" />
@@ -212,7 +212,7 @@ export default function AIAssistantPanel({ className = "" }: AIAssistantPanelPro
           >
             <button
               type="button"
-              className="rounded-md p-1.5 text-slate-500 hover:text-slate-300"
+              className="rounded-md p-1.5 text-[var(--algovia-muted)] hover:text-[var(--foreground)]"
               aria-label="Attach file"
               tabIndex={-1}
             >
