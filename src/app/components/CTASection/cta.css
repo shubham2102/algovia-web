@@ -1,0 +1,195 @@
+/* ── CTASection — full-width dark closing band ──────────────────────────────
+   Sits directly above the footer; both share the same dark surface so they
+   form one unified closing section without any light gap.                   */
+
+.cta {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* Same gradient as footer so the two blend into one band */
+  background: linear-gradient(
+    165deg,
+    var(--surface-dark) 0%,
+    var(--surface-dark-elevated) 50%,
+    #121528 100%
+  );
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ── Background decoration ──────────────────────────────────────────────────── */
+
+/* Dot-grid pattern (same as architecture showcase) */
+.cta__bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none;
+}
+
+/* Glow orbs */
+.cta__glow-l,
+.cta__glow-r {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+}
+
+.cta__glow-l {
+  width: min(50vw, 520px);
+  height: min(50vw, 520px);
+  top: -20%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, transparent 60%);
+}
+
+.cta__glow-r {
+  width: min(40vw, 400px);
+  height: min(40vw, 400px);
+  bottom: -20%;
+  right: -5%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 60%);
+}
+
+/* ── Inner content ──────────────────────────────────────────────────────────── */
+
+.cta__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  padding: clamp(5rem, 10vw, 8rem) var(--layout-gutter) clamp(5.5rem, 10vw, 8.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+}
+
+/* ── Typography ─────────────────────────────────────────────────────────────── */
+
+.cta__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--algovia-green-light);
+  margin-bottom: 1.25rem;
+}
+
+.cta__eyebrow::before {
+  content: "";
+  width: 1.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--algovia-bright-green), transparent);
+}
+
+.cta__eyebrow::after {
+  content: "";
+  width: 1.5rem;
+  height: 1px;
+  background: linear-gradient(270deg, var(--algovia-bright-green), transparent);
+}
+
+.cta__heading {
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--foreground-on-dark);
+  max-width: 16ch;
+}
+
+.cta__heading em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--algovia-purple-light) 0%, #a78bfa 60%, var(--algovia-green-light) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.cta__lead {
+  margin-top: 1.25rem;
+  max-width: 44rem;
+  font-size: clamp(0.9375rem, 1.3vw, 1.125rem);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────────────── */
+
+.cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.875rem;
+  margin-top: 2.75rem;
+}
+
+/* Primary: solid white pill */
+.cta__btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8125rem 1.625rem;
+  border-radius: 9999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--algovia-navy);
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(5, 7, 20, 0.25);
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.cta__btn-primary:hover {
+  background: rgba(255, 255, 255, 0.93);
+  box-shadow: 0 8px 32px rgba(5, 7, 20, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Ghost: outlined pills */
+.cta__btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8125rem 1.375rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.cta__btn-ghost:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.09);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* ── Divider between CTA and footer ────────────────────────────────────────── */
+
+.cta__footer-rule {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+  margin: 0;
+}

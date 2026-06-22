@@ -12,10 +12,10 @@ import {
 import { gsap, ScrollTrigger, registerGsapPlugins } from "@/lib/gsap";
 import "./sticky-cards.css";
 
-const CARDS_ENTER_END = 100;
-const CARD_FLIP_TRIGGER = 200;
-const CARD_DISMISS_START = 300;
-const CARD_DISMISS_DURATION = 100;
+const CARDS_ENTER_END = 60;
+const CARD_FLIP_TRIGGER = 120;
+const CARD_DISMISS_START = 180;
+const CARD_DISMISS_DURATION = 60;
 
 const CARD_FLIP_TILT_ANGLES = [-10, -20, -5, 10];
 const CARD_DISMISS_TILT_ANGLES = [-50, -60, -45, 50];

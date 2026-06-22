@@ -79,12 +79,12 @@ function AppShell({ children }: { children: React.ReactNode }) {
     <div className="page">
       <LenisScrollSync />
       <Menu />
-      <TransitionProvider>
+      {/* <TransitionProvider> */}
         <div className="page-wrapper">
           <main id="main-content">{children}</main>
           <Footer />
         </div>
-      </TransitionProvider>
+      {/* </TransitionProvider> */}
     </div>
   );
 }

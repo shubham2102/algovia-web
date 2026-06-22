@@ -1,78 +1,193 @@
 "use client";
 
-import { useState } from "react";
-import SectionViewport from "@/components/ui/SectionViewport";
+import { useRef, useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { useGSAP } from "@gsap/react";
 import SectionLabel from "@/components/ui/SectionLabel";
-import Reveal from "@/components/animations/Reveal";
+import { gsap, ScrollTrigger, registerGsapPlugins } from "@/lib/gsap";
 import { INDUSTRIES } from "@/lib/constants";
+import "./industries.css";
+
+// How fast each panel transitions in/out — 1/SPEED fraction of a scroll segment
+const SPEED = 6;
 
 export default function IndustriesSection() {
-  const [active, setActive] = useState(0);
-  const industry = INDUSTRIES[active];
+  const sectionRef  = useRef<HTMLElement>(null);
+  const panelsRef   = useRef<HTMLDivElement>(null);
+  const tabsRef     = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  useGSAP(
+    () => {
+      registerGsapPlugins();
+      const section = sectionRef.current;
+      const panels  = panelsRef.current?.querySelectorAll<HTMLElement>(".ind-panel");
+      const bars    = tabsRef.current?.querySelectorAll<HTMLElement>(".ind-tab__bar");
+
+      if (!section || !panels || !panels.length || !bars || !bars.length) return;
+
+      const n = panels.length;
+
+      // ── Initial state: first panel visible, rest off to the right ──────────
+      panels.forEach((panel, i) => {
+        gsap.set(panel, { opacity: i === 0 ? 1 : 0, x: i === 0 ? 0 : 32 });
+      });
+      bars.forEach((bar) => gsap.set(bar, { scaleX: 0 }));
+
+      let trigger: ReturnType<typeof ScrollTrigger.create> | undefined;
+
+      function setup() {
+        cleanup();
+        if (window.innerWidth < 1024) return;
+
+        // Reset to initial state on re-setup (e.g. resize)
+        panels!.forEach((panel, i) => {
+          gsap.set(panel, { opacity: i === 0 ? 1 : 0, x: i === 0 ? 0 : 32 });
+        });
+        bars!.forEach((bar) => gsap.set(bar, { scaleX: 0 }));
+        setActiveIdx(0);
+
+        let prevIdx = 0;
+
+        trigger = ScrollTrigger.create({
+          trigger: section,
+          start: "top top",
+          end: `+=${window.innerHeight * n}px`,
+          pin: true,
+          pinSpacing: true,
+          scrub: true,
+          onUpdate: (self) => {
+            const progress = self.progress * n; // 0 → n
+
+            // ── Content panels: crossfade + slide ──────────────────────────
+            panels!.forEach((panel, i) => {
+              const isLast = i === n - 1;
+              // enter: 0→1 in first (1/SPEED) of this panel's segment
+              const enter = gsap.utils.clamp(0, 1, (progress - i) * SPEED);
+              // exit: 0→1 in first (1/SPEED) of the NEXT segment (= last 1/SPEED of this one)
+              const exit  = isLast
+                ? 0
+                : gsap.utils.clamp(0, 1, (progress - i - 1) * SPEED);
+
+              const opacity = enter * (1 - exit);
+              // slides in from +32px, out to -32px
+              const x = (1 - enter) * 32 - exit * 32;
+
+              gsap.set(panel, { opacity, x });
+            });
+
+            // ── Tab fill bars ───────────────────────────────────────────────
+            bars!.forEach((bar, i) => {
+              const barFill = gsap.utils.clamp(0, 1, progress - i);
+              gsap.set(bar, { scaleX: barFill });
+            });
+
+            // ── React state: only update when active tab changes ────────────
+            const idx = Math.min(n - 1, Math.floor(progress));
+            if (idx !== prevIdx) {
+              prevIdx = idx;
+              setActiveIdx(idx);
+            }
+          },
+        });
+      }
+
+      function cleanup() {
+        trigger?.kill();
+        trigger = undefined;
+      }
+
+      setup();
+
+      let resizeTimer: ReturnType<typeof setTimeout>;
+      const onResize = () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(setup, 250);
+      };
+
+      window.addEventListener("resize", onResize);
+
+      return () => {
+        cleanup();
+        clearTimeout(resizeTimer);
+        window.removeEventListener("resize", onResize);
+      };
+    },
+    { scope: sectionRef },
+  );
 
   return (
-    <SectionViewport
+    <section
+      ref={sectionRef}
       id="industries"
-      className="section-band border-t border-[var(--algovia-border)]"
+      className="ind section-band"
+      style={{ borderTop: "1px solid var(--algovia-border)" }}
+      aria-label="Algovia industry use cases"
     >
-      <Reveal>
-        <div
-          data-reveal-item
-          className="section-intro mx-auto max-w-2xl text-center lg:mx-0 lg:text-left"
-        >
+      <div className="ind__inner">
+
+        {/* ── Left: header + tabs ─────────────────────────────────────────── */}
+        <div className="ind__header">
           <SectionLabel>Industry Use Cases</SectionLabel>
-          <h2 className="text-[var(--foreground)]">
+          <h2 className="ind__heading">
             Specialized AI that fits your workflow
           </h2>
-          <p>
+          <p className="ind__lead">
             Unlock hidden revenue. Accelerate operations. Build smarter with
             vertical AI tailored to your business.
           </p>
-        </div>
-      </Reveal>
 
-      <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
-        {INDUSTRIES.map((ind, i) => (
-          <button
-            key={ind.id}
-            type="button"
-            onClick={() => setActive(i)}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition-all sm:px-5 sm:py-2.5 ${
-              active === i
-                ? "bg-[var(--gradient-brand)] text-white shadow-lg shadow-[rgba(99,102,241,0.25)]"
-                : "card-surface text-[var(--algovia-muted)] hover:text-[var(--foreground)]"
-            }`}
-          >
-            {ind.title}
-          </button>
-        ))}
-      </div>
-
-      <Reveal delay={0.1}>
-        <article
-          data-reveal-item
-          className="card-surface rounded-2xl p-6 sm:p-8 lg:p-10"
-        >
-          <div className="flex flex-col items-center gap-8 text-center sm:flex-row sm:items-end sm:justify-between sm:text-left">
-            <div className="max-w-2xl">
-              <h3 className="text-xl font-bold text-[var(--foreground)] sm:text-2xl">
-                {industry.title}
-              </h3>
-              <p className="mt-4 leading-relaxed text-[var(--algovia-muted)]">
-                {industry.description}
-              </p>
-            </div>
-            <div className="shrink-0 rounded-xl border border-[rgba(99,102,241,0.2)] bg-[var(--algovia-green-muted)] px-8 py-5">
-              <p className="text-2xl font-bold text-[var(--algovia-green)] sm:text-3xl">
-                {industry.metric}
-              </p>
-              <p className="mt-2 text-xs text-[var(--algovia-muted)]">
-                {industry.metricLabel}
-              </p>
-            </div>
+          <div ref={tabsRef} className="ind__tabs" role="tablist">
+            {INDUSTRIES.map((ind, i) => (
+              <button
+                key={ind.id}
+                role="tab"
+                type="button"
+                aria-selected={activeIdx === i}
+                className={`ind-tab${activeIdx === i ? " ind-tab--active" : ""}`}
+                onClick={() => {
+                  setActiveIdx(i);
+                  // On desktop, scrolling is the primary driver — click just scrolls
+                  if (window.innerWidth >= 1024) {
+                    sectionRef.current?.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+              >
+                <span className="ind-tab__bar" aria-hidden />
+                <span className="ind-tab__num">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="ind-tab__label">{ind.title}</span>
+                <ArrowRight className="ind-tab__arrow h-3.5 w-3.5" strokeWidth={2.5} />
+              </button>
+            ))}
           </div>
-        </article>
-      </Reveal>
-    </SectionViewport>
+        </div>
+
+        {/* ── Right: content panels ───────────────────────────────────────── */}
+        <div ref={panelsRef} className="ind__panels" role="tabpanel">
+          {INDUSTRIES.map((ind, i) => (
+            <div
+              key={ind.id}
+              className="ind-panel"
+              aria-hidden={activeIdx !== i}
+            >
+              <div className="ind-panel__card">
+                <div className="ind-panel__metric">
+                  <p className="ind-panel__metric-value">{ind.metric}</p>
+                  <p className="ind-panel__metric-label">{ind.metricLabel}</p>
+                </div>
+
+                <div className="ind-panel__divider" aria-hidden />
+
+                <h3 className="ind-panel__title">{ind.title}</h3>
+                <p className="ind-panel__desc">{ind.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
   );
 }

@@ -49,7 +49,7 @@
   height: 100%;
   min-height: 0;
   margin: 0 auto;
-  padding: 5rem clamp(0.75rem, 2vw, 1.5rem) 2.25rem;
+  padding: 5rem var(--layout-gutter) 2.5rem;
 }
 
 .hero__layout {
@@ -234,7 +234,9 @@
   color: var(--algovia-green-light);
 }
 
-/* AI Panel — fixed height, internal scroll only */
+/* ── AI panel — Sierra-style floating conversation ──────────────────────────── */
+/* No panel chrome. Chat elements float freely in the right column.              */
+
 .hero-ai {
   position: relative;
   z-index: 1;
@@ -242,191 +244,240 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  max-height: 100%;
   min-height: 0;
-  flex: 1 1 auto;
-  border-radius: 1.25rem;
-  overflow: hidden;
+  gap: 1.25rem;
+  padding: 1.5rem 0.25rem 0;
 }
 
-.hero-ai::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    145deg,
-    rgba(99, 102, 241, 0.35) 0%,
-    rgba(229, 231, 235, 0.9) 35%,
-    rgba(99, 102, 241, 0.2) 100%
-  );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: 2;
-}
+/* ── Conversation area ──────────────────────────────────────────────────────── */
 
-.hero-ai__surface {
-  position: relative;
-  z-index: 1;
+.hero-ai__convo {
+  /* Flex grow + min-height:0 are both required for overflow-y to work in a flex column */
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  max-height: 100%;
-  min-height: 0;
-  overflow: hidden;
-  background: var(--surface-card);
-  box-shadow:
-    0 24px 64px rgba(5, 7, 20, 0.08),
-    0 0 0 1px var(--algovia-border);
+  justify-content: flex-end; /* pushes content to bottom when it's smaller than the container */
+  gap: 0.875rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  padding-bottom: 0.25rem;
+  /* Fade older messages as they scroll toward the top */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 14%,
+    black 27%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 14%,
+    black 27%
+  );
 }
 
-.hero-ai__header {
-  flex-shrink: 0;
+.hero-ai__convo::-webkit-scrollbar { display: none; }
+
+/* ── Demo conversation ──────────────────────────────────────────────────────── */
+
+/* Floating user question — very light pill, right-aligned */
+.hero-ai__demo-user {
+  align-self: flex-end;
+  max-width: 80%;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--algovia-slate);
+  background: rgba(5, 7, 20, 0.045);
+  border: 1px solid rgba(5, 7, 20, 0.07);
+  border-radius: 1.25rem 1.25rem 0.25rem 1.25rem;
+  padding: 0.625rem 1rem;
+  animation: heroAiFadeUp 0.55s ease both;
+  animation-delay: 0.15s;
+}
+
+/* Wrapper that carries the entrance animation */
+.hero-ai__demo-agent-wrap {
+  animation: heroAiFadeUp 0.55s ease both;
+  animation-delay: 0.4s;
+}
+
+/* Agent card — the Sierra-style response card */
+.hero-ai__agent-card {
+  background: var(--surface-card);
+  border: 1px solid var(--algovia-border);
+  border-radius: 1.375rem;
+  padding: 1rem 1.125rem;
+  /* box-shadow:
+    0 8px 32px rgba(5, 7, 20, 0.08),
+    0 1px 4px rgba(5, 7, 20, 0.04); */
+  max-width: 92%;
+}
+
+.hero-ai__agent-card-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid var(--algovia-border);
+  gap: 0.5rem;
+  margin-bottom: 0.625rem;
 }
 
-.hero-ai__status {
-  display: inline-flex;
+.hero-ai__avatar {
+  display: flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.6875rem;
-  color: var(--algovia-muted);
-}
-
-.hero-ai__status-dot {
-  width: 0.5rem;
-  height: 0.5rem;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
   border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+  background: var(--gradient-brand);
+  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.3);
 }
 
-.hero-ai__body {
-  flex: 1 1 auto;
-  min-height: 0;
-  max-height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: 1.25rem;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(99, 102, 241, 0.35) transparent;
+.hero-ai__agent-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--algovia-muted);
+  letter-spacing: 0.01em;
 }
 
-.hero-ai__body::-webkit-scrollbar {
-  width: 5px;
+.hero-ai__agent-card-body {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--foreground);
 }
 
-.hero-ai__body::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.35);
-  border-radius: 4px;
+/* ── Markdown rendering ──────────────────────────────────────────────────────── */
+
+.hero-ai__md {
+  display: flex;
+  flex-direction: column;
+  gap: 0.325rem;
 }
+
+.hero-ai__md-p {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.hero-ai__md-gap { height: 0.3rem; }
+
+.hero-ai__md-hr {
+  border: none;
+  border-top: 1px solid var(--algovia-border);
+  margin: 0.325rem 0;
+}
+
+.hero-ai__md-ol,
+.hero-ai__md-ul {
+  margin: 0.125rem 0;
+  padding-left: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.hero-ai__md-ol li,
+.hero-ai__md-ul li {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--foreground);
+}
+
+/* ── Real messages ──────────────────────────────────────────────────────────── */
 
 .hero-ai__messages {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  margin-top: 0.75rem;
 }
 
-.hero-ai__greeting {
-  font-size: 0.9375rem;
+/* User bubble — light, right-aligned (Sierra-style floating text) */
+.hero-ai__user-bubble {
+  align-self: flex-end;
+  max-width: 80%;
+  padding: 0.625rem 1rem;
+  border-radius: 1.25rem 1.25rem 0.25rem 1.25rem;
+  font-size: 0.875rem;
   line-height: 1.5;
-  color: var(--algovia-muted);
+  color: var(--algovia-slate);
+  background: rgba(5, 7, 20, 0.055);
+  border: 1px solid rgba(5, 7, 20, 0.08);
 }
 
-.hero-ai__greeting strong {
-  color: var(--foreground);
-  font-weight: 600;
-}
+/* ── Bottom bar ─────────────────────────────────────────────────────────────── */
 
-.hero-ai__prompts {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-@media (max-width: 1023px) {
-  .hero-ai__prompts {
-    grid-template-columns: 1fr;
-  }
-}
-
-.hero-ai__prompt {
+.hero-ai__bottom {
+  flex-shrink: 0;
   display: flex;
-  align-items: flex-start;
-  gap: 0.625rem;
-  padding: 0.875rem;
-  text-align: left;
-  border-radius: 0.75rem;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ── Prompt chips — horizontal wrapping pills ───────────────────────────────── */
+
+.hero-ai__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4375rem;
+  animation: heroAiFadeUp 0.45s ease both;
+  animation-delay: 0.65s;
+}
+
+.hero-ai__chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.875rem;
+  border-radius: 9999px;
   border: 1px solid var(--algovia-border);
-  background: var(--surface-elevated);
+  background: var(--surface-card);
+  font-size: 0.8125rem;
+  font-weight: 450;
+  line-height: 1;
+  color: var(--algovia-slate);
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(5, 7, 20, 0.04);
   transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    transform 0.2s ease;
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-.hero-ai__prompt:hover {
-  border-color: rgba(99, 102, 241, 0.35);
-  background: rgba(99, 102, 241, 0.06);
-  transform: translateY(-1px);
-}
-
-.hero-ai__prompt-text {
-  flex: 1;
-  font-size: 0.75rem;
-  line-height: 1.45;
-  color: var(--algovia-muted);
-}
-
-.hero-ai__prompt:hover .hero-ai__prompt-text {
-  color: var(--foreground);
-}
-
-.hero-ai__prompt-arrow {
-  flex-shrink: 0;
-  color: var(--algovia-border-muted);
-  transition: color 0.2s ease;
-}
-
-.hero-ai__prompt:hover .hero-ai__prompt-arrow {
+.hero-ai__chip:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+  background: rgba(99, 102, 241, 0.05);
   color: var(--algovia-purple);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
 }
 
-.hero-ai__footer {
-  flex-shrink: 0;
-  padding: 1rem 1.25rem 1.125rem;
-  border-top: 1px solid var(--algovia-border);
-}
+/* ── Input row ──────────────────────────────────────────────────────────────── */
 
-.hero-ai__input-wrap {
+.hero-ai__input-row {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 0.5rem 0.5rem 0.75rem;
-  border-radius: 0.875rem;
+  padding: 0.5rem 0.5rem 0.5rem 1.125rem;
+  border-radius: 9999px;
   border: 1px solid var(--algovia-border);
-  background: var(--surface-elevated);
+  background: var(--surface-card);
+  box-shadow:
+    0 4px 16px rgba(5, 7, 20, 0.06),
+    0 1px 3px rgba(5, 7, 20, 0.04);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  animation: heroAiFadeUp 0.45s ease both;
+  animation-delay: 0.1s;
 }
 
-.hero-ai__input-wrap:focus-within {
-  border-color: rgba(99, 102, 241, 0.5);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+.hero-ai__input-row:focus-within {
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow:
+    0 0 0 3px rgba(99, 102, 241, 0.08),
+    0 4px 16px rgba(5, 7, 20, 0.06);
 }
 
 .hero-ai__input {
@@ -435,66 +486,73 @@
   border: none;
   background: transparent;
   font-size: 0.875rem;
+  line-height: 1.5;
   color: var(--foreground);
   outline: none;
+  padding: 0;
+  font-family: var(--font-sans);
 }
 
 .hero-ai__input::placeholder {
   color: var(--algovia-muted);
+  opacity: 0.65;
+}
+
+.hero-ai__reset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  color: var(--algovia-muted);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.hero-ai__reset:hover {
+  background: var(--surface-hover);
+  color: var(--foreground);
 }
 
 .hero-ai__send {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2rem;
+  height: 2rem;
   flex-shrink: 0;
   border-radius: 50%;
   border: none;
   color: #fff;
-  background: var(--gradient-brand);
+  background: var(--algovia-navy);
   cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: transform 0.15s ease, background 0.2s ease;
 }
 
 .hero-ai__send:hover:not(:disabled) {
-  transform: scale(1.05);
+  transform: scale(1.07);
+  background: var(--algovia-purple);
 }
 
 .hero-ai__send:disabled {
-  opacity: 0.4;
+  opacity: 0.28;
   cursor: not-allowed;
 }
 
 .hero-ai__disclaimer {
-  margin-top: 0.625rem;
   text-align: center;
-  font-size: 0.625rem;
-  line-height: 1.4;
-  color: #475569;
+  font-size: 0.5625rem;
+  color: var(--algovia-muted);
+  opacity: 0.45;
+  letter-spacing: 0.01em;
 }
 
-.hero-ai__message-user {
-  margin-left: auto;
-  max-width: 88%;
-  padding: 0.625rem 0.875rem;
-  border-radius: 1rem 1rem 0.25rem 1rem;
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  color: var(--algovia-white);
-  background: var(--algovia-navy);
-}
+/* ── Entrance animation ─────────────────────────────────────────────────────── */
 
-.hero-ai__message-assistant {
-  max-width: 92%;
-  padding: 0.75rem 0.875rem;
-  border-radius: 1rem 1rem 1rem 0.25rem;
-  font-size: 0.8125rem;
-  line-height: 1.55;
-  color: var(--algovia-slate);
-  border: 1px solid var(--algovia-border);
-  background: var(--surface-elevated);
+@keyframes heroAiFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* Mobile: stack with panel fixed height below content */

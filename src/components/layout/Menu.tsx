@@ -92,10 +92,14 @@ export default function Menu() {
     const nav = navRef.current;
     if (!nav) return;
 
+    const getHeroThreshold = () => {
+      const hero = document.querySelector(".hero") as HTMLElement | null;
+      return (hero?.offsetHeight ?? window.innerHeight) * 0.9;
+    };
+
     const updateNavTopClass = () => {
       const scrollY = lenis?.scroll ?? window.scrollY;
-      const threshold = window.innerHeight * 0.5;
-      nav.classList.toggle("top", scrollY < threshold);
+      nav.classList.toggle("top", scrollY < getHeroThreshold());
     };
 
     lenis?.on("scroll", updateNavTopClass);
@@ -176,7 +180,7 @@ export default function Menu() {
 
   return (
     <>
-      <nav ref={navRef} className="site-nav top" aria-label="Site navigation">
+      <nav ref={navRef} className={`site-nav top${menuOpen ? " menu-open" : ""}`} aria-label="Site navigation">
         <div className="container" style={{ padding: 0 }}>
           <div className="site-nav__container">
             <div className="site-nav__cta">
@@ -214,10 +218,6 @@ export default function Menu() {
         aria-hidden={!menuOpen}
       >
         <div className="site-menu-overlay__items">
-          <div className="site-menu-overlay__logo">
-            <Logo size="lg" href="" className="!h-10 sm:!h-12" />
-          </div>
-
           {MENU_LINKS.map((item) => (
             <div
               key={item.href}
@@ -238,7 +238,7 @@ export default function Menu() {
           ))}
         </div>
 
-        <div className="site-menu-overlay__footer">
+        {/* <div className="site-menu-overlay__footer">
           <div className="container">
             <div className="site-menu-overlay__footer-inner">
               <div className="site-menu-overlay__footer-links">
@@ -265,7 +265,7 @@ export default function Menu() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

@@ -24,33 +24,33 @@ export const HERO_BADGES = [
 export const AI_PROMPTS = [
   {
     id: "marketplace",
+    label: "AI marketplace design",
     text: "Design an AI-powered marketplace architecture",
-    icon: "layers",
   },
   {
     id: "legacy",
+    label: "Modernize legacy systems",
     text: "How can Algovia modernize legacy systems?",
-    icon: "refresh",
   },
   {
     id: "fintech-team",
+    label: "Fintech MVP team plan",
     text: "Estimate team structure for a fintech MVP",
-    icon: "users",
   },
   {
     id: "microservices",
+    label: "Microservices roadmap",
     text: "Create a microservices roadmap",
-    icon: "route",
   },
   {
     id: "langgraph",
+    label: "AI agents with LangGraph",
     text: "How to build AI agents using LangGraph?",
-    icon: "workflow",
   },
   {
     id: "saudi-cloud",
+    label: "Saudi fintech cloud",
     text: "Suggest cloud architecture for Saudi fintech",
-    icon: "globe",
   },
 ] as const;
 
@@ -216,7 +216,7 @@ export const CASE_STUDIES = [
     description:
       "Deployed predictive routing and warehouse automation for a regional logistics leader.",
     image:
-      "https://images.unsplash.com/photo-1586528116311-ad8dd90c19f7?w=800&q=80",
+      "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=800&q=80",
   },
   {
     id: "enterprise",

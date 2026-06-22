@@ -50,7 +50,7 @@ export default function ServicesSection() {
           </div>
         </Reveal>
 
-        <div className="section-scroll max-h-[min(58dvh,520px)] space-y-2.5 overflow-y-auto pr-1 lg:max-h-[min(62dvh,560px)]">
+        <div className="section-scroll max-h-[min(58dvh,520px)] space-y-3 overflow-y-auto pr-2 lg:max-h-[min(62dvh,560px)]">
           {SERVICES.map((service, i) => {
             const Icon = iconMap[service.icon] ?? Code2;
             return (

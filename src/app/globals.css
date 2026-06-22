@@ -70,7 +70,7 @@
   --section-padding-y: clamp(4rem, 8vw, 8rem);
   --section-padding-compact: clamp(2.5rem, 5vw, 4rem);
   --section-stack-gap: clamp(2.5rem, 5vw, 4rem);
-  --section-header-gap: 1.25rem;
+  --section-header-gap: 1rem;
   --content-gap: clamp(1.25rem, 2vw, 2rem);
 }
 
@@ -309,6 +309,12 @@ h3 .copy-word {
   display: flex;
   flex-direction: column;
   gap: var(--section-header-gap);
+}
+
+/* Label is tightly coupled to the heading — collapse gap between them */
+.section-intro span + h2,
+.section-intro span + h3 {
+  margin-top: calc(-0.375rem);
 }
 
 .section-intro h2 {

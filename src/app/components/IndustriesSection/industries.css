@@ -1,0 +1,297 @@
+/* ── IndustriesSection — scroll-driven tab reveal ───────────────────────────
+   Section pins for (n × 100vh). Left column holds static copy + vertical tabs.
+   Right column holds all n panels; GSAP drives opacity + translateX per panel.
+   Each tab has a fill-bar that tracks scroll progress through its segment.
+   Mobile (<1024px): pin off, panels stack vertically.                        */
+
+.ind {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+}
+
+/* ── Inner flex row ─────────────────────────────────────────────────────────── */
+
+.ind__inner {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(3rem, 5vw, 7rem);
+  width: 100%;
+  max-width: var(--layout-max-width);
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 var(--layout-gutter);
+}
+
+/* ── Left column: copy + tabs ───────────────────────────────────────────────── */
+
+.ind__header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 0 0 clamp(280px, 38%, 420px);
+  min-width: 0;
+  gap: 0;
+  height: 100%;
+}
+
+.ind__heading {
+  font-size: clamp(1.875rem, 3vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--foreground);
+  margin-top: -0.25rem;
+}
+
+.ind__lead {
+  margin-top: 0.75rem;
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  line-height: 1.7;
+  color: var(--algovia-muted);
+  max-width: 26rem;
+}
+
+/* ── Vertical tab list ──────────────────────────────────────────────────────── */
+
+.ind__tabs {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2.5rem;
+  gap: 0;
+}
+
+.ind-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  /* Bottom rule */
+  border-bottom: 1px solid var(--algovia-border);
+  transition: opacity 0.2s ease;
+}
+
+.ind-tab:first-child {
+  border-top: 1px solid var(--algovia-border);
+}
+
+/* Scroll-progress fill bar — scaleX driven by GSAP */
+.ind-tab__bar {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--gradient-brand);
+  transform-origin: left center;
+  transform: scaleX(0);
+  z-index: 1;
+}
+
+/* Tab number badge */
+.ind-tab__num {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--algovia-muted);
+  border: 1px solid var(--algovia-border);
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.ind-tab--active .ind-tab__num {
+  background: var(--algovia-purple);
+  color: #fff;
+  border-color: var(--algovia-purple);
+}
+
+.ind-tab__label {
+  flex: 1;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--algovia-muted);
+  transition: color 0.25s ease;
+}
+
+.ind-tab--active .ind-tab__label {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.ind-tab__arrow {
+  flex-shrink: 0;
+  opacity: 0;
+  transform: translateX(-4px);
+  color: var(--algovia-purple);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.ind-tab--active .ind-tab__arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Right column: panel stack ──────────────────────────────────────────────── */
+
+.ind__panels {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Each panel is absolutely layered; GSAP drives opacity + x */
+.ind-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+}
+
+.ind-panel:first-child {
+  opacity: 1; /* first panel visible by default */
+}
+
+/* Panel inner card */
+.ind-panel__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(2rem, 3.5vw, 3rem);
+  border-radius: 1.375rem;
+  border: 1px solid var(--algovia-border);
+  background: var(--surface-card);
+  box-shadow:
+    0 8px 40px rgba(5, 7, 20, 0.07),
+    0 1px 4px rgba(5, 7, 20, 0.04);
+  overflow: hidden;
+}
+
+/* Top-edge gradient accent */
+.ind-panel__card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-brand);
+  opacity: 0.5;
+  border-radius: 1.375rem 1.375rem 0 0;
+}
+
+/* Metric area at top of card */
+.ind-panel__metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-bottom: 1.5rem;
+}
+
+.ind-panel__metric-value {
+  font-size: clamp(3rem, 5.5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ind-panel__metric-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--algovia-muted);
+}
+
+.ind-panel__divider {
+  width: 2.5rem;
+  height: 2px;
+  background: var(--gradient-brand);
+  border-radius: 9999px;
+  margin-bottom: 1.5rem;
+  opacity: 0.5;
+}
+
+.ind-panel__title {
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--foreground);
+}
+
+.ind-panel__desc {
+  margin-top: 1rem;
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  line-height: 1.75;
+  color: var(--algovia-muted);
+  max-width: 44rem;
+}
+
+/* ── Mobile/tablet: stacked, no pin ────────────────────────────────────────── */
+
+@media (max-width: 1023px) {
+  .ind {
+    height: auto;
+    overflow: visible;
+  }
+
+  .ind__inner {
+    flex-direction: column;
+    height: auto;
+    padding-top: clamp(5rem, 10vw, 7rem);
+    padding-bottom: clamp(3rem, 8vw, 5rem);
+    gap: 2.5rem;
+  }
+
+  .ind__header {
+    flex: none;
+    height: auto;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .ind__tabs {
+    margin-top: 1.75rem;
+  }
+
+  .ind__panels {
+    position: relative;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .ind-panel {
+    position: relative;
+    inset: auto;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

@@ -1,165 +1,305 @@
 "use client";
 
-import { useRef } from "react";
+import React, { useRef } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  Bot,
+  Brain,
+  Building2,
+  Database,
+  Smartphone,
+  Users,
+  Zap,
+} from "lucide-react";
 import { useGSAP } from "@gsap/react";
-import SectionViewport from "@/components/ui/SectionViewport";
 import SectionLabel from "@/components/ui/SectionLabel";
-import Reveal from "@/components/animations/Reveal";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { registerGsapPlugins } from "@/lib/gsap";
+import { gsap, ScrollTrigger, registerGsapPlugins } from "@/lib/gsap";
+import "./arch.css";
 
-const nodes = [
-  { id: "knowledge", label: "Knowledge Layer (RAG / Vector DB)", row: 0, col: 1 },
-  { id: "orchestration", label: "AI Orchestration Layer (Agents)", row: 1, col: 1, highlight: true },
-  { id: "llm", label: "LLM Layer (OpenAI / Claude / Llama)", row: 2, col: 1 },
-  { id: "user", label: "User / Client", row: 0, col: 0 },
-  { id: "apps", label: "Web / Mobile Applications", row: 2, col: 0 },
-  { id: "apis", label: "APIs & Services", row: 0, col: 2 },
-  { id: "enterprise", label: "Enterprise Systems (ERP, CRM, etc.)", row: 2, col: 2 },
+// ─── Coordinate system ────────────────────────────────────────────────────────
+// SVG viewBox: "0 0 500 490"
+// Node (cx, cy) = center in that space.
+// HTML node cards are absolutely positioned via (cx/500*100%, cy/490*100%).
+// Lines use SVG <path> drawn center-to-center; node cards sit on top and
+// visually cover the endpoints, so no gap-trimming is needed.
+
+const VW = 500;
+const VH = 490;
+
+interface ArchNode {
+  id: string;
+  label: string;
+  sub: string;
+  cx: number;
+  cy: number;
+  highlight?: boolean;
+  Icon: React.ElementType;
+}
+
+const NODES: ArchNode[] = [
+  { id: "orchestration", label: "AI Orchestration Layer", sub: "(Agents)",                   cx: 250, cy: 232, highlight: true, Icon: Bot        },
+  { id: "knowledge",     label: "Knowledge Layer",         sub: "(RAG / Vector DB)",           cx: 250, cy: 62,               Icon: Database   },
+  { id: "llm",           label: "LLM Layer",               sub: "(OpenAI / Claude / Llama)",   cx: 250, cy: 406,              Icon: Brain      },
+  { id: "user",          label: "User / Client",            sub: "",                            cx: 66,  cy: 88,               Icon: Users      },
+  { id: "apps",          label: "Web / Mobile",             sub: "Applications",                cx: 66,  cy: 378,              Icon: Smartphone },
+  { id: "apis",          label: "APIs & Services",          sub: "",                            cx: 434, cy: 88,               Icon: Zap        },
+  { id: "enterprise",    label: "Enterprise Systems",       sub: "(ERP, CRM, etc.)",            cx: 434, cy: 378,              Icon: Building2  },
 ];
 
+// Paths from each outer node center → orchestration center.
+// Cubic bezier curves for a clean organic flow.
+const PATHS = [
+  // knowledge → orchestration (vertical, straight)
+  "M 250 62  L 250 232",
+  // orchestration → llm (vertical, straight)
+  "M 250 232 L 250 406",
+  // user → orchestration
+  "M 66 88   C 120 88  200 175 250 232",
+  // apps → orchestration
+  "M 66 378  C 120 378 200 290 250 232",
+  // apis → orchestration
+  "M 434 88  C 380 88  300 175 250 232",
+  // enterprise → orchestration
+  "M 434 378 C 380 378 300 290 250 232",
+] as const;
+
+// Outer node order for staggered entrance (matches PATHS index order)
+const OUTER_IDS = ["knowledge", "llm", "user", "apps", "apis", "enterprise"];
+
 export default function ArchitectureShowcase() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const copyRef    = useRef<HTMLDivElement>(null);
   const diagramRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
       registerGsapPlugins();
+      const section = sectionRef.current;
+      const copy    = copyRef.current;
       const diagram = diagramRef.current;
-      if (!diagram) return;
+      if (!section || !copy || !diagram) return;
 
-      const nodeEls = diagram.querySelectorAll("[data-arch-node]");
-      const lines = diagram.querySelectorAll("[data-arch-line]");
-
-      gsap.set(nodeEls, { opacity: 0, scale: 0.85 });
-      gsap.set(lines, { strokeDashoffset: 80, opacity: 0 });
-
-      ScrollTrigger.create({
-        trigger: diagram,
-        start: "top 80%",
-        once: true,
-        onEnter: () => {
-          gsap.to(lines, {
-            strokeDashoffset: 0,
-            opacity: 0.5,
-            duration: 1.2,
-            stagger: 0.08,
-            ease: "power2.out",
-          });
-          gsap.to(nodeEls, {
-            opacity: 1,
-            scale: 1,
-            duration: 0.7,
-            stagger: 0.1,
-            ease: "back.out(1.4)",
-          });
-          gsap.to("[data-arch-glow]", {
-            scale: 1.05,
-            opacity: 0.6,
-            duration: 2,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-          });
-        },
+      // ── SVG path draw setup ───────────────────────────────────────────────
+      const pathEls = diagram.querySelectorAll<SVGGeometryElement>("[data-arch-path]");
+      pathEls.forEach((p) => {
+        const len = p.getTotalLength();
+        gsap.set(p, { strokeDasharray: len, strokeDashoffset: len, opacity: 0 });
       });
+
+      // ── Initial hidden state ─────────────────────────────────────────────
+      // autoAlpha only — never touch transform so CSS translate(-50%,-50%)
+      // on .arch__node stays intact and nodes stay at their correct positions.
+      const centerNode = diagram.querySelector<HTMLElement>('[data-node-id="orchestration"]');
+      const outerNodes = OUTER_IDS.map((id) =>
+        diagram.querySelector<HTMLElement>(`[data-node-id="${id}"]`),
+      ).filter(Boolean) as HTMLElement[];
+      const copyItems = copy.querySelectorAll<HTMLElement>("[data-copy-item]");
+
+      gsap.set([centerNode, ...outerNodes], { autoAlpha: 0 });
+      gsap.set(copyItems, { opacity: 0, y: 20 });
+
+      // ── Animation timeline ────────────────────────────────────────────────
+      const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out" } });
+
+      // copy fades + slides up
+      tl.to(copyItems, { opacity: 1, y: 0, duration: 0.6, stagger: 0.1 }, 0);
+
+      // center node fades in
+      tl.to(centerNode, { autoAlpha: 1, duration: 0.5 }, 0.4);
+
+      // paths draw outward one by one
+      pathEls.forEach((p, i) => {
+        tl.to(p, {
+          strokeDashoffset: 0,
+          opacity: 0.6,
+          duration: 0.65,
+          ease: "power2.inOut",
+        }, 0.55 + i * 0.12);
+      });
+
+      // outer nodes fade in staggered, paired with their path
+      outerNodes.forEach((node, i) => {
+        tl.to(node, { autoAlpha: 1, duration: 0.45 }, 0.75 + i * 0.12);
+      });
+
+      // ── Trigger: play once when section scrolls into view ────────────────
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 72%",
+        once: true,
+        onEnter: () => tl.play(),
+      });
+
+      // ── Glow pulse (runs immediately, independent of scroll) ─────────────
+      const glowEl = diagram.querySelector<HTMLElement>("[data-arch-glow]");
+      if (glowEl) {
+        gsap.to(glowEl, {
+          scale: 1.15,
+          opacity: 0.7,
+          duration: 2,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
     },
     { scope: sectionRef },
   );
 
   return (
-    <SectionViewport
+    <section
+      ref={sectionRef}
       id="platform"
-      className="section-band--dark border-y border-[var(--algovia-border)]"
+      className="arch"
+      aria-label="Algovia AI platform architecture"
     >
-      <div ref={sectionRef} className="relative w-full">
-        <div className="pointer-events-none absolute -inset-x-[50vw] inset-y-0 left-1/2 w-screen -translate-x-1/2 bg-[var(--surface-dark)]" />
-        <div className="pointer-events-none absolute -inset-x-[50vw] inset-y-0 left-1/2 w-screen -translate-x-1/2 opacity-30 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 30 Q15 0 30 30 T60 30\' fill=\'none\' stroke=\'%236366f1\' stroke-opacity=\'0.15\'/%3E%3C/svg%3E')]" />
-        <div className="pointer-events-none absolute top-1/2 left-1/2 h-[min(80vw,500px)] w-[min(80vw,500px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[rgba(99,102,241,0.18)] blur-[120px]" />
+      {/* Background layers */}
+      <div className="arch__bg" aria-hidden />
+      <div className="arch__ambient" aria-hidden />
 
-        <div className="relative section-grid section-grid--2 w-full items-center">
-          <Reveal>
-            <div data-reveal-item className="section-intro">
-              <SectionLabel>Interactive Architecture Showcase</SectionLabel>
-              <h2 className="text-[var(--foreground)]">
-                AI-native systems. Built to scale.
-              </h2>
-              <p>
-                From user experience to enterprise backends — orchestrated agents,
-                RAG knowledge layers, and governed LLM integrations.
-              </p>
-              <Link
-                href="/platform"
-                className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--algovia-purple-light)] hover:text-[var(--foreground-on-dark)]"
-              >
-                Explore our platform
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </Reveal>
+      <div className="arch__inner">
+        {/* ── Copy ──────────────────────────────────────────────────────── */}
+        <div ref={copyRef} className="arch__copy">
+          <SectionLabel data-copy-item>The Algovia Platform</SectionLabel>
 
-          <div
-            ref={diagramRef}
-            className="relative mx-auto aspect-square w-full max-w-md lg:max-h-[min(480px,52dvh)] lg:max-w-none lg:justify-self-end"
+          <h2 data-copy-item className="arch__heading">
+            AI-native systems.
+            <br />
+            Built to scale.
+          </h2>
+
+          <p data-copy-item className="arch__lead">
+            From user experience to enterprise backends — orchestrated agents,
+            RAG knowledge layers, and governed LLM integrations, all in one
+            coherent platform.
+          </p>
+
+          <Link href="/platform" data-copy-item className="arch__cta">
+            Explore our platform
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+
+        {/* ── Diagram ───────────────────────────────────────────────────── */}
+        <div ref={diagramRef} className="arch__diagram">
+          {/* SVG — connection paths */}
+          <svg
+            viewBox={`0 0 ${VW} ${VH}`}
+            className="arch__svg"
+            fill="none"
+            aria-hidden
+            preserveAspectRatio="xMidYMid meet"
           >
-            <svg
-              className="absolute inset-0 h-full w-full"
-              viewBox="0 0 400 400"
-              fill="none"
-              aria-hidden
-            >
-              <line data-arch-line x1="120" y1="80" x2="200" y2="120" stroke="rgba(99,102,241,0.4)" strokeWidth="1" strokeDasharray="6 6" />
-              <line data-arch-line x1="120" y1="320" x2="200" y2="280" stroke="rgba(99,102,241,0.4)" strokeWidth="1" strokeDasharray="6 6" />
-              <line data-arch-line x1="280" y1="80" x2="200" y2="120" stroke="rgba(99,102,241,0.4)" strokeWidth="1" strokeDasharray="6 6" />
-              <line data-arch-line x1="280" y1="320" x2="200" y2="280" stroke="rgba(99,102,241,0.4)" strokeWidth="1" strokeDasharray="6 6" />
-              <line data-arch-line x1="200" y1="120" x2="200" y2="200" stroke="rgba(99,102,241,0.5)" strokeWidth="1" strokeDasharray="6 6" />
-              <line data-arch-line x1="200" y1="200" x2="200" y2="280" stroke="rgba(99,102,241,0.5)" strokeWidth="1" strokeDasharray="6 6" />
-            </svg>
+            <defs>
+              {/* Gradient stroke for each path */}
+              <linearGradient id="arch-grad-v" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stopColor="rgba(99,102,241,0.65)" />
+                <stop offset="100%" stopColor="rgba(99,102,241,0.25)" />
+              </linearGradient>
+              <linearGradient id="arch-grad-d1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%"   stopColor="rgba(99,102,241,0.5)" />
+                <stop offset="100%" stopColor="rgba(99,102,241,0.2)" />
+              </linearGradient>
+              <linearGradient id="arch-grad-d2" x1="1" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stopColor="rgba(99,102,241,0.5)" />
+                <stop offset="100%" stopColor="rgba(99,102,241,0.2)" />
+              </linearGradient>
+            </defs>
 
-            <div className="grid h-full grid-cols-3 grid-rows-3 gap-3 p-4 sm:gap-4 sm:p-5">
-              {nodes.map((node) => {
-                const pos: Record<string, string> = {
-                  "0-0": "col-start-1 row-start-1",
-                  "0-1": "col-start-2 row-start-1",
-                  "0-2": "col-start-3 row-start-1",
-                  "1-0": "col-start-1 row-start-2",
-                  "1-1": "col-start-2 row-start-2",
-                  "1-2": "col-start-3 row-start-2",
-                  "2-0": "col-start-1 row-start-3",
-                  "2-1": "col-start-2 row-start-3",
-                  "2-2": "col-start-3 row-start-3",
-                };
-                const key = `${node.row}-${node.col}`;
-                return (
-                  <div
-                    key={node.id}
-                    data-arch-node
-                    className={`flex items-center justify-center ${pos[key]}`}
-                  >
-                    <div
-                      className={`glass-panel-dark relative rounded-xl px-2 py-2 text-center text-[9px] font-medium leading-tight text-slate-200 sm:px-3 sm:py-2.5 sm:text-xs ${
-                        node.highlight
-                          ? "border-[rgba(99,102,241,0.45)] bg-[rgba(5,7,20,0.55)] shadow-lg shadow-[rgba(99,102,241,0.2)]"
-                          : ""
-                      }`}
-                    >
-                      {node.highlight && (
-                        <span
-                          data-arch-glow
-                          className="absolute inset-0 rounded-xl bg-[rgba(99,102,241,0.2)] blur-md"
-                        />
-                      )}
-                      <span className="relative">{node.label}</span>
-                    </div>
-                  </div>
-                );
-              })}
+            {/* knowledge → orchestration (vert up) */}
+            <path
+              data-arch-path
+              d={PATHS[0]}
+              stroke="url(#arch-grad-v)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            {/* orchestration → llm (vert down) */}
+            <path
+              data-arch-path
+              d={PATHS[1]}
+              stroke="url(#arch-grad-v)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            {/* user → orchestration */}
+            <path
+              data-arch-path
+              d={PATHS[2]}
+              stroke="url(#arch-grad-d1)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            {/* apps → orchestration */}
+            <path
+              data-arch-path
+              d={PATHS[3]}
+              stroke="url(#arch-grad-d1)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            {/* apis → orchestration */}
+            <path
+              data-arch-path
+              d={PATHS[4]}
+              stroke="url(#arch-grad-d2)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            {/* enterprise → orchestration */}
+            <path
+              data-arch-path
+              d={PATHS[5]}
+              stroke="url(#arch-grad-d2)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+
+            {/* Connection dots at path ends */}
+            {[
+              { cx: 250, cy: 62  },
+              { cx: 250, cy: 406 },
+              { cx: 66,  cy: 88  },
+              { cx: 66,  cy: 378 },
+              { cx: 434, cy: 88  },
+              { cx: 434, cy: 378 },
+            ].map(({ cx, cy }, i) => (
+              <circle
+                key={i}
+                cx={cx} cy={cy} r="3"
+                fill="rgba(99,102,241,0.55)"
+              />
+            ))}
+          </svg>
+
+          {/* HTML node cards — positioned in the same 500×490 coordinate space */}
+          {NODES.map(({ id, label, sub, cx, cy, highlight = false, Icon }) => (
+            <div
+              key={id}
+              data-arch-node
+              data-node-id={id}
+              className={`arch__node${highlight ? " arch__node--center" : ""}`}
+              style={{
+                left: `${(cx / VW) * 100}%`,
+                top:  `${(cy / VH) * 100}%`,
+              }}
+            >
+              {highlight && <span data-arch-glow className="arch__node-glow" />}
+
+              <span className={`arch__node-icon${highlight ? " arch__node--center-icon" : ""}`}>
+                <Icon
+                  className={highlight ? "h-4 w-4" : "h-3.5 w-3.5"}
+                  strokeWidth={2}
+                />
+              </span>
+
+              <span className="arch__node-label">{label}</span>
+              {sub && <span className="arch__node-sub">{sub}</span>}
             </div>
-          </div>
+          ))}
         </div>
       </div>
-    </SectionViewport>
+    </section>
   );
 }
