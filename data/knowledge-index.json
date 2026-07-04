@@ -1,195 +1,218 @@
 {
-  "version": 1,
-  "model": "text-embedding-3-small",
-  "chunkCount": 14,
+  "version": 2,
+  "chunkCount": 11,
+  "generatedAt": "2026-07-04T22:21:06.096Z",
   "chunks": [
+    {
+      "id": "case-studies",
+      "category": "resources",
+      "title": "Case Studies and Outcomes",
+      "content": "Algovia measures success by outcomes in production, not demos in a boardroom. Representative results from live deployments:\n\n**Retail demand forecasting** — 23% reduction in forecast error for a mid-size grocery chain (800+ SKUs, 40 stores). Integrated with existing SAP supply chain. Delivered in 14 weeks from contract to production.\n\n**Financial services KYC automation** — 55% reduction in KYC processing time for a digital bank entering three new markets. Automated document extraction and risk scoring; human review retained for flagged cases. Fully compliant with local regulatory requirements.\n\n**Industrial predictive maintenance** — 37% reduction in unplanned downtime for a chemical processing facility. Models trained on 18 months of sensor history. Edge deployment on existing plant hardware.\n\n**Enterprise IT service desk** — 31% reduction in L1 ticket volume for a 3,000-seat IT organization. Conversational AI handles password resets, software requests, and onboarding workflows. Integrated with ServiceNow and Active Directory.\n\n**Media content operations** — 48% reduction in manual metadata tagging time for a broadcast archive digitization project. Vision AI + LLM pipeline processed 200,000+ hours of archive content.\n\n**Fintech MVP** — Full-stack AI-native lending platform delivered in 12 weeks for a regulated fintech startup. Included credit scoring, document processing, and a conversational onboarding flow. Raised Series A 6 months after launch.\n\nAll case studies available in detail on request. Schedule a Solution Workshop to discuss how similar outcomes apply to your context.",
+      "keywords": [
+        "case study",
+        "results",
+        "outcomes",
+        "roi",
+        "impact",
+        "success",
+        "client",
+        "deployment",
+        "production"
+      ]
+    },
     {
       "id": "overview",
       "category": "company",
       "title": "Algovia Overview",
-      "content": "Algovia is an AI-native engineering and consulting company. We help enterprises and ambitious startups design, build, and scale AI-native products and platforms from strategy to production.",
+      "content": "Algovia is an AI-native engineering and consulting company. We help enterprises and ambitious startups design, build, and scale AI-native products and platforms — from strategy through to production.\n\nWe pair large-language-model interfaces with a living network of agents, verified vendors, and on-demand contributors to turn plain-language requests into finished, real-world outcomes. Our work spans every layer: data infrastructure, AI orchestration, product engineering, cloud delivery, and the user experiences that make it all usable.\n\nOur team has shipped AI systems across retail, financial services, industrial operations, enterprise IT, media, and trading. We bring both deep technical depth and business pragmatism — every engagement is scoped to produce measurable outcomes, not research artifacts.\n\nEngagement models: fixed-scope delivery, team augmentation, platform licensing, and strategic advisory. All engagements begin with a structured discovery workshop to align on goals, constraints, and the right level of AI ambition for the problem.\n\nCore beliefs:\n- AI should replace friction, not create it\n- Every completed job should enrich a shared intelligence layer\n- Value should flow back to the people who contribute knowledge, labor, and local context\n- Trust, transparency, and protected payments are non-negotiable at every layer\n\nTo get started: Talk to Algovia AI on the homepage, schedule a Solution Workshop, or upload your project requirements.",
       "keywords": [
         "algovia",
         "company",
         "about",
         "who",
-        "what"
-      ]
-    },
-    {
-      "id": "services-strategy",
-      "category": "services",
-      "title": "AI Strategy & Consulting",
-      "content": "Algovia provides AI strategy and consulting: roadmaps, use-case discovery, ROI modeling, and executive workshops. We help identify high-impact AI opportunities aligned to business outcomes.",
-      "keywords": [
-        "strategy",
+        "what",
+        "mission",
+        "ai",
         "consulting",
-        "roadmap",
-        "workshop",
-        "discovery"
+        "engineering"
       ]
     },
     {
-      "id": "services-agents",
-      "category": "services",
-      "title": "AI Agents & Automation",
-      "content": "Algovia builds AI agents and copilots using LangGraph, CrewAI, and enterprise guardrails. Agentic systems handle complex workflows with human-in-the-loop checkpoints, tracing, and audit trails.",
+      "id": "enterprise-it",
+      "category": "industries",
+      "title": "Enterprise IT",
+      "content": "Algovia builds AI systems for enterprise IT teams — from service desk automation to AIOps at scale.\n\n**AI Service Management** — Intelligent layer on top of existing ITSM platforms (ServiceNow, Jira Service Management, BMC Remedy). Auto-classifies and routes tickets, suggests resolutions from knowledge bases, and drafts responses. Reduces L1 ticket volume by 25-40%.\n\n**Incident and Problem Management** — AI-assisted major incident response: automatic timeline correlation, blast radius assessment, draft communications, and post-incident report generation. Root cause analysis using log clustering and change correlation.\n\n**Change and Release Management** — Risk scoring for change requests using historical incident data and dependency graphs. Automated approval routing for low-risk changes. Release readiness checks against rollback criteria.\n\n**IT Asset Management** — AI-assisted asset discovery, license compliance monitoring, shadow IT detection, and refresh cycle optimization. Connects to Lansweeper, Snow, and native CMDB.\n\n**Configuration Management** — CMDB health scoring, auto-remediation of stale CIs, and relationship mapping from network scans and cloud APIs. Feeds into incident impact analysis.\n\n**Service Desk Automation** — Conversational AI for employee self-service: password resets, software requests, onboarding workflows, and VPN troubleshooting. Integrates with Active Directory, Okta, and Slack/Teams.\n\n**AI-Driven IT Operations (AIOps)** — Metric anomaly detection, log intelligence, and event correlation across cloud-native and on-prem environments. Reduces alert noise by 60-80% in production.\n\nTarget customers: Enterprise IT organizations with 500+ employees, managed service providers, and IT outsourcing firms.",
       "keywords": [
-        "agent",
-        "langgraph",
-        "automation",
-        "copilot",
-        "agentic"
+        "enterprise it",
+        "itsm",
+        "service desk",
+        "incident management",
+        "problem management",
+        "change management",
+        "asset management",
+        "configuration management",
+        "service catalog",
+        "itil",
+        "aiops"
       ]
     },
     {
-      "id": "services-engineering",
-      "category": "services",
-      "title": "Product Engineering",
-      "content": "End-to-end product engineering: full-stack development, mobile apps, API-first platforms, and AI-native architecture. Typical MVP timeline is 10-14 weeks for regulated fintech with KYC/payments.",
+      "id": "eureka-platform",
+      "category": "platform",
+      "title": "Eureka AI Platform",
+      "content": "Eureka is Algovia's enterprise AI platform — a layered architecture that connects data, reasoning, and user experience into production-ready AI systems.\n\n**Intelligent Data Layer** — The foundation. Connectors to enterprise systems (ERP, CRM, SCADA, data lakes), real-time streaming pipelines, vector stores for semantic search, and a governed feature store. Data quality, lineage, and access controls are built in — not bolted on. Supports pgvector, Pinecone, Milvus, and Weaviate.\n\n**Generative AI Layer** — LLM orchestration with LangGraph: multi-agent pipelines, tool bindings, RAG retrieval, human-in-the-loop checkpoints, and memory management. Model-agnostic — runs OpenAI, Anthropic, Gemini, Llama, and domain-fine-tuned models. Streaming responses, context management, and cost controls included.\n\n**Predictive AI Layer** — Classical and deep learning models for forecasting, classification, anomaly detection, and optimization. AutoML for rapid prototyping, full MLOps lifecycle for production. Feature store shared with the Intelligent Data Layer for consistency between training and inference.\n\n**Dynamic UI/UX** — AI-native interface components: streaming chat, copilot sidebars, insight cards, and agentic workflow UIs. Built on Next.js with accessibility and mobile-first design. Ships with a design system that matches your brand.\n\n**Responsible AI** — Model cards, bias auditing, explainability layers (SHAP, LIME), and governance dashboards. Audit trails for every AI decision. Compliance-ready for EU AI Act, ISO 42001, and sector-specific regulations (SAMA, FCA, HIPAA).\n\nEureka is available as a managed platform (hosted by Algovia), a self-hosted deployment on your cloud, or as licensed modules that integrate with your existing AI stack.",
       "keywords": [
-        "product",
-        "engineering",
-        "mvp",
-        "development",
-        "full-stack"
-      ]
-    },
-    {
-      "id": "services-cloud",
-      "category": "services",
-      "title": "Cloud & DevOps",
-      "content": "Cloud and DevOps on AWS: Kubernetes, serverless, CI/CD, observability, and SRE practices. Algovia recommends multi-AZ VPC, WAF, KMS encryption, and IAM least privilege for enterprise workloads.",
-      "keywords": [
-        "cloud",
-        "devops",
-        "aws",
-        "kubernetes",
-        "ci/cd",
-        "infrastructure"
-      ]
-    },
-    {
-      "id": "services-data",
-      "category": "services",
-      "title": "Data & Analytics",
-      "content": "Data engineering: data lakes, real-time pipelines, BI, vector databases (pgvector, Milvus), and RAG pipelines for enterprise knowledge retrieval.",
-      "keywords": [
-        "data",
-        "analytics",
+        "eureka",
+        "platform",
+        "generative ai",
+        "predictive ai",
+        "responsible ai",
+        "intelligent data layer",
+        "dynamic ux",
+        "llm",
         "rag",
         "vector",
-        "pipeline",
-        "lake"
+        "orchestration"
       ]
     },
     {
-      "id": "services-legacy",
-      "category": "services",
-      "title": "Legacy Modernization",
-      "content": "Legacy modernization using strangler-fig migration, API-first extraction, and incremental AI adoption. Algovia avoids big-bang rewrites and delivers incremental value with bounded contexts.",
+      "id": "financial-services",
+      "category": "industries",
+      "title": "Financial Services",
+      "content": "Algovia builds AI systems for banks, insurers, financial markets infrastructure, private banking, wealth management, and gaming operators navigating AML and compliance obligations.\n\n**KYC / CDD** — AI-assisted Know Your Customer and Customer Due Diligence. Document extraction, identity verification, risk scoring, and ongoing monitoring. Reduces manual KYC time by 40-60%. Compliant with FATF, FinCEN, FCA, and MAS frameworks.\n\n**Transaction Monitoring** — Behavioral analytics and graph models to detect suspicious transaction patterns. Precision-tuned to reduce false positives while maintaining detection coverage. Integrates with Actimize, NICE, and custom data pipelines.\n\n**Sanctions Screening** — Real-time and batch screening against OFAC, UN, EU, and domestic sanctions lists. Fuzzy name matching with contextual disambiguation. Sub-100ms API latency for payment rails.\n\n**Payment Fraud** — ML models for card-not-present fraud, account takeover, and first-party fraud. Ensemble approach: rules + gradient boosting + LLM-based anomaly explanation. Typically reduces fraud losses by 20-35%.\n\n**Case Management** — AI overlay on existing case management systems (Pega, Salesforce, custom). Auto-summarizes transaction chains, suggests disposition, routes to the right analyst. Reduces average case handling time by 30-50%.\n\n**AI Overlays** — Non-invasive AI layer on existing compliance stacks. No rip-and-replace required. Augments legacy systems with generative AI reasoning and modern data pipelines.\n\nKey sectors: Retail banking, insurance carriers, capital markets, private banking, hedge funds, payments processors, and regulated gaming operators.\n\nAlgovia holds experience with SAMA (Saudi Arabia), FCA (UK), MAS (Singapore), and CBN (Nigeria) compliance frameworks.",
       "keywords": [
-        "legacy",
-        "modernize",
-        "modernization",
-        "migrate",
-        "erp",
-        "monolith"
-      ]
-    },
-    {
-      "id": "architecture-marketplace",
-      "category": "architecture",
-      "title": "AI Marketplace Architecture",
-      "content": "AI marketplace architecture: Experience layer (Next.js, BFF, OIDC) → Commerce core (catalog, orders, payments) → AI layer (recommendations, vector search, pricing agent, fraud) → Data (Kafka, lakehouse, pgvector) → Ops (AWS EKS, observability, CI/CD). MVP phase: 8-12 weeks.",
-      "keywords": [
-        "marketplace",
-        "architecture",
-        "ecommerce",
-        "commerce"
-      ]
-    },
-    {
-      "id": "architecture-microservices",
-      "category": "architecture",
-      "title": "Microservices Roadmap",
-      "content": "Microservices roadmap: Phase 1 (0-6 weeks) domain mapping, API contracts, CI/CD. Phase 2 (6-14 weeks) extract 2-3 high-value services, event backbone. Phase 3 (14+ weeks) observability, SRE, platform team enablement.",
-      "keywords": [
-        "microservices",
-        "roadmap",
-        "phase",
-        "services",
-        "api"
-      ]
-    },
-    {
-      "id": "architecture-saudi",
-      "category": "architecture",
-      "title": "Saudi Fintech Cloud",
-      "content": "Saudi fintech cloud: AWS Bahrain (me-south-1) or in-Kingdom options per data residency. Multi-AZ VPC, WAF, CloudFront, PCI-aligned payment isolation, KMS, SAMA-aligned logging. Arabic/English UX required.",
-      "keywords": [
-        "saudi",
         "fintech",
-        "bahrain",
-        "sama",
-        "compliance",
-        "me-south"
+        "financial services",
+        "kyc",
+        "cdd",
+        "aml",
+        "transaction monitoring",
+        "sanctions screening",
+        "payment fraud",
+        "case management",
+        "banking",
+        "insurance",
+        "wealth management",
+        "gaming",
+        "compliance"
       ]
     },
     {
-      "id": "team-fintech",
-      "category": "delivery",
-      "title": "Fintech MVP Team Structure",
-      "content": "Fintech MVP team: Product/BA (1), Tech lead (1), Full-stack engineers (2-3), AI/ML engineer (1), DevOps (0.5-1), QA/Security (1). Timeline: 10-14 weeks for regulated MVP with KYC and payments integration.",
+      "id": "get-started",
+      "category": "lead",
+      "title": "Getting Started with Algovia",
+      "content": "Getting started with Algovia is straightforward. Three paths depending on where you are:\n\n**Talk to Algovia AI** — Use the chat on the homepage to describe your challenge. The AI will help you articulate the problem, identify which Algovia capabilities are most relevant, and suggest next steps. No commitment required.\n\n**Schedule a Solution Workshop** — A 90-minute structured session with Algovia's solutions team. We map your current state, identify the 2-3 highest-impact AI opportunities, and produce a written engagement outline with timeline and resource estimates. Available virtually or in person. No cost.\n\n**Upload Your Requirements** — Have a brief, RFP, or technical spec? Upload it directly and Algovia will review and respond with a tailored approach within 2 business days.\n\nWhat to expect in a first engagement:\n1. Discovery workshop (1-2 weeks) — stakeholder interviews, data audit, technical assessment, opportunity prioritization\n2. Engagement design (1 week) — team composition, delivery roadmap, milestones, commercial terms\n3. Kick-off and sprint 1 (weeks 3-4) — foundation work: data pipelines, CI/CD, architecture alignment\n4. Iterative delivery (weeks 4-14+) — biweekly demos, continuous deployment, stakeholder feedback loops\n5. Production handoff — documentation, knowledge transfer, optional SLA-backed managed service\n\nPricing: Fixed-scope engagements from $50K for focused AI POCs. Platform licensing and team augmentation also available. All pricing discussed transparently in the Solution Workshop.\n\nIndustries where Algovia has shipped production systems: Retail/CPG, Financial Services, Industrial, Enterprise IT, Media, Trading & Investing.",
       "keywords": [
-        "team",
-        "fintech",
-        "mvp",
-        "structure",
-        "size",
-        "estimate"
+        "get started",
+        "workshop",
+        "contact",
+        "schedule",
+        "book",
+        "engagement",
+        "proposal",
+        "requirements",
+        "pricing",
+        "consultation",
+        "how to start"
       ]
     },
     {
-      "id": "industries-retail",
+      "id": "industrial",
+      "category": "industries",
+      "title": "Industrial AI",
+      "content": "Algovia builds AI systems for industrial operators across oil and gas, energy, semiconductors, chemicals, pharmaceuticals, process industries, assembly, and utilities.\n\n**Predictive Asset Intelligence** — Sensor fusion, anomaly detection, and remaining useful life (RUL) models for rotating equipment, process vessels, and electrical infrastructure. Reduces unplanned downtime by 20-40%. Integrates with OSIsoft PI, Siemens MindSphere, and OPC-UA data historians.\n\n**Industrial LLM** — Domain-adapted language models for maintenance manuals, P&ID interpretation, incident reports, and work order management. Engineers ask questions in natural language; the system retrieves from structured documents and plant history simultaneously.\n\n**Plant Insights** — Real-time dashboard AI that surfaces process deviations, energy efficiency opportunities, and yield optimization recommendations. Connects to DCS, SCADA, and MES systems.\n\n**Vision AI Studio** — Computer vision for quality inspection, safety compliance monitoring, foreign object detection, and automated visual defect classification on production lines. Supports edge deployment on NVIDIA Jetson and standard industrial cameras.\n\n**Manufacturing Workflow Intelligence** — Agent-based systems for production scheduling, material handling coordination, and exception management. Human-in-the-loop for high-risk decisions; fully automated for routine reordering and shift handoffs.\n\nSectors: Upstream and midstream oil and gas, renewable energy operations, semiconductor fabs, API pharmaceutical manufacturing, specialty chemicals, utilities (transmission and distribution), discrete and process assembly.\n\nTypical deployment: Edge-first architecture with cloud aggregation. Operates in air-gapped environments where required. OT/IT integration expertise across Purdue model environments.",
+      "keywords": [
+        "industrial",
+        "manufacturing",
+        "oil gas",
+        "energy",
+        "semiconductor",
+        "chemical",
+        "pharmaceutical",
+        "predictive maintenance",
+        "asset intelligence",
+        "vision ai",
+        "process",
+        "assembly",
+        "utilities"
+      ]
+    },
+    {
+      "id": "media",
+      "category": "industries",
+      "title": "Media & Entertainment",
+      "content": "Algovia builds AI systems for broadcasters, streaming platforms, publishers, and content operations teams.\n\n**Media Copilot** — Generative AI assistant for media workflows: script analysis, content tagging, rights query resolution, and broadcast rundown optimization. Reduces editorial prep time by 30-50%. Works with existing MAM, PAM, and CMS systems.\n\n**Digital / OTT** — AI recommendation engine, content personalization, churn prediction, and ad inventory optimization for over-the-top and SVOD/AVOD platforms. Lightweight enough to run on Vercel Edge or Lambda@Edge.\n\n**Linear Broadcasting** — Scheduling optimization, audience retention forecasting, and automated traffic management for linear TV and radio. Integrates with Imagine, Amagi, and Grass Valley playout.\n\n**Rights and Compliance** — AI-assisted rights management: contract extraction, territory conflict detection, clearance workflow automation, and expiry monitoring. Reduces rights query resolution from days to minutes.\n\n**Content Intelligence** — Automated metadata enrichment, scene detection, content moderation, and accessibility captioning at scale. Reduces manual QC costs by 40-60% on high-volume archives.\n\n**Audience Intelligence** — First-party data activation, behavioral segmentation, and lookalike modeling without third-party cookies. Privacy-safe architecture compliant with GDPR and CCPA.\n\nAudit and managed services available for media operations: compliance monitoring, content performance audits, and AI model governance reviews.\n\nSectors: Broadcast television, streaming platforms, podcast networks, news publishers, sports rights holders, and advertising agencies.",
+      "keywords": [
+        "media",
+        "entertainment",
+        "ott",
+        "streaming",
+        "digital",
+        "linear",
+        "content",
+        "broadcast",
+        "media copilot",
+        "rights management",
+        "audience intelligence"
+      ]
+    },
+    {
+      "id": "retail-cpg",
       "category": "industries",
       "title": "Retail / CPG",
-      "content": "Retail AI: demand prediction, inventory optimization, personalized customer experiences. Algovia has 75+ retail locations worldwide in client deployments.",
+      "content": "Algovia builds AI systems for retailers and consumer goods companies across grocery, fuel, and convenience sectors.\n\n**Shelf Planning AI** — Computer vision and demand signal fusion to optimize shelf placement, facings, and replenishment cycles. Reduces out-of-stock rates by 15-30% in production deployments. Works with existing planogram tools or replaces manual processes entirely.\n\n**Demand Forecasting** — Multi-horizon demand forecasting using store-level sales history, weather, events, promotions, and supplier lead times. Accuracy improvement of 12-25% over legacy statistical models. Integrates with SAP, Oracle, and Blue Yonder.\n\n**Store Operations** — AI copilots for shift managers: exception alerts, task prioritization, staffing optimization, and automated compliance checks. Reduces manager decision overhead by 2-3 hours per shift.\n\n**Pricing Optimization** — Dynamic pricing agents that respond to competitor movements, inventory levels, and demand elasticity. Bounded by margin floors and brand guardrails.\n\n**Supplier Intelligence** — Automated supplier performance scoring, contract compliance monitoring, and risk flagging using document RAG and structured data pipelines.\n\nIndustries served: Grocery chains, fuel retail networks, convenience store operators, CPG manufacturers, and private-label brands.\n\nResources available: ROI calculators for demand forecasting, case studies on shelf AI deployment, analyst reports on AI in retail. Contact Algovia to access these materials.",
       "keywords": [
         "retail",
         "cpg",
+        "consumer goods",
+        "grocery",
+        "fuel",
+        "convenience",
+        "shelf planning",
+        "demand forecasting",
+        "store operations",
         "inventory",
-        "demand"
+        "pricing"
       ]
     },
     {
-      "id": "industries-fintech",
+      "id": "services",
+      "category": "services",
+      "title": "Algovia Services",
+      "content": "Algovia delivers six core service lines, typically combined into a single engagement:\n\n**AI Strategy & Consulting** — Roadmaps, use-case discovery, ROI modeling, and executive workshops. We identify the 2-3 AI opportunities with the highest business impact and the lowest integration risk, then build a delivery roadmap aligned to your team's capacity.\n\n**AI Agents & Automation** — Production-grade agent systems using LangGraph, CrewAI, and enterprise guardrails. Agentic systems handle complex workflows with human-in-the-loop checkpoints, full audit trails, and OpenTelemetry tracing. Typical patterns: document processing agents, customer-facing copilots, internal ops automation, and RAG-powered knowledge systems.\n\n**Product Engineering** — End-to-end product delivery: full-stack web and mobile, API-first platforms, and AI-native architecture. Typical MVP timeline: 10-14 weeks for a regulated fintech product with KYC and payments. We build with Next.js, FastAPI, and React Native depending on the surface.\n\n**Cloud & DevOps** — AWS, Kubernetes, CI/CD, and observability. We design for operational excellence from day one: automated testing, blue/green deployments, SLO monitoring, and cost optimization.\n\n**Data Engineering** — Data lakes, real-time streaming pipelines, BI, vector stores, and RAG systems. We build the data foundations that AI products actually need — not data warehouses that live in a slide deck.\n\n**Digital Transformation** — Legacy modernization, microservices migration, and ERP/CRM integration. Strangler-fig approach: expose capabilities via APIs/events without big-bang rewrites. Introduce AI incrementally — document RAG, ops copilots, decision agents.\n\nTypical fintech MVP team: 1 product/BA, 1 tech lead, 2-3 full-stack engineers, 1 AI/ML engineer, 0.5-1 DevOps, 1 QA/security. Timeline: 10-14 weeks.",
+      "keywords": [
+        "services",
+        "product engineering",
+        "ai agents",
+        "automation",
+        "cloud",
+        "devops",
+        "data",
+        "analytics",
+        "digital transformation",
+        "mvp",
+        "consulting"
+      ]
+    },
+    {
+      "id": "trading-investing",
       "category": "industries",
-      "title": "Financial Services",
-      "content": "Financial services AI: compliance automation, real-time risk monitoring, intelligent case management. 70% smarter workflows achieved in client engagements.",
+      "title": "Trading and Investing",
+      "content": "Algovia builds AI systems for quantitative trading firms, asset managers, hedge funds, and financial market infrastructure providers.\n\n**Market Intelligence** — Real-time news and earnings call analysis, sentiment scoring, and event-driven signal generation. LLM-based extraction of forward guidance, management tone shifts, and regulatory filings. Latency-optimized for intraday use cases.\n\n**Alpha Research** — ML pipelines for alternative data integration: satellite imagery, web traffic, credit card transactions, and social media signals. Feature engineering at scale with backtesting infrastructure.\n\n**Portfolio Analytics** — AI-assisted portfolio construction, factor exposure analysis, and scenario stress testing. Natural language query interface for portfolio managers who need answers without writing SQL.\n\n**Risk Intelligence** — Real-time VaR estimation, tail risk monitoring, and counterparty exposure aggregation. Anomaly detection on position and P&L data. Escalation workflows for limit breaches.\n\n**Trade Execution AI** — Predictive execution analytics: optimal order routing, market impact modeling, and post-trade TCA with AI-generated commentary for compliance reporting.\n\n**Regulatory Reporting** — Automated generation of MiFID II, EMIR, CFTC, and SEC reporting. Document understanding for interpreting regulatory changes and flagging required system updates.\n\nPartnerships: Algovia works with specialized data providers and market infrastructure firms to deliver integrated solutions. The Lighthouse Partnership model connects clients to curated alternative data and specialized research.\n\nDeployment: Cloud-native (AWS, GCP) and hybrid on-prem for latency-sensitive workloads. FIX protocol, kdb+, and ClickHouse integrations available.",
       "keywords": [
-        "fintech",
-        "financial",
-        "banking",
-        "compliance",
-        "risk"
-      ]
-    },
-    {
-      "id": "engagement",
-      "category": "lead",
-      "title": "Engagement & CTAs",
-      "content": "Engagement options: Talk to Algovia AI, Schedule Solution Workshop, Upload Requirements, Generate Architecture, Request Consultation. Contact our experts for scoped engagements and discovery workshops.",
-      "keywords": [
-        "contact",
-        "workshop",
-        "consultation",
-        "hire",
-        "engage",
-        "lead",
-        "quote"
+        "trading",
+        "investing",
+        "capital markets",
+        "hedge fund",
+        "asset management",
+        "alpha",
+        "signals",
+        "risk",
+        "portfolio",
+        "quant",
+        "data",
+        "market intelligence"
       ]
     }
-  ],
-  "generatedAt": "2026-05-22T19:51:58.512Z"
+  ]
 }

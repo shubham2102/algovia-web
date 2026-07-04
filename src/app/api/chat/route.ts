@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { generateChatResponse } from "@/lib/ai/chat";
+import { NextRequest } from "next/server";
+import { streamChatResponse } from "@/lib/ai/chat";
 import { checkRateLimit } from "@/lib/ai/rate-limit";
 
 interface ChatMessage {
@@ -15,10 +15,7 @@ export async function POST(request: NextRequest) {
       "unknown";
 
     if (!checkRateLimit(ip)) {
-      return NextResponse.json(
-        { error: "Rate limit exceeded. Please try again in a minute." },
-        { status: 429 },
-      );
+      return new Response("Rate limit exceeded. Please try again in a minute.", { status: 429 });
     }
 
     const body = await request.json();
@@ -26,24 +23,20 @@ export async function POST(request: NextRequest) {
 
     const lastUser = [...messages].reverse().find((m) => m.role === "user");
     if (!lastUser?.content?.trim()) {
-      return NextResponse.json(
-        { error: "No message provided" },
-        { status: 400 },
-      );
+      return new Response("No message provided", { status: 400 });
     }
 
-    const result = await generateChatResponse(messages);
+    const stream = await streamChatResponse(messages);
 
-    return NextResponse.json({
-      message: result.message,
-      intent: result.intent,
-      source: result.source,
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "no-cache, no-store",
+        "X-Accel-Buffering": "no",
+      },
     });
   } catch (error) {
     console.error("Chat API error:", error);
-    return NextResponse.json(
-      { error: "Failed to process request" },
-      { status: 500 },
-    );
+    return new Response("Failed to process request", { status: 500 });
   }
 }

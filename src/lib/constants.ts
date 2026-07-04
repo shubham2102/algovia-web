@@ -14,6 +14,40 @@ export const NAV_ITEMS = [
   { label: "Company", href: "/company", hasDropdown: true },
 ] as const;
 
+export const NAV_DROPDOWNS: Record<string, readonly { label: string; href: string }[]> = {
+  "/solutions": [
+    { label: "Vertical AI",      href: "/solutions#vertical-ai" },
+    { label: "Generative AI",    href: "/solutions#generative-ai" },
+    { label: "Business AI",      href: "/solutions#business-ai" },
+  ],
+  "/services": [
+    { label: "Product Engineering",    href: "/services#product-engineering" },
+    { label: "AI & Machine Learning",  href: "/services#ai-ml" },
+    { label: "Cloud & DevOps",         href: "/services#cloud" },
+    { label: "Data Engineering",       href: "/services#data" },
+    { label: "Digital Transformation", href: "/services#digital" },
+  ],
+  "/industries": [
+    { label: "Retail / CPG",       href: "/industries#retail" },
+    { label: "Financial Services", href: "/industries#fintech" },
+    { label: "Industrial",         href: "/industries#industrial" },
+    { label: "Real Estate",        href: "/industries#realestate" },
+    { label: "Media",              href: "/industries#media" },
+  ],
+  "/resources": [
+    { label: "Case Studies",  href: "/resources#case-studies" },
+    { label: "Blog",          href: "/resources#blog" },
+    { label: "Documentation", href: "/resources#docs" },
+    { label: "Help Center",   href: "/resources#help" },
+  ],
+  "/company": [
+    { label: "About Us", href: "/company#about" },
+    { label: "Careers",  href: "/company#careers" },
+    { label: "Press",    href: "/company#press" },
+    { label: "Contact",  href: "/company#contact" },
+  ],
+};
+
 export const HERO_BADGES = [
   { label: "AI Strategy & Consulting", icon: "brain" },
   { label: "AI Agents & Automation", icon: "bot" },
@@ -64,6 +98,7 @@ export const TRUST_LOGOS = [
 
 export const SERVICES = [
   {
+    id: "product-engineering",
     title: "Product Engineering",
     description:
       "End-to-end product development from discovery to deployment with AI-native architecture.",
@@ -71,6 +106,7 @@ export const SERVICES = [
     icon: "code",
   },
   {
+    id: "ai-ml",
     title: "AI & Machine Learning",
     description:
       "Custom ML models, LLM integrations, RAG pipelines, and intelligent automation systems.",
@@ -78,6 +114,7 @@ export const SERVICES = [
     icon: "sparkles",
   },
   {
+    id: "cloud",
     title: "Cloud & DevOps",
     description:
       "Scalable cloud infrastructure, CI/CD pipelines, and enterprise-grade DevOps practices.",
@@ -85,6 +122,7 @@ export const SERVICES = [
     icon: "cloud",
   },
   {
+    id: "data",
     title: "Data Engineering",
     description:
       "Modern data platforms, real-time analytics, and enterprise data lake architectures.",
@@ -92,6 +130,7 @@ export const SERVICES = [
     icon: "database",
   },
   {
+    id: "digital",
     title: "Digital Transformation",
     description:
       "Legacy modernization, API-first architectures, and enterprise system integration.",

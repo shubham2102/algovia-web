@@ -5,6 +5,7 @@ interface LogoProps {
   href?: string;
   className?: string;
   size?: "sm" | "md" | "lg";
+  dark?: boolean;
 }
 
 const sizeClasses = {
@@ -17,10 +18,11 @@ export default function Logo({
   href = "/",
   className = "",
   size = "md",
+  dark = false,
 }: LogoProps) {
   const image = (
     <Image
-      src="/logo.png"
+      src={dark ? "/logo_v1_dark_transparent.png" : "/logo_v1.png"}
       alt="Algovia AI"
       width={200}
       height={40}

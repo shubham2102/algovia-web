@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/marketing/PageHero";
 import PageSection from "@/components/marketing/PageSection";
-import MarketingCTA from "@/components/marketing/MarketingCTA";
 import { INDUSTRIES } from "@/lib/constants";
 import { createPageMetadata } from "@/lib/metadata";
+import CTASection from "../components/CTASection";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Industries",
@@ -27,7 +27,7 @@ export default function IndustriesPage() {
       >
         <div className="page-card-grid">
           {INDUSTRIES.map((industry) => (
-            <article key={industry.id} className="page-card">
+            <article key={industry.id} id={industry.id} className="page-card">
               <p className="page-card__stat">{industry.metric}</p>
               <p className="text-xs uppercase tracking-wide text-[var(--algovia-muted)]">
                 {industry.metricLabel}
@@ -38,7 +38,13 @@ export default function IndustriesPage() {
           ))}
         </div>
       </PageSection>
-      <MarketingCTA />
+      <CTASection
+        eyebrow="Your industry. Our expertise."
+        heading="AI that understands"
+        headingAccent="your sector."
+        lead="We've built specialized AI for retail, finance, industrial, real estate, and media. Tell us your challenge — we'll build the solution."
+      />
+  
     </>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import SectionLabel from "@/components/ui/SectionLabel";
@@ -137,6 +138,14 @@ export default function IndustriesSection() {
             vertical AI tailored to your business.
           </p>
 
+          <Link
+            href="/industries"
+            className="ind-panel__cta mt-0 mb-4"
+          >
+            View all industries
+            <ArrowRight className="h-4 w-4" strokeWidth={2} />
+          </Link>
+
           <div ref={tabsRef} className="ind__tabs" role="tablist">
             {INDUSTRIES.map((ind, i) => (
               <button
@@ -182,6 +191,14 @@ export default function IndustriesSection() {
 
                 <h3 className="ind-panel__title">{ind.title}</h3>
                 <p className="ind-panel__desc">{ind.description}</p>
+                <Link
+                  href={`/industries#${ind.id}`}
+                  className="ind-panel__cta"
+                  tabIndex={activeIdx !== i ? -1 : 0}
+                >
+                  Explore {ind.title}
+                  <ArrowRight className="h-4 w-4" strokeWidth={2} />
+                </Link>
               </div>
             </div>
           ))}

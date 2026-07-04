@@ -4,6 +4,7 @@ import PageSection from "@/components/marketing/PageSection";
 import MarketingCTA from "@/components/marketing/MarketingCTA";
 import { PLATFORM_FEATURES } from "@/lib/constants";
 import { createPageMetadata } from "@/lib/metadata";
+import CTASection from "../components/CTASection";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Platform",
@@ -54,7 +55,12 @@ export default function PlatformPage() {
           </li>
         </ol>
       </PageSection>
-      <MarketingCTA title="Explore the platform with Algovia AI." />
+      <CTASection
+        eyebrow="Built for enterprise scale"
+        heading="Ship your AI platform"
+        headingAccent="with confidence."
+        lead="From architecture review to production deployment — Algovia's platform team handles the complexity so your team can focus on impact."
+      />
     </>
   );
 }

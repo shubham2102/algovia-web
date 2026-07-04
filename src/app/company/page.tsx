@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/marketing/PageHero";
 import PageSection from "@/components/marketing/PageSection";
-import MarketingCTA from "@/components/marketing/MarketingCTA";
+import CTASection from "@/app/components/CTASection";
 import { SITE } from "@/lib/constants";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -88,7 +88,12 @@ export default function CompanyPage() {
           )}
         </PageSection>
       ))}
-      <MarketingCTA />
+      <CTASection
+        eyebrow="Get in touch"
+        heading="Build something"
+        headingAccent="remarkable together."
+        lead="Whether you're ready to start or just exploring — Algovia AI can help you think it through, and our team is ready to turn that into a plan."
+      />
     </>
   );
 }

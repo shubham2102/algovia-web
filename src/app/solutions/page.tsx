@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/marketing/PageHero";
 import PageSection from "@/components/marketing/PageSection";
-import MarketingCTA from "@/components/marketing/MarketingCTA";
+import CTASection from "@/app/components/CTASection";
 import { SOLUTIONS } from "@/lib/constants";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -35,7 +35,12 @@ export default function SolutionsPage() {
           </p>
         </PageSection>
       ))}
-      <MarketingCTA />
+      <CTASection
+        eyebrow="Ready to deploy?"
+        heading="Find the right AI solution"
+        headingAccent="for your business."
+        lead="From vertical AI to autonomous agents — let Algovia scope your first deployment and define a roadmap built around measurable outcomes."
+      />
     </>
   );
 }

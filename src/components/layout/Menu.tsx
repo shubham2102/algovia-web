@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useLenis } from "lenis/react";
 import Logo from "@/components/ui/Logo";
 import { AILink } from "@/components/ui/AILink";
-import { FOOTER_LINKS, NAV_ITEMS } from "@/lib/constants";
+import { FOOTER_LINKS, NAV_DROPDOWNS, NAV_ITEMS } from "@/lib/constants";
 import { MENU_CLOSE_EVENT } from "@/lib/menuClose";
 import { gsap } from "@/lib/gsap";
 import "./Menu.css";
@@ -31,6 +31,71 @@ function isActiveRoute(pathname: string, href: string) {
   return current === target || current.startsWith(`${target}/`);
 }
 
+// ── Desktop nav item — flat link or hover dropdown ───────────────────────────
+interface NavItemProps {
+  item: (typeof NAV_ITEMS)[number];
+  isActive: boolean;
+  openDropdown: string | null;
+  setOpenDropdown: (v: string | null) => void;
+  clearTimer: () => void;
+  closeTimerRef: React.RefObject<ReturnType<typeof setTimeout> | null>;
+  onLinkClick: (e: React.MouseEvent, href: string) => void;
+}
+
+function NavItem({ item, isActive, openDropdown, setOpenDropdown, clearTimer, closeTimerRef, onLinkClick }: NavItemProps) {
+  const links = NAV_DROPDOWNS[item.href];
+  const isOpen = openDropdown === item.href;
+
+  if (!links) {
+    return (
+      <Link
+        href={item.href}
+        className={`site-nav__link${isActive ? " is-active" : ""}`}
+        onClick={(e) => onLinkClick(e, item.href)}
+      >
+        {item.label}
+      </Link>
+    );
+  }
+
+  return (
+    <div
+      className={`site-nav__item${isOpen ? " is-open" : ""}`}
+      onMouseEnter={() => { clearTimer(); setOpenDropdown(item.href); }}
+      onMouseLeave={() => { closeTimerRef.current = setTimeout(() => setOpenDropdown(null), 120); }}
+    >
+      <Link
+        href={item.href}
+        className={`site-nav__link site-nav__trigger${isActive ? " is-active" : ""}`}
+        onClick={(e) => onLinkClick(e, item.href)}
+      >
+        {item.label}
+        <svg className="site-nav__chevron" viewBox="0 0 10 6" fill="none" aria-hidden>
+          <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </Link>
+
+      <div
+        className="site-nav__dropdown"
+        aria-hidden={!isOpen}
+        onMouseEnter={() => clearTimer()}
+        onMouseLeave={() => { closeTimerRef.current = setTimeout(() => setOpenDropdown(null), 120); }}
+      >
+        {links.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className="site-nav__dropdown-link"
+            onClick={() => setOpenDropdown(null)}
+          >
+            {link.label}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Menu() {
   const pathname = usePathname();
   const lenis = useLenis();
@@ -39,6 +104,10 @@ export default function Menu() {
   const hamburgerTl = useRef<gsap.core.Timeline | null>(null);
   const isMenuOpen = useRef(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const clearTimer = () => { if (closeTimerRef.current) clearTimeout(closeTimerRef.current); };
 
   const closeMenu = useCallback(
     (immediate = false) => {
@@ -70,7 +139,6 @@ export default function Menu() {
   const handleLinkClick = useCallback(
     (event: React.MouseEvent, href: string) => {
       if (normalizePath(pathname) !== normalizePath(href)) return;
-
       event.preventDefault();
       event.stopPropagation();
       closeMenu();
@@ -100,6 +168,7 @@ export default function Menu() {
     const updateNavTopClass = () => {
       const scrollY = lenis?.scroll ?? window.scrollY;
       nav.classList.toggle("top", scrollY < getHeroThreshold());
+      setIsDarkMode(scrollY < getHeroThreshold());
     };
 
     lenis?.on("scroll", updateNavTopClass);
@@ -108,27 +177,8 @@ export default function Menu() {
     const spans = nav.querySelectorAll(".site-nav__hamburger span");
     const tl = gsap.timeline({ paused: true });
 
-    tl.to(
-      spans[0],
-      {
-        y: "0.19rem",
-        rotation: 45,
-        width: "1.1rem",
-        duration: 0.3,
-        ease: "power2.inOut",
-      },
-      0,
-    ).to(
-      spans[1],
-      {
-        y: "-0.19rem",
-        rotation: -45,
-        width: "1.1rem",
-        duration: 0.3,
-        ease: "power2.inOut",
-      },
-      0,
-    );
+    tl.to(spans[0], { y: "0.19rem", rotation: 45, width: "1.1rem", duration: 0.3, ease: "power2.inOut" }, 0)
+      .to(spans[1], { y: "-0.19rem", rotation: -45, width: "1.1rem", duration: 0.3, ease: "power2.inOut" }, 0);
 
     hamburgerTl.current = tl;
 
@@ -147,6 +197,7 @@ export default function Menu() {
       lenis?.off("scroll", updateNavTopClass);
       tl.kill();
       overlay?.removeEventListener("transitionend", onTransitionEnd);
+      clearTimer();
     };
   }, [lenis]);
 
@@ -161,14 +212,12 @@ export default function Menu() {
       overlay.style.pointerEvents = "all";
       overlay.style.transition = "none";
       overlay.style.opacity = "0";
-
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           overlay.style.transition = "opacity 0.4s ease";
           overlay.style.opacity = "1";
         });
       });
-
       isMenuOpen.current = true;
       setMenuOpen(true);
       lenis?.stop();
@@ -180,20 +229,40 @@ export default function Menu() {
 
   return (
     <>
-      <nav ref={navRef} className={`site-nav top${menuOpen ? " menu-open" : ""}`} aria-label="Site navigation">
+      <nav
+        ref={navRef}
+        className={`site-nav top${menuOpen ? " menu-open" : ""}`}
+        aria-label="Site navigation"
+      >
         <div className="container" style={{ padding: 0 }}>
           <div className="site-nav__container">
-            <div className="site-nav__cta">
+
+            {/* ── Logo ──────────────────────────────────────────────────── */}
+            <div className="site-nav__logo">
+              <Logo size="lg" className="!h-8 sm:!h-9" dark={menuOpen ? false : isDarkMode} />
+            </div>
+
+            {/* ── Desktop nav links ─────────────────────────────────────── */}
+            <div className="site-nav__links" aria-label="Primary navigation">
+              {NAV_ITEMS.map((item) => (
+                <NavItem
+                  key={item.href}
+                  item={item}
+                  isActive={isActiveRoute(pathname, item.href)}
+                  openDropdown={openDropdown}
+                  setOpenDropdown={setOpenDropdown}
+                  clearTimer={clearTimer}
+                  closeTimerRef={closeTimerRef}
+                  onLinkClick={handleLinkClick}
+                />
+              ))}
+            </div>
+
+            {/* ── Actions: CTA + mobile hamburger ───────────────────────── */}
+            <div className="site-nav__actions">
               <AILink className="site-nav__cta-btn hero__cta-primary !px-5 !py-2.5 !text-sm">
                 Talk to Algovia AI
               </AILink>
-            </div>
-
-            <div className="site-nav__logo">
-              <Logo size="lg" className="!h-8 sm:!h-9" />
-            </div>
-
-            <div className="site-nav__toggle">
               <button
                 type="button"
                 className="site-nav__toggle-btn"
@@ -201,17 +270,18 @@ export default function Menu() {
                 aria-label={menuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={menuOpen}
               >
-                Menu
                 <span className="site-nav__hamburger" aria-hidden>
                   <span />
                   <span />
                 </span>
               </button>
             </div>
+
           </div>
         </div>
       </nav>
 
+      {/* ── Full-screen overlay (all screens) ───────────────────────────── */}
       <div
         className="site-menu-overlay"
         ref={overlayRef}
@@ -221,9 +291,7 @@ export default function Menu() {
           {MENU_LINKS.map((item) => (
             <div
               key={item.href}
-              className={`site-menu-overlay__item ${
-                isActiveRoute(pathname, item.href) ? "is-active" : ""
-              }`}
+              className={`site-menu-overlay__item${isActiveRoute(pathname, item.href) ? " is-active" : ""}`}
             >
               <Link
                 href={item.href}
@@ -238,34 +306,26 @@ export default function Menu() {
           ))}
         </div>
 
-        {/* <div className="site-menu-overlay__footer">
+        <div className="site-menu-overlay__footer">
           <div className="container">
             <div className="site-menu-overlay__footer-inner">
               <div className="site-menu-overlay__footer-links">
                 {FOOTER_LINKS.products.slice(0, 2).map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => closeMenu()}
-                  >
+                  <Link key={link.href} href={link.href} onClick={() => closeMenu()}>
                     {link.label}
                   </Link>
                 ))}
               </div>
               <div className="site-menu-overlay__footer-links">
                 {OVERLAY_FOOTER_LINKS.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => closeMenu()}
-                  >
+                  <Link key={link.href} href={link.href} onClick={() => closeMenu()}>
                     {link.label}
                   </Link>
                 ))}
               </div>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     </>
   );

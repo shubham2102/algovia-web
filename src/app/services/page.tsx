@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/marketing/PageHero";
 import PageSection from "@/components/marketing/PageSection";
-import MarketingCTA from "@/components/marketing/MarketingCTA";
+import CTASection from "@/app/components/CTASection";
 import { DELIVERY_PILLARS, SERVICES } from "@/lib/constants";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -28,7 +28,7 @@ export default function ServicesPage() {
       >
         <div className="page-card-grid">
           {SERVICES.map((service) => (
-            <article key={service.title} className="page-card">
+            <article key={service.id} id={service.id} className="page-card">
               <h3 className="page-card__title">{service.title}</h3>
               <p className="page-card__text">{service.description}</p>
             </article>
@@ -52,7 +52,12 @@ export default function ServicesPage() {
           ))}
         </div>
       </PageSection>
-      <MarketingCTA />
+      <CTASection
+        eyebrow="Let's scope your project"
+        heading="From idea to production,"
+        headingAccent="we've got you."
+        lead="Talk to an Algovia engineer about your next AI, cloud, or digital transformation project. We'll help you move fast without sacrificing quality."
+      />
     </>
   );
 }

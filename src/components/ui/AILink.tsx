@@ -30,7 +30,7 @@ export function AILink({ children, className = "", onClick }: AILinkProps) {
   }
 
   return (
-    <Link href="/#ai-panel" className={className} onClick={onClick}>
+    <Link href="/" className={className} onClick={onClick}>
       {children}
     </Link>
   );

@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import SectionLabel from "@/components/ui/SectionLabel";
 import { gsap, ScrollTrigger, registerGsapPlugins } from "@/lib/gsap";
@@ -100,6 +102,13 @@ export default function EngineeringSection() {
             Move beyond experimentation. Algovia&apos;s AI delivers measurable
             performance gains across every industry.
           </p>
+          <Link
+            href="/services"
+            className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--algovia-green)] hover:text-[var(--algovia-green-light)] transition-colors"
+          >
+            View all services
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
 
         {/* ── Right: scroll-stacking cards ──────────────────────────────────── */}

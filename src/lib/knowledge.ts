@@ -90,9 +90,5 @@ Algovia ships production agent patterns with enterprise security and audit trail
 Algovia has experience with regional compliance and hybrid enterprise integrations.`;
   }
 
-  return `Thanks for your question. Algovia helps organizations build **AI-native products**, **agentic automation**, and **cloud platforms** with measurable business outcomes.
-
-I can help with architecture, roadmaps, team sizing, cloud design, and service discovery. Try a suggested prompt or ask about a specific industry.
-
-**Next steps:** Schedule a Solution Workshop or Talk to Algovia AI for a scoped engagement.`;
+  return `Algovia builds **AI-native products**, **agentic automation**, and **cloud platforms** for enterprises and startups. Ask about architecture, team sizing, cloud design, or a specific industry — or try one of the suggested prompts.`;
 }

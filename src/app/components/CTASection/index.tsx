@@ -8,7 +8,19 @@ import { SITE } from "@/lib/constants";
 import { scrollToAIPanel } from "@/lib/utils";
 import "./cta.css";
 
-export default function CTASection() {
+interface CTASectionProps {
+  eyebrow?: string;
+  heading?: string;
+  headingAccent?: string;
+  lead?: string;
+}
+
+export default function CTASection({
+  eyebrow = "Let's build together",
+  heading = "Start with a",
+  headingAccent = "conversation.",
+  lead = "Talk to Algovia AI or connect with our experts to scope your next AI-native platform, agentic workflow, or cloud transformation.",
+}: CTASectionProps) {
   const innerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -38,22 +50,18 @@ export default function CTASection() {
 
   return (
     <section className="cta" aria-label="Start a conversation with Algovia AI">
-      {/* Background decoration */}
       <div className="cta__bg-grid" aria-hidden />
       <div className="cta__glow-l"  aria-hidden />
       <div className="cta__glow-r"  aria-hidden />
 
       <div ref={innerRef} className="cta__inner">
-        <p className="cta__eyebrow" data-cta-item>Let&apos;s build together</p>
+        <p className="cta__eyebrow" data-cta-item>{eyebrow}</p>
 
         <h2 className="cta__heading" data-cta-item>
-          Start with a <em>conversation.</em>
+          {heading} <em>{headingAccent}</em>
         </h2>
 
-        <p className="cta__lead" data-cta-item>
-          Talk to Algovia AI or connect with our experts to scope your next
-          AI-native platform, agentic workflow, or cloud transformation.
-        </p>
+        <p className="cta__lead" data-cta-item>{lead}</p>
 
         <div className="cta__actions" data-cta-item>
           <button

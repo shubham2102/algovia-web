@@ -10,8 +10,10 @@ interface Message {
   content: string;
 }
 
-const DEMO_USER  = "How does Algovia build production AI systems?";
-const DEMO_AGENT = "We architect end-to-end — LangGraph orchestration, RAG knowledge layers, and cloud-native delivery. You get a running production system, not a prototype.";
+interface Props {
+  className?: string;
+  onFirstMessage?: () => void;
+}
 
 // ── Lightweight inline markdown renderer ────────────────────────────────────
 function parseLine(text: string): React.ReactNode {
@@ -36,190 +38,213 @@ function renderMarkdown(text: string): React.ReactNode {
   while (i < lines.length) {
     const line = lines[i];
 
-    if (line.trim() === "") {
-      nodes.push(<div key={i} className="hero-ai__md-gap" />);
-      i++;
-      continue;
-    }
+    if (line.trim() === "") { nodes.push(<div key={i} className="agent-md__gap" />); i++; continue; }
+    if (line.trim() === "---" || line.trim() === "—") { nodes.push(<hr key={i} className="agent-md__hr" />); i++; continue; }
 
-    if (line.trim() === "---" || line.trim() === "—") {
-      nodes.push(<hr key={i} className="hero-ai__md-hr" />);
-      i++;
-      continue;
-    }
-
-    // Ordered list — consume consecutive numbered lines
     if (/^\d+\.\s/.test(line)) {
       const items: string[] = [];
-      while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
-        items.push(lines[i].replace(/^\d+\.\s+/, ""));
-        i++;
-      }
-      nodes.push(
-        <ol key={`ol${i}`} className="hero-ai__md-ol">
-          {items.map((it, j) => <li key={j}>{parseLine(it)}</li>)}
-        </ol>
-      );
+      while (i < lines.length && /^\d+\.\s/.test(lines[i])) { items.push(lines[i]!.replace(/^\d+\.\s+/, "")); i++; }
+      nodes.push(<ol key={`ol${i}`} className="agent-md__ol">{items.map((it, j) => <li key={j}>{parseLine(it)}</li>)}</ol>);
       continue;
     }
 
-    // Unordered list
     if (/^[-*]\s/.test(line)) {
       const items: string[] = [];
-      while (i < lines.length && /^[-*]\s/.test(lines[i])) {
-        items.push(lines[i].replace(/^[-*]\s+/, ""));
-        i++;
-      }
-      nodes.push(
-        <ul key={`ul${i}`} className="hero-ai__md-ul">
-          {items.map((it, j) => <li key={j}>{parseLine(it)}</li>)}
-        </ul>
-      );
+      while (i < lines.length && /^[-*]\s/.test(lines[i])) { items.push(lines[i]!.replace(/^[-*]\s+/, "")); i++; }
+      nodes.push(<ul key={`ul${i}`} className="agent-md__ul">{items.map((it, j) => <li key={j}>{parseLine(it)}</li>)}</ul>);
       continue;
     }
 
-    nodes.push(<p key={i} className="hero-ai__md-p">{parseLine(line)}</p>);
+    // Markdown table: collect consecutive pipe-starting lines
+    if (/^\|/.test(line.trim())) {
+      const tableLines: string[] = [];
+      while (i < lines.length && /^\|/.test(lines[i]!.trim())) { tableLines.push(lines[i]!); i++; }
+      const parseRow = (row: string) => row.split("|").slice(1, -1).map((c) => c.trim());
+      const isSeparator = (row: string) => /^[\|\s\-:]+$/.test(row);
+      if (tableLines.length >= 2 && isSeparator(tableLines[1] ?? "")) {
+        const headers = parseRow(tableLines[0]!);
+        const rows = tableLines.slice(2).map(parseRow);
+        nodes.push(
+          <div key={`tbl${i}`} className="agent-md__table-wrap">
+            <table className="agent-md__table">
+              <thead>
+                <tr>{headers.map((h, j) => <th key={j}>{parseLine(h)}</th>)}</tr>
+              </thead>
+              <tbody>
+                {rows.map((row, ri) => (
+                  <tr key={ri}>{row.map((cell, ci) => <td key={ci}>{parseLine(cell)}</td>)}</tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      }
+      continue;
+    }
+
+    nodes.push(<p key={i} className="agent-md__p">{parseLine(line)}</p>);
     i++;
   }
 
   return nodes;
 }
 
-// ── Agent card — defined outside so React doesn't remount it every render ────
-function AgentCard({ children, dataMsg }: { children: React.ReactNode; dataMsg?: string }) {
+// ── Agent turn ───────────────────────────────────────────────────────────────
+function AgentTurn({
+  children,
+  dataMsg,
+  streaming,
+}: {
+  children: React.ReactNode;
+  dataMsg?: string;
+  streaming?: boolean;
+}) {
   return (
-    <div className="hero-ai__agent-card" {...(dataMsg ? { "data-msg": dataMsg } : {})}>
-      <div className="hero-ai__agent-card-header">
-        <span className="hero-ai__avatar">
-          <Sparkles className="h-3 w-3 text-white" strokeWidth={2.5} />
+    <div
+      className={`agent-turn${streaming ? " agent-turn--streaming" : ""}`}
+      {...(dataMsg ? { "data-msg": dataMsg } : {})}
+    >
+      <div className="agent-turn__header">
+        <span className="agent-turn__icon">
+          <Sparkles className="h-3 w-3" strokeWidth={2.5} />
         </span>
-        <span className="hero-ai__agent-name">Algovia AI</span>
+        <span className="agent-turn__label">Algovia AI</span>
       </div>
-      {children}
+      <div className="agent-turn__body">{children}</div>
     </div>
   );
 }
 
 // ── Component ────────────────────────────────────────────────────────────────
-export default function AIAssistantPanel({ className = "" }: { className?: string }) {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput]       = useState("");
-  const [loading, setLoading]   = useState(false);
-  const convoRef                = useRef<HTMLDivElement>(null);
-  const hasMessages             = messages.length > 0;
+export default function AIAssistantPanel({ className = "", onFirstMessage }: Props) {
+  const [messages, setMessages]         = useState<Message[]>([]);
+  const [input, setInput]               = useState("");
+  const [loading, setLoading]           = useState(false);
+  const [streaming, setStreaming]       = useState(false);
+  const [loadingLabel, setLoadingLabel] = useState("Thinking");
+  const convoRef                        = useRef<HTMLDivElement>(null);
+  const hasMessages                     = messages.length > 0;
 
-  // ── Scroll-based per-message blur ──────────────────────────────────────────
+  // ── Cycle loading labels for agentic feel ─────────────────────────────────
+  useEffect(() => {
+    if (!loading) return;
+    const labels = ["Thinking", "Analyzing", "Researching", "Drafting response"];
+    let idx = 0;
+    const iv = setInterval(() => { idx = (idx + 1) % labels.length; setLoadingLabel(labels[idx]!); }, 1800);
+    return () => clearInterval(iv);
+  }, [loading]);
+
+  // ── Auto-scroll to latest message ─────────────────────────────────────────
   useEffect(() => {
     const convo = convoRef.current;
     if (!convo) return;
-
-    const applyBlur = () => {
-      const items    = convo.querySelectorAll<HTMLElement>("[data-msg]");
-      const fadeZone = convo.clientHeight * 0.32;
-
-      items.forEach((el) => {
-        const elRelTop = el.offsetTop - convo.scrollTop;
-
-        if (elRelTop < fadeZone && elRelTop > -el.offsetHeight) {
-          const t        = Math.max(0, Math.min(1, elRelTop / fadeZone));
-          el.style.opacity    = String(0.06 + t * 0.94);
-          el.style.filter     = `blur(${(1 - t) * 2.5}px)`;
-          el.style.transition = "opacity 80ms linear, filter 80ms linear";
-        } else if (elRelTop >= fadeZone) {
-          el.style.opacity = "1";
-          el.style.filter  = "none";
-        }
-      });
-    };
-
-    convo.addEventListener("scroll", applyBlur, { passive: true });
-    // Re-run after each new message renders
     const raf = requestAnimationFrame(() => {
       convo.scrollTo({ top: convo.scrollHeight, behavior: "smooth" });
-      applyBlur();
     });
-
-    return () => {
-      convo.removeEventListener("scroll", applyBlur);
-      cancelAnimationFrame(raf);
-    };
+    return () => cancelAnimationFrame(raf);
   }, [messages, loading]);
 
   // ── Send ───────────────────────────────────────────────────────────────────
   const sendMessage = useCallback(
     async (text: string) => {
       const trimmed = text.trim();
-      if (!trimmed || loading) return;
+      if (!trimmed || loading || streaming) return;
+
+      const isFirst = messages.length === 0;
       setInput("");
-      setMessages((prev) => [...prev, { role: "user", content: trimmed }]);
+
+      // Build the updated message list synchronously so we can pass it to the API
+      const updated: Message[] = [...messages, { role: "user", content: trimmed }];
+      setMessages(updated);
+      if (isFirst) onFirstMessage?.();
+
       setLoading(true);
+      setLoadingLabel("Thinking");
+
       try {
-        const res  = await fetch("/api/chat", {
+        const res = await fetch("/api/chat", {
           method:  "POST",
           headers: { "Content-Type": "application/json" },
-          body:    JSON.stringify({ messages: [...messages, { role: "user", content: trimmed }] }),
+          body:    JSON.stringify({ messages: updated }),
         });
-        const data = await res.json();
-        setMessages((prev) => [...prev, { role: "assistant", content: data.message ?? data.error }]);
+
+        if (!res.ok || !res.body) {
+          setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong. Please try again." }]);
+          return;
+        }
+
+        // Thinking phase ends → streaming phase begins
+        setLoading(false);
+        setStreaming(true);
+        setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
+
+        const reader  = res.body.getReader();
+        const decoder = new TextDecoder();
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          setMessages((prev) => {
+            const copy = [...prev];
+            const last = copy[copy.length - 1];
+            if (last?.role === "assistant") {
+              copy[copy.length - 1] = { ...last, content: last.content + chunk };
+            }
+            return copy;
+          });
+        }
       } catch {
         setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong. Please try again." }]);
       } finally {
         setLoading(false);
+        setStreaming(false);
       }
     },
-    [loading, messages],
+    [loading, streaming, messages, onFirstMessage],
   );
 
   return (
     <div id="ai-panel" className={`hero-ai ${className}`.trim()} role="region" aria-label="Algovia AI assistant">
 
-      {/* ── Conversation scroll area ─────────────────────────────────────── */}
-      <div ref={convoRef} className="hero-ai__convo">
-
-        {/* Demo state */}
-        {!hasMessages && (
-          <>
-            <div className="hero-ai__demo-user">{DEMO_USER}</div>
-            <div className="hero-ai__demo-agent-wrap">
-              <AgentCard>
-                <p className="hero-ai__agent-card-body">{DEMO_AGENT}</p>
-              </AgentCard>
-            </div>
-          </>
-        )}
-
-        {/* Real messages */}
-        {hasMessages && (
-          <div className="hero-ai__messages">
-            {messages.map((msg, i) =>
-              msg.role === "user" ? (
-                <div key={i} data-msg="user" className="hero-ai__user-bubble">
-                  {msg.content}
-                </div>
-              ) : (
-                <AgentCard key={i} dataMsg="ai">
-                  <div className="hero-ai__agent-card-body hero-ai__md">
-                    {renderMarkdown(msg.content)}
+      {/* ── Conversation area ─────────────────────────────────────────── */}
+      <div className="hero-ai__convo-wrap">
+        <div ref={convoRef} className="hero-ai__convo" data-lenis-prevent>
+          {hasMessages && (
+            <div className="hero-ai__thread">
+              {messages.map((msg, i) => {
+                const isLastAssistant = msg.role === "assistant" && i === messages.length - 1;
+                return msg.role === "user" ? (
+                  <div key={i} data-msg="user" className="user-turn">
+                    <div className="user-turn__header">
+                      <span className="user-turn__avatar">YOU</span>
+                      <span className="user-turn__name">You</span>
+                    </div>
+                    <p className="user-turn__text">{msg.content}</p>
                   </div>
-                </AgentCard>
-              )
-            )}
+                ) : (
+                  <AgentTurn key={i} dataMsg="ai" streaming={isLastAssistant && streaming}>
+                    <div className="agent-md">{renderMarkdown(msg.content)}</div>
+                  </AgentTurn>
+                );
+              })}
 
-            {loading && (
-              <AgentCard dataMsg="ai">
-                <div className="flex gap-1.5 py-0.5">
-                  {[0, 130, 260].map((d) => (
-                    <span key={d} className="h-1.5 w-1.5 animate-bounce rounded-full bg-[var(--algovia-purple)]"
-                      style={{ animationDelay: `${d}ms` }} />
-                  ))}
-                </div>
-              </AgentCard>
-            )}
-          </div>
-        )}
+              {loading && (
+                <AgentTurn dataMsg="ai">
+                  <div className="agent-turn__thinking">
+                    <span className="agent-turn__thinking-dot" />
+                    <span className="agent-turn__thinking-dot" />
+                    <span className="agent-turn__thinking-dot" />
+                    <span className="agent-turn__thinking-text">{loadingLabel}…</span>
+                  </div>
+                </AgentTurn>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* ── Bottom bar ──────────────────────────────────────────────────── */}
+      {/* ── Input area ─────────────────────────────────────────────────── */}
       <div className="hero-ai__bottom">
         {!hasMessages && (
           <div className="hero-ai__chips" role="list">
@@ -232,19 +257,37 @@ export default function AIAssistantPanel({ className = "" }: { className?: strin
           </div>
         )}
 
-        <form className="hero-ai__input-row" onSubmit={(e) => { e.preventDefault(); sendMessage(input); }}>
-          <input type="text" value={input} onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask Algovia AI…" className="hero-ai__input"
-            disabled={loading} autoComplete="off" />
+        <form
+          className="hero-ai__input-row"
+          onSubmit={(e) => { e.preventDefault(); sendMessage(input); }}
+        >
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Ask Algovia AI anything about your project…"
+            className="hero-ai__input"
+            disabled={loading || streaming}
+            autoComplete="off"
+          />
           {hasMessages && (
-            <button type="button" onClick={() => { setMessages([]); setInput(""); }}
-              className="hero-ai__reset" aria-label="New conversation">
+            <button
+              type="button"
+              onClick={() => { setMessages([]); setInput(""); setStreaming(false); setLoading(false); }}
+              className="hero-ai__reset"
+              aria-label="New conversation"
+              disabled={loading || streaming}
+            >
               <RefreshCw className="h-3.5 w-3.5" />
             </button>
           )}
-          <button type="submit" disabled={loading || !input.trim()}
-            className="hero-ai__send" aria-label="Send">
-            <ArrowUp className="h-3.5 w-3.5" />
+          <button
+            type="submit"
+            disabled={loading || streaming || !input.trim()}
+            className="hero-ai__send"
+            aria-label="Send"
+          >
+            <ArrowUp className="h-4 w-4" />
           </button>
         </form>
 

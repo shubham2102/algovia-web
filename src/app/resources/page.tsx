@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import PageHero from "@/components/marketing/PageHero";
 import PageSection from "@/components/marketing/PageSection";
-import MarketingCTA from "@/components/marketing/MarketingCTA";
+import CTASection from "@/app/components/CTASection";
 import { CASE_STUDIES } from "@/lib/constants";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -75,7 +75,12 @@ export default function ResourcesPage() {
           ))}
         </div>
       </PageSection>
-      <MarketingCTA />
+      <CTASection
+        eyebrow="Go deeper"
+        heading="Ready to see AI in"
+        headingAccent="your industry?"
+        lead="Explore our case studies or start a conversation with Algovia AI to learn how we've delivered results across retail, fintech, and enterprise."
+      />
     </>
   );
 }

@@ -253,6 +253,23 @@
   max-width: 44rem;
 }
 
+.ind-panel__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 1.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--algovia-green);
+  text-decoration: none;
+  transition: gap 0.18s ease, color 0.18s ease;
+}
+
+.ind-panel__cta:hover {
+  gap: 0.625rem;
+  color: var(--algovia-green-light);
+}
+
 /* ── Mobile/tablet: stacked, no pin ────────────────────────────────────────── */
 
 @media (max-width: 1023px) {

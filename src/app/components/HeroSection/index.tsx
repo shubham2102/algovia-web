@@ -1,36 +1,27 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "@/lib/gsap";
-import { registerGsapPlugins } from "@/lib/gsap";
-import { scrollToAIPanel } from "@/lib/utils";
-import HeroContent from "./HeroContent";
+import { gsap, registerGsapPlugins } from "@/lib/gsap";
 import AIAssistantPanel from "./AIAssistantPanel";
 import "./hero.css";
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (window.location.hash === "#ai-panel") {
-      scrollToAIPanel(true);
-    }
-  }, []);
+  const [conversationActive, setConversationActive] = useState(false);
 
   useGSAP(
     () => {
       registerGsapPlugins();
-      const panel = sectionRef.current?.querySelector("[data-hero-panel]");
-      if (!panel) return;
-
-      gsap.from(panel, {
+      const el = sectionRef.current;
+      if (!el) return;
+      gsap.from(el.querySelectorAll("[data-hero-item]"), {
         opacity: 0,
-        x: 40,
-        scale: 0.98,
-        duration: 1,
+        y: 28,
+        duration: 0.85,
+        stagger: 0.1,
         ease: "power3.out",
-        delay: 0.25,
+        delay: 0.15,
       });
     },
     { scope: sectionRef },
@@ -39,22 +30,30 @@ export default function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="hero"
+      className={`hero${conversationActive ? " hero--active" : ""}`}
       aria-label="Algovia AI engineering partner"
     >
       <div className="hero__bg" aria-hidden />
       <div className="hero__grid" aria-hidden />
-      <div className="hero__vignette" aria-hidden />
 
+      {/* Intro — absolutely positioned in upper-center, fades when active */}
+      <div className="hero__intro">
+        <p className="hero__eyebrow" data-hero-item>
+          AI‑Powered Engineering Partner
+        </p>
+        <h1 className="hero__headline" data-hero-item>
+          Build AI systems
+          <br />
+          <span className="hero__headline-accent">that ship.</span>
+        </h1>
+        <p className="hero__lead" data-hero-item>
+          Ask Algovia AI anything about your product — strategy, architecture, or go-to-market.
+        </p>
+      </div>
+
+      {/* Shell — flex-end anchors the panel to the bottom */}
       <div className="hero__shell">
-        <div className="hero__layout">
-          <div className="hero__content-col">
-            <HeroContent />
-          </div>
-          <div data-hero-panel className="hero__panel-col">
-            <AIAssistantPanel />
-          </div>
-        </div>
+        <AIAssistantPanel onFirstMessage={() => setConversationActive(true)} />
       </div>
     </section>
   );

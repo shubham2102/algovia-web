@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "npm run ingest:knowledge && next dev",
     "build": "next build",
+    "prebuild": "npm run ingest:knowledge",
     "start": "next start",
     "lint": "eslint",
     "ingest:knowledge": "npx tsx scripts/ingest-knowledge.ts"

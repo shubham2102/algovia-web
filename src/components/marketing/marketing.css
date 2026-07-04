@@ -54,10 +54,16 @@
 .page-section {
   padding: var(--section-padding-y) 0;
   border-top: 1px solid var(--algovia-border);
+  scroll-margin-top: 5.5rem;
 }
 
 .page-section--elevated {
   background: var(--surface);
+}
+
+/* Anchor-targeted cards (services, industries sub-items) */
+.page-card[id] {
+  scroll-margin-top: 6rem;
 }
 
 .page-section__label {

@@ -1,98 +1,79 @@
-/* Hero — full viewport layout */
+/* ══ Hero — full-viewport centered AI command center ══════════════════════════
+   Layout: single centered column. Headline collapses when conversation starts.
+   The input bar is the primary CTA — think Perplexity / Arc Search, not chat.  */
+
+/* ── Section shell ──────────────────────────────────────────────────────────── */
 
 .hero {
   position: relative;
   isolation: isolate;
   width: 100%;
-  min-height: 100dvh;
   height: 100dvh;
   max-height: 100dvh;
   overflow: hidden;
 }
 
+/* Background gradient */
 .hero__bg {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 90% 60% at 15% -10%, rgba(99, 102, 241, 0.14), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 85% 20%, rgba(99, 102, 241, 0.08), transparent 50%),
-    radial-gradient(ellipse 50% 40% at 50% 100%, rgba(99, 102, 241, 0.06), transparent 45%),
+    radial-gradient(ellipse 80% 55% at 50% 0%, rgba(99, 102, 241, 0.11), transparent 58%),
+    radial-gradient(ellipse 55% 45% at 20% 80%, rgba(99, 102, 241, 0.07), transparent 50%),
+    radial-gradient(ellipse 45% 40% at 80% 75%, rgba(16, 185, 129, 0.05), transparent 45%),
     var(--background);
 }
 
+/* Subtle grid overlay */
 .hero__grid {
   position: absolute;
   inset: 0;
-  opacity: 0.5;
+  opacity: 0.45;
   background-image:
-    linear-gradient(rgba(5, 7, 20, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(5, 7, 20, 0.04) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
+    linear-gradient(rgba(5, 7, 20, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(5, 7, 20, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, black 20%, transparent 70%);
 }
 
-.hero__vignette {
+/* ── Intro — absolute, centered in upper half, fades when active ─────────────── */
+
+.hero__intro {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 100% 80% at 50% 50%, transparent 40%, rgba(248, 249, 251, 0.6) 100%);
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  max-width: 640px;
+  padding: 0 var(--layout-gutter);
+  text-align: center;
+  transform: translate(-50%, -65%);
+  transition: opacity 0.4s ease, transform 0.5s ease;
+  pointer-events: auto;
+}
+
+.hero--active .hero__intro {
+  opacity: 0;
+  transform: translate(-50%, -80%);
   pointer-events: none;
 }
 
-/* Full-width inner shell — not squeezed into a narrow column */
+/* ── Shell — flex-end anchors the panel to the bottom ──────────────────────── */
+
 .hero__shell {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 100%;
-  height: 100%;
-  min-height: 0;
-  margin: 0 auto;
-  padding: 5rem var(--layout-gutter) 2.5rem;
-}
-
-.hero__layout {
-  display: grid;
+  align-items: center;
+  justify-content: flex-end;
   width: 100%;
   height: 100%;
-  min-height: 0;
-  flex: 1;
-  align-items: stretch;
-  gap: clamp(1.5rem, 3vw, 3rem);
-  grid-template-columns: 1fr;
+  padding: 0 var(--layout-gutter) 2.75rem;
 }
 
-@media (min-width: 1024px) {
-  .hero__layout {
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    gap: clamp(2rem, 3.5vw, 4rem);
-  }
-}
-
-.hero__content-col {
-  display: flex;
-  min-width: 0;
-  min-height: 0;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  padding-right: 0;
-}
-
-@media (min-width: 1024px) {
-  .hero__content-col {
-    padding-right: clamp(0.5rem, 2vw, 2rem);
-  }
-}
-
-.hero__panel-col {
-  display: flex;
-  min-width: 0;
-  min-height: 0;
-  height: 100%;
-  width: 100%;
-}
+/* ── Typography ─────────────────────────────────────────────────────────────── */
 
 .hero__eyebrow {
   display: inline-flex;
@@ -103,6 +84,7 @@
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--algovia-green-light);
+  margin-bottom: 1.25rem;
 }
 
 .hero__eyebrow::before {
@@ -113,16 +95,12 @@
 }
 
 .hero__headline {
-  font-size: clamp(2.25rem, 4.8vw, 4rem);
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
   font-weight: 700;
   line-height: 1.06;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
   color: var(--foreground);
-  width: 100%;
-}
-
-.hero__headline-line {
-  display: block;
+  margin-bottom: 1.125rem;
 }
 
 .hero__headline-accent {
@@ -138,12 +116,14 @@
 }
 
 .hero__lead {
-  font-size: clamp(1.0625rem, 1.5vw, 1.1875rem);
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
   line-height: 1.65;
   color: var(--algovia-muted);
-  width: 100%;
-  max-width: 42rem;
+  max-width: 40rem;
+  margin: 0 auto;
 }
+
+/* ── Hero CTA (used by nav AILink component) ────────────────────────────────── */
 
 .hero__cta-primary {
   display: inline-flex;
@@ -183,59 +163,9 @@
   gap: 0.55rem;
 }
 
-.hero__capabilities {
-  display: grid;
-  width: 100%;
-  max-width: 100%;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.625rem;
-  margin-top: 2rem;
-}
-
-@media (max-width: 639px) {
-  .hero__capabilities {
-    grid-template-columns: 1fr;
-  }
-}
-
-.hero__capability {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.875rem 1rem;
-  border-radius: 0.875rem;
-  border: 1px solid var(--algovia-border);
-  background: var(--surface-card);
-  box-shadow: 0 1px 3px rgba(5, 7, 20, 0.04);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--algovia-slate);
-  transition:
-    border-color 0.25s ease,
-    background 0.25s ease,
-    transform 0.25s ease;
-}
-
-.hero__capability:hover {
-  border-color: rgba(99, 102, 241, 0.35);
-  background: rgba(99, 102, 241, 0.06);
-  transform: translateY(-1px);
-}
-
-.hero__capability-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  flex-shrink: 0;
-  border-radius: 0.5rem;
-  background: var(--algovia-green-muted);
-  color: var(--algovia-green-light);
-}
-
-/* ── AI panel — Sierra-style floating conversation ──────────────────────────── */
-/* No panel chrome. Chat elements float freely in the right column.              */
+/* ══ AI Panel ══════════════════════════════════════════════════════════════════
+   The main interaction surface. Starts as just the input bar. Grows upward
+   when conversation is active. Feels like issuing commands to an agent.        */
 
 .hero-ai {
   position: relative;
@@ -243,194 +173,309 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
-  min-height: 0;
-  gap: 1.25rem;
-  padding: 1.5rem 0.25rem 0;
+  max-width: 900px;
+  gap: 0;
 }
 
-/* ── Conversation area ──────────────────────────────────────────────────────── */
+/* ── Conversation wrapper — expands when hero--active ───────────────────────── */
 
+.hero-ai__convo-wrap {
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.4s ease;
+  margin-bottom: 0;
+}
+
+/* Grows to fill the viewport above the input bar */
+.hero--active .hero-ai__convo-wrap {
+  height: calc(100svh - 12rem);
+  margin-bottom: 1rem;
+}
+
+/* justify-content: flex-end on a scroll container breaks in many browsers —
+   use margin-top: auto on the thread child instead (reliable cross-browser) */
 .hero-ai__convo {
-  /* Flex grow + min-height:0 are both required for overflow-y to work in a flex column */
-  flex: 1;
-  min-height: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* pushes content to bottom when it's smaller than the container */
-  gap: 0.875rem;
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
   scrollbar-width: none;
-  padding-bottom: 0.25rem;
-  /* Fade older messages as they scroll toward the top */
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(0, 0, 0, 0.55) 14%,
-    black 27%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(0, 0, 0, 0.55) 14%,
-    black 27%
-  );
+  padding-bottom: 0.5rem;
+  touch-action: pan-y;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 6%);
 }
 
 .hero-ai__convo::-webkit-scrollbar { display: none; }
 
-/* ── Demo conversation ──────────────────────────────────────────────────────── */
+.hero-ai__thread {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  margin-top: auto; /* pushes thread to bottom when content is short */
+}
 
-/* Floating user question — very light pill, right-aligned */
-.hero-ai__demo-user {
+/* ── User turn — card with avatar + name header ──────────────────────────────── */
+
+.user-turn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 1.125rem 1.375rem;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(99, 102, 241, 0.14);
+  border-radius: 1.25rem;
+  box-shadow: 0 2px 12px rgba(5, 7, 20, 0.06);
   align-self: flex-end;
-  max-width: 80%;
-  font-size: 0.9375rem;
-  line-height: 1.5;
-  color: var(--algovia-slate);
-  background: rgba(5, 7, 20, 0.045);
-  border: 1px solid rgba(5, 7, 20, 0.07);
-  border-radius: 1.25rem 1.25rem 0.25rem 1.25rem;
-  padding: 0.625rem 1rem;
-  animation: heroAiFadeUp 0.55s ease both;
-  animation-delay: 0.15s;
+  max-width: 72%;
 }
 
-/* Wrapper that carries the entrance animation */
-.hero-ai__demo-agent-wrap {
-  animation: heroAiFadeUp 0.55s ease both;
-  animation-delay: 0.4s;
-}
-
-/* Agent card — the Sierra-style response card */
-.hero-ai__agent-card {
-  background: var(--surface-card);
-  border: 1px solid var(--algovia-border);
-  border-radius: 1.375rem;
-  padding: 1rem 1.125rem;
-  /* box-shadow:
-    0 8px 32px rgba(5, 7, 20, 0.08),
-    0 1px 4px rgba(5, 7, 20, 0.04); */
-  max-width: 92%;
-}
-
-.hero-ai__agent-card-header {
+.user-turn__header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.625rem;
 }
 
-.hero-ai__avatar {
+.user-turn__avatar {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.625rem;
+  height: 1.625rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--algovia-purple);
+  color: #fff;
+  font-size: 0.5625rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.user-turn__name {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--algovia-purple);
+}
+
+.user-turn__text {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--foreground);
+  font-weight: 400;
+}
+
+/* ── Agent turn — dark glass card ────────────────────────────────────────────── */
+
+.agent-turn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(5, 7, 20, 0.87);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 1.25rem;
+  align-self: flex-start;
+  width: 100%;
+}
+
+.agent-turn__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.agent-turn__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.625rem;
+  height: 1.625rem;
   flex-shrink: 0;
   border-radius: 50%;
   background: var(--gradient-brand);
-  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.3);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
 }
 
-.hero-ai__agent-name {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--algovia-muted);
-  letter-spacing: 0.01em;
+.agent-turn__label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
 }
 
-.hero-ai__agent-card-body {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--foreground);
+.agent-turn__body {
+  padding-left: 0;
 }
 
-/* ── Markdown rendering ──────────────────────────────────────────────────────── */
+/* Thinking / loading state */
+.agent-turn__thinking {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
 
-.hero-ai__md {
+.agent-turn__thinking-dot {
+  display: inline-block;
+  width: 0.3125rem;
+  height: 0.3125rem;
+  border-radius: 50%;
+  background: var(--algovia-green-light);
+  opacity: 0.5;
+  animation: agentPulse 1.2s ease-in-out infinite;
+}
+
+.agent-turn__thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+.agent-turn__thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+
+.agent-turn__thinking-text {
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin-left: 0.25rem;
+  font-style: italic;
+}
+
+@keyframes agentPulse {
+  0%, 80%, 100% { opacity: 0.2; transform: scale(0.85); }
+  40% { opacity: 1; transform: scale(1); }
+}
+
+/* ── Markdown inside agent turn — white text on dark card ────────────────────── */
+
+.agent-md {
   display: flex;
   flex-direction: column;
-  gap: 0.325rem;
+  gap: 0.35rem;
 }
 
-.hero-ai__md-p {
-  font-size: 0.875rem;
-  line-height: 1.6;
-  color: var(--foreground);
+.agent-md__p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.88);
   margin: 0;
 }
 
-.hero-ai__md-gap { height: 0.3rem; }
+.agent-md__gap { height: 0.35rem; }
 
-.hero-ai__md-hr {
+.agent-md__hr {
   border: none;
-  border-top: 1px solid var(--algovia-border);
-  margin: 0.325rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0.4rem 0;
 }
 
-.hero-ai__md-ol,
-.hero-ai__md-ul {
+.agent-md__ol,
+.agent-md__ul {
   margin: 0.125rem 0;
   padding-left: 1.15rem;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.25rem;
 }
 
-.hero-ai__md-ol li,
-.hero-ai__md-ul li {
-  font-size: 0.875rem;
-  line-height: 1.55;
-  color: var(--foreground);
+.agent-md__ol li,
+.agent-md__ul li {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
 }
 
-/* ── Real messages ──────────────────────────────────────────────────────────── */
+.agent-md strong { color: #fff; }
+.agent-md em { color: var(--algovia-green-light); font-style: italic; }
 
-.hero-ai__messages {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+/* ── Markdown table ──────────────────────────────────────────────────────────── */
+
+.agent-md__table-wrap {
+  overflow-x: auto;
+  margin: 0.25rem 0;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
 }
 
-/* User bubble — light, right-aligned (Sierra-style floating text) */
-.hero-ai__user-bubble {
-  align-self: flex-end;
-  max-width: 80%;
-  padding: 0.625rem 1rem;
-  border-radius: 1.25rem 1.25rem 0.25rem 1.25rem;
-  font-size: 0.875rem;
+.agent-md__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8375rem;
   line-height: 1.5;
-  color: var(--algovia-slate);
-  background: rgba(5, 7, 20, 0.055);
-  border: 1px solid rgba(5, 7, 20, 0.08);
 }
 
-/* ── Bottom bar ─────────────────────────────────────────────────────────────── */
+.agent-md__table thead tr {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.agent-md__table th {
+  padding: 0.5rem 0.875rem;
+  text-align: left;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.agent-md__table td {
+  padding: 0.4375rem 0.875rem;
+  color: rgba(255, 255, 255, 0.82);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.agent-md__table tbody tr:last-child td { border-bottom: none; }
+
+.agent-md__table tbody tr:hover { background: rgba(255, 255, 255, 0.03); }
+
+/* ── Streaming cursor ────────────────────────────────────────────────────────── */
+
+@keyframes agent-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.agent-turn--streaming .agent-md__p:last-child::after,
+.agent-turn--streaming .agent-md__ul li:last-child::after,
+.agent-turn--streaming .agent-md__ol li:last-child::after {
+  content: "▋";
+  display: inline-block;
+  margin-left: 1px;
+  font-size: 0.85em;
+  color: var(--algovia-green-light);
+  animation: agent-blink 0.65s step-end infinite;
+}
+
+/* ── Bottom area: chips + input ─────────────────────────────────────────────── */
 
 .hero-ai__bottom {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.875rem;
 }
 
-/* ── Prompt chips — horizontal wrapping pills ───────────────────────────────── */
-
+/* Prompt chips */
 .hero-ai__chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4375rem;
-  animation: heroAiFadeUp 0.45s ease both;
+  justify-content: center;
+  gap: 0.5rem;
+  animation: fadeUp 0.5s ease both;
   animation-delay: 0.65s;
 }
 
 .hero-ai__chip {
   display: inline-flex;
   align-items: center;
-  padding: 0.4rem 0.875rem;
+  padding: 0.4375rem 1rem;
   border-radius: 9999px;
   border: 1px solid var(--algovia-border);
   background: var(--surface-card);
@@ -445,39 +490,38 @@
     border-color 0.15s ease,
     background 0.15s ease,
     color 0.15s ease,
-    box-shadow 0.15s ease;
+    transform 0.15s ease;
 }
 
 .hero-ai__chip:hover {
   border-color: rgba(99, 102, 241, 0.4);
   background: rgba(99, 102, 241, 0.05);
   color: var(--algovia-purple);
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+  transform: translateY(-1px);
 }
 
-/* ── Input row ──────────────────────────────────────────────────────────────── */
-
+/* Input bar — prominent, Google-style command bar */
 .hero-ai__input-row {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 0.5rem 0.5rem 1.125rem;
+  padding: 0.75rem 0.625rem 0.75rem 1.375rem;
   border-radius: 9999px;
-  border: 1px solid var(--algovia-border);
-  background: var(--surface-card);
+  border: 1px solid rgba(5, 7, 20, 0.11);
+  background: #fff;
   box-shadow:
-    0 4px 16px rgba(5, 7, 20, 0.06),
-    0 1px 3px rgba(5, 7, 20, 0.04);
+    0 6px 32px rgba(5, 7, 20, 0.1),
+    0 2px 6px rgba(5, 7, 20, 0.05);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  animation: heroAiFadeUp 0.45s ease both;
+  animation: fadeUp 0.5s ease both;
   animation-delay: 0.1s;
 }
 
 .hero-ai__input-row:focus-within {
-  border-color: rgba(99, 102, 241, 0.4);
+  border-color: rgba(99, 102, 241, 0.5);
   box-shadow:
-    0 0 0 3px rgba(99, 102, 241, 0.08),
-    0 4px 16px rgba(5, 7, 20, 0.06);
+    0 0 0 4px rgba(99, 102, 241, 0.09),
+    0 8px 36px rgba(5, 7, 20, 0.1);
 }
 
 .hero-ai__input {
@@ -485,7 +529,7 @@
   min-width: 0;
   border: none;
   background: transparent;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   line-height: 1.5;
   color: var(--foreground);
   outline: none;
@@ -495,15 +539,15 @@
 
 .hero-ai__input::placeholder {
   color: var(--algovia-muted);
-  opacity: 0.65;
+  opacity: 0.5;
 }
 
 .hero-ai__reset {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.875rem;
-  height: 1.875rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   flex-shrink: 0;
   color: var(--algovia-muted);
@@ -519,8 +563,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 2.375rem;
+  height: 2.375rem;
   flex-shrink: 0;
   border-radius: 50%;
   border: none;
@@ -536,7 +580,7 @@
 }
 
 .hero-ai__send:disabled {
-  opacity: 0.28;
+  opacity: 0.25;
   cursor: not-allowed;
 }
 
@@ -544,38 +588,70 @@
   text-align: center;
   font-size: 0.5625rem;
   color: var(--algovia-muted);
-  opacity: 0.45;
+  opacity: 0.4;
   letter-spacing: 0.01em;
 }
 
-/* ── Entrance animation ─────────────────────────────────────────────────────── */
+/* ── Entrance animations ─────────────────────────────────────────────────────── */
 
-@keyframes heroAiFadeUp {
-  from { opacity: 0; transform: translateY(10px); }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Mobile: stack with panel fixed height below content */
-@media (max-width: 1023px) {
+/* ── Mobile ─────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+  /* Switch to flex column so intro and shell stack without overlap */
   .hero {
-    height: auto;
-    max-height: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100dvh;
     min-height: 100dvh;
-    overflow: visible;
   }
 
+  /* Pull intro back into normal flow — no more absolute centering */
+  .hero__intro {
+    position: static;
+    transform: none;
+    left: auto;
+    top: auto;
+    width: 100%;
+    max-width: 100%;
+    padding: 5.5rem 1.5rem 1.5rem;
+    text-align: center;
+    max-height: 55dvh;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.4s ease, padding 0.4s ease;
+  }
+
+  /* Collapse intro when conversation starts */
+  .hero--active .hero__intro {
+    opacity: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    pointer-events: none;
+    transform: none;
+  }
+
+  /* Shell fills remaining space and pins AI panel to bottom */
   .hero__shell {
-    height: auto;
-    min-height: calc(100dvh - 5rem);
+    flex: 1;
+    width: 100%;
+    padding: 0 1.25rem 2rem;
   }
 
-  .hero__layout {
-    height: auto;
+  .hero__headline {
+    font-size: clamp(2rem, 7vw, 3rem);
   }
 
-  .hero__panel-col {
-    height: min(560px, 65dvh);
-    min-height: min(560px, 65dvh);
-    max-height: min(560px, 65dvh);
+  .hero--active .hero-ai__convo-wrap {
+    height: calc(100dvh - 11rem);
+  }
+
+  .hero-ai__chips {
+    justify-content: flex-start;
   }
 }
