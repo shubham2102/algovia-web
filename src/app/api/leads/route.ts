@@ -68,21 +68,21 @@ export async function POST(request: Request) {
   const record: Record<string, unknown> = {};
   let cvUrl: string | null = null;
 
-  for (const [key, value] of formData.entries()) {
-    if (key === "formType" || key === "conversationId" || key === "sessionId") continue;
-
-    if (value instanceof File) {
-      if (value.size === 0) continue;
-      if (value.size > MAX_FILE_SIZE) {
-        return NextResponse.json({ error: `${key} exceeds the 10MB upload limit.` }, { status: 400 });
-      }
-      cvUrl = await storeUpload(value);
-    } else {
-      record[key] = value;
-    }
-  }
-
   try {
+    for (const [key, value] of formData.entries()) {
+      if (key === "formType" || key === "conversationId" || key === "sessionId") continue;
+
+      if (value instanceof File) {
+        if (value.size === 0) continue;
+        if (value.size > MAX_FILE_SIZE) {
+          return NextResponse.json({ error: `${key} exceeds the 10MB upload limit.` }, { status: 400 });
+        }
+        cvUrl = await storeUpload(value);
+      } else {
+        record[key] = value;
+      }
+    }
+
     if (sql) {
       await ensureSchema();
 
