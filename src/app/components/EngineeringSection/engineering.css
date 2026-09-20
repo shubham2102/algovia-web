@@ -76,8 +76,8 @@
   border: 1px solid var(--algovia-border);
   background: var(--surface-card);
   box-shadow:
-    0 8px 32px rgba(5, 7, 20, 0.07),
-    0 1px 4px rgba(5, 7, 20, 0.04);
+    0 8px 32px rgba(11, 36, 38, 0.07),
+    0 1px 4px rgba(11, 36, 38, 0.04);
   overflow: hidden;
   will-change: transform;
   /* Cards start below viewport — GSAP drives transform */

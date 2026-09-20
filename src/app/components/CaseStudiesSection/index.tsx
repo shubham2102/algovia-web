@@ -90,7 +90,7 @@ export default function CaseStudiesSection() {
               <div className="cs-card__body">
                 <h3 className="cs-card__title">{study.title}</h3>
                 <p className="cs-card__desc">{study.description}</p>
-                <Link href="/resources#case-studies" className="cs-card__cta">
+                <Link href="/success-stories" className="cs-card__cta">
                   View case study
                   <ArrowUpRight className="cs-card__cta-icon h-3.5 w-3.5" strokeWidth={2.5} />
                 </Link>

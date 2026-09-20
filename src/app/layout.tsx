@@ -10,13 +10,13 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Algovia | AI-Native Engineering & Consulting",
+  title: "Algovia AI | AI Transformation & Execution",
   description:
-    "Build what's next with AI at scale. Algovia helps enterprises design, build, and scale AI-native products, agents, and cloud platforms.",
+    "Algovia AI is a leading AI Transformation and Execution firm helping organizations move from strategy to execution, adoption, and measurable value.",
   openGraph: {
-    title: "Algovia | AI-Native Engineering",
+    title: "Algovia AI | AI Transformation & Execution",
     description:
-      "Your AI partner from idea to deployment. Strategy, agents, cloud, and enterprise delivery.",
+      "The partner that connects strategy and execution — accountable until AI becomes business as usual.",
   },
 };
 

@@ -96,14 +96,16 @@ export default function EngineeringSection() {
 
         {/* ── Left: static copy ─────────────────────────────────────────────── */}
         <div className="eng__header">
-          <SectionLabel>AI + Engineering + Delivery</SectionLabel>
-          <h2 className="eng__heading">Engineered for results</h2>
+          <SectionLabel>Our Value Proposition</SectionLabel>
+          <h2 className="eng__heading">Why Algovia</h2>
           <p className="eng__lead">
-            Move beyond experimentation. Algovia&apos;s AI delivers measurable
-            performance gains across every industry.
+            Most firms stop at strategy or software. Algovia combines business
+            transformation expertise, deep operational understanding, and proven
+            AI execution to embed intelligent AI into operating models that drive
+            real performance.
           </p>
           <Link
-            href="/services"
+            href="/service-offerings"
             className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--algovia-green)] hover:text-[var(--algovia-green-light)] transition-colors"
           >
             View all services

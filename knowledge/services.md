@@ -1,22 +1,24 @@
 ---
 id: services
 category: services
-title: Algovia Services
-keywords: services, product engineering, ai agents, automation, cloud, devops, data, analytics, digital transformation, mvp, consulting
+title: Service Portfolio — AI & Digital Solutions and Intelligent Business Solutions
+keywords: services, service portfolio, ai strategy, artificial intelligence, computer vision, software development, data engineering, iot, embedded systems, strategy, operating model, governance, risk, compliance, cost optimization, business transformation, capital markets, internal audit
 ---
 
-Algovia delivers six core service lines, typically combined into a single engagement:
+Algovia's Service Portfolio has two categories, twelve capabilities total.
 
-**AI Strategy & Consulting** — Roadmaps, use-case discovery, ROI modeling, and executive workshops. We identify the 2-3 AI opportunities with the highest business impact and the lowest integration risk, then build a delivery roadmap aligned to your team's capacity.
+AI & Digital Solutions — the build capabilities behind Algovia's execution:
+- AI Strategy — AI strategic initiatives & roadmap, AI solution scoping. Concentrates investment on use cases that move the P&L.
+- Artificial Intelligence — Agentic AI, Generative AI, Machine Learning, AI Consulting, Agentic AI Security & Governance. Faster decisions and business automation, governed the way boards expect.
+- Computer Vision — Object detection, image & video analysis, quality inspection, industrial automation. Fewer defects, less downtime, cost optimization.
+- Software Development — Enterprise platforms, cloud-native applications, back & front-end development, mobile applications. Modern platforms that operate faster and cost less to run.
+- Data Engineering & Analytics — Data platforms, business intelligence, predictive analytics, data science, automated doc & CAD analysis. One source of truth for quick, effective decisions.
+- IoT & Embedded Systems — Custom hardware & firmware, Internet of Things, on-board/edge processing, connectivity & sensors. Infrastructure that scales with the business.
 
-**AI Agents & Automation** — Production-grade agent systems using LangGraph, CrewAI, and enterprise guardrails. Agentic systems handle complex workflows with human-in-the-loop checkpoints, full audit trails, and OpenTelemetry tracing. Typical patterns: document processing agents, customer-facing copilots, internal ops automation, and RAG-powered knowledge systems.
-
-**Product Engineering** — End-to-end product delivery: full-stack web and mobile, API-first platforms, and AI-native architecture. Typical MVP timeline: 10-14 weeks for a regulated fintech product with KYC and payments. We build with Next.js, FastAPI, and React Native depending on the surface.
-
-**Cloud & DevOps** — AWS, Kubernetes, CI/CD, and observability. We design for operational excellence from day one: automated testing, blue/green deployments, SLO monitoring, and cost optimization.
-
-**Data Engineering** — Data lakes, real-time streaming pipelines, BI, vector stores, and RAG systems. We build the data foundations that AI products actually need — not data warehouses that live in a slide deck.
-
-**Digital Transformation** — Legacy modernization, microservices migration, and ERP/CRM integration. Strangler-fig approach: expose capabilities via APIs/events without big-bang rewrites. Introduce AI incrementally — document RAG, ops copilots, decision agents.
-
-Typical fintech MVP team: 1 product/BA, 1 tech lead, 2-3 full-stack engineers, 1 AI/ML engineer, 0.5-1 DevOps, 1 QA/security. Timeline: 10-14 weeks.
+Intelligent Business Solutions — the governance and transformation capabilities Algovia embeds alongside every AI build:
+- Strategy & Operating Model — Business & digital strategy, SMO & PMO, operating model development & transformation. Built to compete in a disrupted market.
+- Governance, Risk & Compliance (GRC) — Corporate governance, risk management, compliance management, policies & procedures. A competitive advantage, not a compliance checkbox.
+- Cost Optimization — AI-enabled cost optimization assessment & solutions. Savings delivered without cutting into what clients experience.
+- Business Transformation — Business process transformation, customer experience transformation. Leaner processes and better customer experience.
+- Capital Markets Solutions — IPO readiness assessment, IPO GRC framework implementation. Quick alignment to listing requirements under tight deadlines.
+- Internal Audit & ICFR — AI-enabled internal audit services, digitized ICFR services. Financial and process control gaps identified and mitigated in real time.

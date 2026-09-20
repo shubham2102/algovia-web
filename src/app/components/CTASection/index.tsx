@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Calendar, Upload } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import { gsap, registerGsapPlugins } from "@/lib/gsap";
 import { SITE } from "@/lib/constants";
@@ -19,7 +19,7 @@ export default function CTASection({
   eyebrow = "Let's build together",
   heading = "Start with a",
   headingAccent = "conversation.",
-  lead = "Talk to Algovia AI or connect with our experts to scope your next AI-native platform, agentic workflow, or cloud transformation.",
+  lead = "Talk to Algovia AI or connect with our experts to scope your next AI transformation engagement.",
 }: CTASectionProps) {
   const innerRef = useRef<HTMLDivElement>(null);
 
@@ -73,23 +73,11 @@ export default function CTASection({
           </button>
 
           <a
-            href={SITE.workshopUrl}
+            href="/service-offerings#schedule"
             className="cta__btn-ghost"
-            target={SITE.workshopUrl.startsWith("http") ? "_blank" : undefined}
-            rel={SITE.workshopUrl.startsWith("http") ? "noopener noreferrer" : undefined}
           >
             <Calendar className="h-4 w-4" strokeWidth={2} />
-            Schedule a Workshop
-          </a>
-
-          <a
-            href={SITE.uploadUrl}
-            className="cta__btn-ghost"
-            target={SITE.uploadUrl.startsWith("http") ? "_blank" : undefined}
-            rel={SITE.uploadUrl.startsWith("http") ? "noopener noreferrer" : undefined}
-          >
-            <Upload className="h-4 w-4" strokeWidth={2} />
-            Upload Requirements
+            Schedule a Meeting
           </a>
         </div>
       </div>

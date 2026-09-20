@@ -96,12 +96,12 @@
 
 /* Links on light hero */
 .site-nav.top .site-nav__link {
-  color: rgba(5, 7, 20, 0.58);
+  color: rgba(11, 36, 38, 0.58);
 }
 
 .site-nav.top .site-nav__link:hover {
   color: var(--foreground);
-  background: rgba(5, 7, 20, 0.055);
+  background: rgba(11, 36, 38, 0.055);
 }
 
 .site-nav.top .site-nav__link.is-active {
@@ -150,7 +150,7 @@
 .site-nav.top .site-nav__container .hero__cta-primary {
   background: var(--algovia-navy);
   color: var(--algovia-white);
-  box-shadow: 0 4px 20px rgba(5, 7, 20, 0.12);
+  box-shadow: 0 4px 20px rgba(11, 36, 38, 0.12);
 }
 
 /* CTA when overlay open at top */
@@ -186,7 +186,7 @@
 }
 
 .site-nav.top .site-nav__toggle-btn:hover {
-  background: rgba(5, 7, 20, 0.06);
+  background: rgba(11, 36, 38, 0.06);
 }
 
 /* White hamburger when overlay is open */
@@ -241,7 +241,7 @@
     160deg,
     var(--surface-dark) 0%,
     var(--surface-dark-elevated) 60%,
-    #121528 100%
+    #0f2e31 100%
   );
   opacity: 0;
   visibility: hidden;
@@ -256,7 +256,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(99, 102, 241, 0.06) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(2, 187, 115, 0.06) 1px, transparent 1px);
   background-size: 32px 32px;
   pointer-events: none;
 }
@@ -403,11 +403,11 @@
   transform: translateX(-50%) translateY(-6px);
   min-width: 13rem;
   background: #fff;
-  border: 1px solid rgba(5, 7, 20, 0.08);
+  border: 1px solid rgba(11, 36, 38, 0.08);
   border-radius: 0.875rem;
   box-shadow:
-    0 8px 32px rgba(5, 7, 20, 0.13),
-    0 2px 8px rgba(5, 7, 20, 0.06);
+    0 8px 32px rgba(11, 36, 38, 0.13),
+    0 2px 8px rgba(11, 36, 38, 0.06);
   padding: 0.375rem;
   z-index: 300;
   opacity: 0;
@@ -439,13 +439,13 @@
   border-radius: 0.5rem;
   font-size: 0.8125rem;
   font-weight: 500;
-  color: rgba(5, 7, 20, 0.68);
+  color: rgba(11, 36, 38, 0.68);
   white-space: nowrap;
   text-decoration: none;
   transition: color 0.14s ease, background 0.14s ease;
 }
 
 .site-nav__dropdown-link:hover {
-  background: rgba(5, 7, 20, 0.04);
+  background: rgba(11, 36, 38, 0.04);
   color: var(--foreground);
 }

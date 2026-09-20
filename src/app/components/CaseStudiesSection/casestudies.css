@@ -53,8 +53,8 @@
   border: 1px solid var(--algovia-border);
   background: var(--surface-card);
   box-shadow:
-    0 2px 10px rgba(5, 7, 20, 0.05),
-    0 1px 3px rgba(5, 7, 20, 0.04);
+    0 2px 10px rgba(11, 36, 38, 0.05),
+    0 1px 3px rgba(11, 36, 38, 0.04);
   transition:
     border-color 0.3s ease,
     box-shadow 0.3s ease,
@@ -63,11 +63,11 @@
 }
 
 .cs-card:hover {
-  border-color: rgba(99, 102, 241, 0.35);
+  border-color: rgba(2, 187, 115, 0.35);
   box-shadow:
-    0 16px 48px rgba(5, 7, 20, 0.1),
-    0 4px 12px rgba(5, 7, 20, 0.06),
-    0 0 0 1px rgba(99, 102, 241, 0.12);
+    0 16px 48px rgba(11, 36, 38, 0.1),
+    0 4px 12px rgba(11, 36, 38, 0.06),
+    0 0 0 1px rgba(2, 187, 115, 0.12);
   transform: translateY(-4px);
 }
 
@@ -100,7 +100,7 @@
   background: linear-gradient(
     to top,
     var(--surface-card) 0%,
-    rgba(5, 7, 20, 0.06) 38%,
+    rgba(11, 36, 38, 0.06) 38%,
     transparent 70%
   );
   pointer-events: none;
@@ -113,7 +113,7 @@
   left: 0.875rem;
   padding: 0.25rem 0.625rem;
   border-radius: 0.4375rem;
-  background: rgba(5, 7, 20, 0.68);
+  background: rgba(11, 36, 38, 0.68);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   font-size: 0.625rem;

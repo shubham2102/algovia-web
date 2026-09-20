@@ -46,8 +46,9 @@ export default function Footer() {
           <div className="site-footer__brand">
             <Logo size="lg" />
             <p className="site-footer__brand-copy">
-              Business AI that works for you. AI-native engineering, cloud
-              platforms, and enterprise digital transformation.
+              AI Transformation &amp; Execution. We combine senior business
+              transformation expertise with AI build capability — staying
+              accountable until AI becomes business as usual.
             </p>
             <div className="site-footer__brand-rule" aria-hidden />
             <div className="site-footer__brand-social">
@@ -69,9 +70,9 @@ export default function Footer() {
           {/* ── Nav columns ────────────────────────────────────────────── */}
           {(
             [
-              ["Products",  FOOTER_LINKS.products ],
-              ["Company",   FOOTER_LINKS.company  ],
-              ["Resources", FOOTER_LINKS.resources],
+              ["Services",   FOOTER_LINKS.products ],
+              ["Company",    FOOTER_LINKS.company  ],
+              ["Learn",      FOOTER_LINKS.resources],
             ] as const
           ).map(([title, links]) => (
             <div key={title}>

@@ -165,7 +165,7 @@ export async function streamChatResponse(
     : getFallbackResponse(lastUser.content);
   const suffix =
     intent === "lead"
-      ? "\n\n**Next step:** Schedule a Solution Workshop or upload your requirements."
+      ? "\n\n**Next step:** [Schedule a Meeting](/service-offerings#schedule) with our team."
       : "";
   return fallbackStream(`${fallbackText}${suffix}`);
 }

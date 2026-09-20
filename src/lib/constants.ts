@@ -1,346 +1,436 @@
 export const SITE = {
   name: "Algovia AI",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://algovia.ai",
-  workshopUrl: process.env.NEXT_PUBLIC_WORKSHOP_URL ?? "#contact",
-  uploadUrl: process.env.NEXT_PUBLIC_UPLOAD_URL ?? "#contact",
+  workshopUrl: process.env.NEXT_PUBLIC_WORKSHOP_URL ?? "/service-offerings#schedule",
+  uploadUrl: process.env.NEXT_PUBLIC_UPLOAD_URL ?? "/service-offerings#schedule",
 } as const;
 
 export const NAV_ITEMS = [
-  { label: "Platform", href: "/platform", hasDropdown: false },
-  { label: "Solutions", href: "/solutions", hasDropdown: true },
-  { label: "Services", href: "/services", hasDropdown: true },
-  { label: "Industries", href: "/industries", hasDropdown: true },
-  { label: "Resources", href: "/resources", hasDropdown: true },
-  { label: "Company", href: "/company", hasDropdown: true },
+  { label: "Company",           href: "/company",           hasDropdown: true  },
+  { label: "Service Offerings", href: "/service-offerings", hasDropdown: true  },
+  { label: "Success Stories",   href: "/success-stories",   hasDropdown: true  },
+  { label: "Research & Learn",  href: "/research",          hasDropdown: true  },
+  { label: "Our Team",          href: "/our-team",          hasDropdown: false },
 ] as const;
 
 export const NAV_DROPDOWNS: Record<string, readonly { label: string; href: string }[]> = {
-  "/solutions": [
-    { label: "Vertical AI",      href: "/solutions#vertical-ai" },
-    { label: "Generative AI",    href: "/solutions#generative-ai" },
-    { label: "Business AI",      href: "/solutions#business-ai" },
-  ],
-  "/services": [
-    { label: "Product Engineering",    href: "/services#product-engineering" },
-    { label: "AI & Machine Learning",  href: "/services#ai-ml" },
-    { label: "Cloud & DevOps",         href: "/services#cloud" },
-    { label: "Data Engineering",       href: "/services#data" },
-    { label: "Digital Transformation", href: "/services#digital" },
-  ],
-  "/industries": [
-    { label: "Retail / CPG",       href: "/industries#retail" },
-    { label: "Financial Services", href: "/industries#fintech" },
-    { label: "Industrial",         href: "/industries#industrial" },
-    { label: "Real Estate",        href: "/industries#realestate" },
-    { label: "Media",              href: "/industries#media" },
-  ],
-  "/resources": [
-    { label: "Case Studies",  href: "/resources#case-studies" },
-    { label: "Blog",          href: "/resources#blog" },
-    { label: "Documentation", href: "/resources#docs" },
-    { label: "Help Center",   href: "/resources#help" },
-  ],
   "/company": [
-    { label: "About Us", href: "/company#about" },
-    { label: "Careers",  href: "/company#careers" },
-    { label: "Press",    href: "/company#press" },
-    { label: "Contact",  href: "/company#contact" },
+    { label: "About Us",          href: "/company#about"   },
+    { label: "Press",             href: "/company#press"   },
+    { label: "Careers & Network", href: "/company#careers" },
+    { label: "Contact",           href: "/company#contact" },
+  ],
+  "/service-offerings": [
+    { label: "Our Value Proposition", href: "/service-offerings#value-proposition" },
+    { label: "AI & Digital Solutions", href: "/service-offerings#ai-digital" },
+    { label: "Intelligent Business Solutions", href: "/service-offerings#intelligent-business" },
+    { label: "Let's Engage",          href: "/service-offerings#engage" },
+  ],
+  "/success-stories": [
+    { label: "Government & Public Sector",    href: "/success-stories#government"    },
+    { label: "Financial Services",            href: "/success-stories#financial"     },
+    { label: "Energy",                        href: "/success-stories#energy"        },
+    { label: "Technology, Media & Telecom",   href: "/success-stories#tmt"           },
+    { label: "Real Estate",                   href: "/success-stories#realestate"    },
+    { label: "Healthcare",                    href: "/success-stories#healthcare"    },
+    { label: "Education",                     href: "/success-stories#education"     },
+    { label: "Transport & Aviation",          href: "/success-stories#transport"     },
+    { label: "Retail & Manufacturing",        href: "/success-stories#retail"        },
+  ],
+  "/research": [
+    { label: "Thought Leadership", href: "/research#thought-leadership" },
+    { label: "Algovia Academy",    href: "/research#academy"            },
   ],
 };
 
 export const HERO_BADGES = [
-  { label: "AI Strategy & Consulting", icon: "brain" },
-  { label: "AI Agents & Automation", icon: "bot" },
-  { label: "Cloud & DevOps", icon: "cloud" },
-  { label: "Data & Analytics", icon: "chart" },
+  { label: "AI Transformation & Execution", icon: "brain"  },
+  { label: "AI Strategy & Roadmaps",        icon: "bot"    },
+  { label: "Governance, Risk & Compliance", icon: "chart"  },
+  { label: "AI & Digital Solutions",        icon: "cloud"  },
 ] as const;
 
 export const AI_PROMPTS = [
   {
-    id: "marketplace",
-    label: "AI marketplace design",
-    text: "Design an AI-powered marketplace architecture",
+    id: "where-to-start",
+    label: "We don't know where to start",
+    text: "We don't know where to start with AI. What should we do first?",
   },
   {
-    id: "legacy",
-    label: "Modernize legacy systems",
-    text: "How can Algovia modernize legacy systems?",
+    id: "pilots-not-scaled",
+    label: "Pilots that never scaled",
+    text: "We have AI pilots that never scaled. How can Algovia help?",
   },
   {
-    id: "fintech-team",
-    label: "Fintech MVP team plan",
-    text: "Estimate team structure for a fintech MVP",
+    id: "governance",
+    label: "AI governance",
+    text: "We need governance for AI we're already using",
   },
   {
-    id: "microservices",
-    label: "Microservices roadmap",
-    text: "Create a microservices roadmap",
-  },
-  {
-    id: "langgraph",
-    label: "AI agents with LangGraph",
-    text: "How to build AI agents using LangGraph?",
-  },
-  {
-    id: "saudi-cloud",
-    label: "Saudi fintech cloud",
-    text: "Suggest cloud architecture for Saudi fintech",
+    id: "specific-service",
+    label: "Explore a specific service",
+    text: "I want to explore a specific service from Algovia's portfolio",
   },
 ] as const;
 
 export const TRUST_LOGOS = [
-  "stc",
-  "HUNGERSTATION",
-  "SDAIA",
-  "jahez",
-  "alinma bank",
+  "ADNOC",
+  "Mubadala",
+  "Majid Al Futtaim",
+  "TAQA",
+  "Aramco",
 ] as const;
 
-export const SERVICES = [
+// ── Value Proposition pillars (Service Offerings page) ───────────────────────
+export const VALUE_PILLARS = [
   {
-    id: "product-engineering",
-    title: "Product Engineering",
+    title: "Senior Business Transformation Expertise",
     description:
-      "End-to-end product development from discovery to deployment with AI-native architecture.",
-    color: "green",
-    icon: "code",
+      "Our team has led enterprise-scale transformation programs across governments and large corporations as accountable execution owners, not just advisers. This allows us to navigate the true complexity of change and drive the targeted results that matter most to you.",
+    stat: "20+",
+    statLabel: "years of transformation leadership",
   },
   {
-    id: "ai-ml",
-    title: "AI & Machine Learning",
+    title: "Deep Cross-Sector Operational Understanding",
     description:
-      "Custom ML models, LLM integrations, RAG pipelines, and intelligent automation systems.",
-    color: "orange",
-    icon: "sparkles",
+      "Having operated inside the functions & industry sectors we transform, we design solutions tailored to how your business actually works. No generic frameworks. Just targeted solutions that drive faster adoption and tangible business impact.",
+    stat: "9",
+    statLabel: "industry sectors served",
   },
   {
-    id: "cloud",
-    title: "Cloud & DevOps",
+    title: "Proven AI Design & Execution Capability",
     description:
-      "Scalable cloud infrastructure, CI/CD pipelines, and enterprise-grade DevOps practices.",
-    color: "green",
-    icon: "cloud",
+      "With 700+ cross-disciplinary AI professionals, we bring deep technical expertise that is rarely available in a single partner. Our proven track record across numerous successful AI designs and deployments gives clients confidence that has been tested & delivered at scale.",
+    stat: "700+",
+    statLabel: "cross-disciplinary professionals",
   },
   {
-    id: "data",
-    title: "Data Engineering",
+    title: "Digital Transformation & Change Management",
     description:
-      "Modern data platforms, real-time analytics, and enterprise data lake architectures.",
-    color: "blue",
-    icon: "database",
-  },
-  {
-    id: "digital",
-    title: "Digital Transformation",
-    description:
-      "Legacy modernization, API-first architectures, and enterprise system integration.",
-    color: "indigo",
-    icon: "transform",
+      "Deploying AI without managing change guarantees failure. Our proven approach embeds governance, business ownership, and process redesign into engagements, ensuring solutions are embraced and sustained to extract lasting business value.",
+    stat: "40+",
+    statLabel: "successful AI projects delivered",
   },
 ] as const;
 
-export const ARCHITECTURE_NODES = [
-  { id: "user", label: "User / Client", position: "left-top" },
-  { id: "apps", label: "Web / Mobile Applications", position: "left-bottom" },
+// ── AI Value Gap — failure modes ─────────────────────────────────────────────
+export const AI_VALUE_GAP = [
   {
-    id: "orchestration",
-    label: "AI Orchestration Layer (Agents)",
-    position: "center",
-    highlight: true,
-  },
-  { id: "knowledge", label: "Knowledge Layer (RAG / Vector DB)", position: "top" },
-  {
-    id: "llm",
-    label: "LLM Layer (OpenAI / Claude / Llama)",
-    position: "bottom",
-  },
-  { id: "apis", label: "APIs & Services", position: "right-top" },
-  {
-    id: "enterprise",
-    label: "Enterprise Systems (ERP, CRM, etc.)",
-    position: "right-bottom",
-  },
-] as const;
-
-export const DELIVERY_PILLARS = [
-  {
-    title: "AI Engineering",
-    description:
-      "Agentic systems, copilots, and vertical AI built with LangGraph, RAG, and enterprise guardrails.",
-    stat: "70%",
-    statLabel: "smarter workflows",
+    id: "01",
+    title: "Ambition without Prioritization",
+    problem: "Organizations know AI matters but struggle to identify use cases that are material, feasible, and worth scaling.",
+    solution: "Algovia structures and prioritizes use-cases, tying them directly to business targets, so effort & investment goes where it counts.",
   },
   {
-    title: "Platform Delivery",
-    description:
-      "Cloud-native platforms on AWS with microservices, APIs, and observable production operations.",
-    stat: "300M+",
-    statLabel: "transactions processed annually",
+    id: "02",
+    title: "Technology without Foundations",
+    problem: "Tools are deployed into environments that are not ready to support them, including fragmented data & systems operating in silos.",
+    solution: "Algovia diagnoses data & infrastructure readiness before any AI build begins, ensuring foundations are in place for a technology that performs and scales.",
   },
   {
-    title: "Enterprise Integration",
-    description:
-      "Connect ERP, CRM, and legacy estates with secure APIs, event streams, and governed data flows.",
-    stat: "65%",
-    statLabel: "reduction in manual decision-making",
+    id: "03",
+    title: "Pilots without Adoption",
+    problem: "AI initiatives stop at proof of concept because they are not embedded into workflows, roles, or governance.",
+    solution: "Algovia embeds change management, business ownership & process redesign into solutions to enable effective adoption supported by the right operating model.",
+  },
+  {
+    id: "04",
+    title: "Advice without Accountability",
+    problem: "Advisory consulting stops at recommendations; technology vendors stop at deployment. No one is accountable for outcomes.",
+    solution: "Algovia bridges the gap, embedding governance, risk, and controls from day one, while remaining accountable for delivery, adoption, and measurable outcomes.",
+  },
+  {
+    id: "05",
+    title: "Impact without Measurement",
+    problem: "Benefits are promised but rarely tracked through clear KPIs, baselines, and value realization routines.",
+    solution: "Algovia anchors engagements in client targets and KPIs to ensure that impact is realized and sustained.",
   },
 ] as const;
 
+// ── AI & Digital Solutions ────────────────────────────────────────────────────
+export const AI_DIGITAL_SERVICES = [
+  {
+    id: "ai-strategy",
+    title: "AI Strategy",
+    whyNow: "National & Corporate AI mandates demand fast clarity on how AI can create value.",
+    delivers: ["AI Strategic Initiatives & Roadmap", "AI Solution Scoping"],
+    impact: "Investment concentrated on use cases that move the P&L.",
+  },
+  {
+    id: "artificial-intelligence",
+    title: "Artificial Intelligence",
+    whyNow: "Boards are expecting AI adoption to move from chatbots to systems that act with proper governance.",
+    delivers: ["Agentic AI", "Generative AI", "Machine Learning", "AI Consulting", "Agentic AI Security & Governance"],
+    impact: "Faster decisions and business automation, governed the way boards expect.",
+  },
+  {
+    id: "computer-vision",
+    title: "Computer Vision",
+    whyNow: "Rising business needs for AI solutions that can see, inspect and act on the physical world.",
+    delivers: ["Object Detection", "Image & Video Analysis", "Quality Inspection", "Industrial Automation"],
+    impact: "Fewer defects, less downtime, and cost optimization to relieve margin pressures.",
+  },
+  {
+    id: "software-development",
+    title: "Software Development",
+    whyNow: "Business efficiency mandates demand faster, cheaper delivery without sacrificing quality.",
+    delivers: ["Enterprise Platforms", "Cloud-Native Applications", "Back & Front-End Development", "Mobile Applications"],
+    impact: "Modern platforms that operate faster and cost less to run.",
+  },
+  {
+    id: "data-engineering",
+    title: "Data Engineering & Analytics",
+    whyNow: "Leaders need real-time visibility into performance and risks, not static reports.",
+    delivers: ["Data Platforms", "Business Intelligence", "Predictive Analytics", "Data Science", "Automated Doc & CAD Analysis"],
+    impact: "One source of truth that enables quick & effective decisions in an evolving market.",
+  },
+  {
+    id: "iot-embedded",
+    title: "IoT & Embedded Systems",
+    whyNow: "Scaling business operations require hardware & systems that are purpose-built & effectively adopted.",
+    delivers: ["Custom Hardware & Firmware", "Internet of Things", "On-board / Edge Processing", "Connectivity & Sensors"],
+    impact: "Infrastructure that scales with the business instead of constraining it.",
+  },
+] as const;
+
+// ── Intelligent Business Solutions ───────────────────────────────────────────
+export const INTELLIGENT_BUSINESS_SERVICES = [
+  {
+    id: "strategy-operating-model",
+    title: "Strategy & Operating Model",
+    whyNow: "As competitors restructure around AI, businesses need to rethink their strategy & operating model to compete.",
+    delivers: ["Business & Digital Strategy", "SMO & PMO", "Operating Model Development & Transformation"],
+    impact: "Strategy and operating model built to compete in a disrupted market.",
+  },
+  {
+    id: "grc",
+    title: "Governance, Risk & Compliance",
+    whyNow: "As evolving markets reshape how business gets done, governance, risk & compliance (GRC) must keep pace.",
+    delivers: ["Corporate Governance", "Risk Management", "Compliance Management", "Policies & Procedures"],
+    impact: "GRC framework that is a competitive advantage, not a compliance checkbox.",
+  },
+  {
+    id: "cost-optimization",
+    title: "Cost Optimization",
+    whyNow: "Boards demand budget rationalization and margin protection that doesn't come at the expense of quality.",
+    delivers: ["AI-Enabled Cost Optimization Assessment & Solutions"],
+    impact: "Savings delivered without cutting into what clients experience.",
+  },
+  {
+    id: "business-transformation",
+    title: "Business Transformation",
+    whyNow: "Business efficiency mandates require transformation designed around evolving strategies.",
+    delivers: ["Business Process Transformation", "Customer Experience Transformation"],
+    impact: "Leaner processes and better customer experience that act as market differentiators.",
+  },
+  {
+    id: "capital-markets",
+    title: "Capital Markets Solutions",
+    whyNow: "A growing IPO pipeline across the region is raising expectations from Board & Management.",
+    delivers: ["IPO Readiness Assessment", "IPO GRC Framework Implementation"],
+    impact: "Quick business alignment to listing requirements that meets tight deadlines.",
+  },
+  {
+    id: "internal-audit",
+    title: "Internal Audit & ICFR",
+    whyNow: "Board & Shareholders expect transparency that only progressive audit and ICFR solutions can deliver.",
+    delivers: ["AI-Enabled Internal Audit Services", "Digitized ICFR Services"],
+    impact: "Financial & process control gaps identified & mitigated in real-time, not year-end.",
+  },
+] as const;
+
+// ── Engagement models ─────────────────────────────────────────────────────────
+export const ENGAGEMENTS = [
+  {
+    id: "01",
+    title: "AI Value Discovery Sprint",
+    format: "2–3 Weeks",
+    description: "AI workshop, including an executive diagnostic & 2–3 prioritized use cases",
+    outcome: "A business case that leadership can act on, not just an informative slide deck.",
+  },
+  {
+    id: "02",
+    title: "AI Training Sprint",
+    format: "1–2 Weeks",
+    description: "Role-based AI training tailored to your sector and teams",
+    outcome: "Teams that can use AI, not just talk about it.",
+  },
+  {
+    id: "03",
+    title: "AI Transformation Roadmap",
+    format: "Strategic Engagement",
+    description: "Maturity diagnostic, resulting in use-case prioritization, AI roadmap & change plan",
+    outcome: "An AI roadmap tied to budget, timeline and named owners.",
+  },
+  {
+    id: "04",
+    title: "AI Proof of Value & Solution Build",
+    format: "Build Engagement",
+    description: "AI solution design, agile build & testing, and business integration",
+    outcome: "An AI solution live in your operating environment that scales with your business.",
+  },
+  {
+    id: "05",
+    title: "Business Transformation & Change Management",
+    format: "Advisory Engagement",
+    description: "Operating model and business process diagnostic and transformation to enable effective change management and target realization.",
+    outcome: "Enhanced operating model and lean business processes that deliver tangible business value.",
+  },
+  {
+    id: "06",
+    title: "AI Governance, Risk and Compliance Management",
+    format: "Advisory Engagement",
+    description: "AI risk, governance and compliance framework and controls mapping to maintain accountability and ethical standards.",
+    outcome: "Governance that regulators and boards can rely on.",
+  },
+  {
+    id: "07",
+    title: "AI Adoption & Value Realization Office",
+    format: "Managed Service",
+    description: "AI adoption monitoring, KPI dashboards and continuous optimization",
+    outcome: "Value that is measured, sustained & scaled long after AI solution go-live.",
+  },
+] as const;
+
+// ── Industries (Success Stories sectors) ────────────────────────────────────
 export const INDUSTRIES = [
   {
-    id: "retail",
-    title: "Retail / CPG",
-    description:
-      "Predict demand, optimize inventory, and personalize customer experiences with vertical AI.",
-    metric: "75+",
-    metricLabel: "retail locations worldwide",
+    id: "government",
+    title: "Government & Public Sector",
+    description: "AI transformation and execution for public sector institutions, delivering governance-ready solutions at scale.",
+    metric: "UAE · KSA",
+    metricLabel: "primary markets served",
   },
   {
-    id: "fintech",
+    id: "financial",
     title: "Financial Services",
-    description:
-      "Automate compliance workflows, real-time risk monitoring, and intelligent case management.",
-    metric: "70%",
-    metricLabel: "smarter workflows",
+    description: "AI-powered solutions for banking, fintech, and capital markets — from compliance automation to intelligent customer platforms.",
+    metric: "IPO",
+    metricLabel: "readiness & GRC frameworks",
   },
   {
-    id: "industrial",
-    title: "Industrial",
-    description:
-      "Predictive maintenance, smart manufacturing, and AI-guided front-line operations.",
-    metric: "50%",
-    metricLabel: "reduction in downtime",
+    id: "energy",
+    title: "Energy (Oil & Gas, Mining, Power & Utility)",
+    description: "AI transformation and execution for oil & gas, mining, power, and utility operators — case studies in development.",
+    metric: "UAE · KSA",
+    metricLabel: "primary markets served",
+  },
+  {
+    id: "tmt",
+    title: "Technology, Media & Telecommunications",
+    description: "From legal AI platforms to data reliability engineering and automated fibre validation — AI that reduces cost and boosts quality.",
+    metric: "80%",
+    metricLabel: "reduction in intake time",
   },
   {
     id: "realestate",
     title: "Real Estate",
-    description:
-      "Intelligent property search, automated operations, and personalized buyer journeys.",
-    metric: "60%",
-    metricLabel: "workflow automation",
+    description: "Multi-agent AI marketplaces and construction progress monitoring that give teams real-time intelligence across sites and portfolios.",
+    metric: "Real-time",
+    metricLabel: "construction visibility",
   },
   {
-    id: "media",
-    title: "Media",
-    description:
-      "Revenue optimization, faster distribution, and AI-driven content licensing.",
-    metric: "35%",
-    metricLabel: "increased media revenue",
+    id: "healthcare",
+    title: "Healthcare",
+    description: "Medical AI from point-of-care diagnostics to patient engagement platforms — MDR-aware and clinician-validated.",
+    metric: "Class IIb",
+    metricLabel: "MDR certification support",
+  },
+  {
+    id: "education",
+    title: "Education",
+    description: "AI-powered learning platforms and Algovia Academy training programmes building the next generation of AI-enabled organizations.",
+    metric: "700+",
+    metricLabel: "training professionals",
+  },
+  {
+    id: "transport",
+    title: "Transport & Aviation",
+    description: "Intelligent logistics and supply-chain AI that optimizes routes, reduces costs, and improves operational visibility.",
+    metric: "Real-time",
+    metricLabel: "route optimization",
+  },
+  {
+    id: "retail",
+    title: "Retail & Manufacturing",
+    description: "Computer vision defect detection, agentic AI governance, and precision manufacturing AI delivering measurable quality gains.",
+    metric: "90%",
+    metricLabel: "defect detection accuracy",
   },
 ] as const;
 
+// ── Case Studies (homepage preview) ─────────────────────────────────────────
 export const CASE_STUDIES = [
   {
-    id: "banking",
-    category: "Fintech",
-    title: "AI-Powered Banking Platform",
+    id: "talktwelve",
+    category: "Technology & Legal AI",
+    title: "TalkTwelve: Production Legal AI Platform",
     description:
-      "Modernized core banking workflows with agentic automation and real-time risk intelligence.",
-    image:
-      "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80",
+      "Cut intake time from 60+ minutes to ~12 minutes with a conversational AI agent that prepares solicitor-ready briefs.",
+    image: "https://images.unsplash.com/photo-1589578228447-e1a4e481c6c8?w=800&q=80",
   },
   {
-    id: "ecommerce",
-    category: "E-commerce",
-    title: "Intelligent Marketplace",
+    id: "eazli",
+    category: "Real Estate",
+    title: "Eazli: Scalable Multi-Agent Marketplace",
     description:
-      "Built a scalable AI marketplace with recommendation engines and dynamic pricing.",
-    image:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
+      "Multi-agent AI concierge for KSA property, lifestyle & services — enabling new verticals without rebuilding the core platform.",
+    image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80",
   },
   {
-    id: "logistics",
-    category: "Logistics",
-    title: "Supply Chain Optimization",
+    id: "prohan",
+    category: "Manufacturing",
+    title: "Prohan: Computer Vision Defect Detection",
     description:
-      "Deployed predictive routing and warehouse automation for a regional logistics leader.",
-    image:
-      "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=800&q=80",
+      "90% defect detection rate in wood furniture manufacturing, eliminating €40K monthly loss from undetected production flaws.",
+    image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?w=800&q=80",
   },
   {
-    id: "enterprise",
-    category: "Enterprise",
-    title: "Legacy Modernization",
+    id: "kinage",
+    category: "Financial Services",
+    title: "Kinage: AI Personal-Finance MVP",
     description:
-      "Migrated monolithic ERP systems to cloud-native microservices with zero downtime.",
-    image:
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
+      "Accelerated market launch with a functional MVP — secure inbox parsing, bill classification, and anomaly detection.",
+    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80",
   },
 ] as const;
 
 export const FOOTER_LINKS = {
   products: [
-    { label: "Vertical AI", href: "/solutions#vertical-ai" },
-    { label: "Generative AI", href: "/solutions#generative-ai" },
-    { label: "Business AI", href: "/solutions#business-ai" },
-    { label: "Platform", href: "/platform" },
+    { label: "AI & Digital Solutions",          href: "/service-offerings#ai-digital"            },
+    { label: "Intelligent Business Solutions",   href: "/service-offerings#intelligent-business"  },
+    { label: "Let's Engage",                     href: "/service-offerings#engage"                },
   ],
   company: [
-    { label: "About Us", href: "/company#about" },
-    { label: "Careers", href: "/company#careers" },
-    { label: "Press", href: "/company#press" },
-    { label: "Contact", href: "/company#contact" },
+    { label: "About Us",          href: "/company#about"   },
+    { label: "Careers & Network", href: "/company#careers" },
+    { label: "Press",             href: "/company#press"   },
+    { label: "Contact",           href: "/company#contact" },
   ],
   resources: [
-    { label: "Case Studies", href: "/resources#case-studies" },
-    { label: "Blog", href: "/resources#blog" },
-    { label: "Documentation", href: "/resources#docs" },
-    { label: "Help Center", href: "/resources#help" },
+    { label: "Success Stories",    href: "/success-stories"          },
+    { label: "Thought Leadership", href: "/research#thought-leadership" },
+    { label: "Algovia Academy",    href: "/research#academy"           },
+    { label: "Our Team",           href: "/our-team"                   },
   ],
   legal: [
-    { label: "Privacy Policy", href: "/company#privacy" },
-    { label: "Terms of Service", href: "/company#terms" },
-    { label: "Cookie Policy", href: "/company#cookies" },
-    { label: "Security", href: "/company#security" },
+    { label: "Privacy Policy",    href: "/company#privacy" },
+    { label: "Terms of Service",  href: "/company#terms"   },
+    { label: "Cookie Policy",     href: "/company#cookies" },
   ],
 } as const;
 
-export const SOLUTIONS = [
-  {
-    id: "vertical-ai",
-    title: "Vertical AI, Built with Depth",
-    description:
-      "Domain-specific applications designed to solve real business challenges with measurable value and continuous optimization.",
-    stat: "75+",
-    statLabel: "partners globally",
-  },
-  {
-    id: "generative-ai",
-    title: "Autonomous Agents. Human Oversight.",
-    description:
-      "Purpose-built AI agents and copilots that handle complex tasks while keeping humans in the loop with enterprise-grade security.",
-    stat: "65%",
-    statLabel: "reduction in manual decision-making",
-  },
-  {
-    id: "business-ai",
-    title: "Business AI That Works for You",
-    description:
-      "Predictive, generative, and agentic AI tailored to your workflow — engineered for real-world impact across operations.",
-    stat: "70%",
-    statLabel: "improvement in operational efficiency",
-  },
+// ── Architecture nodes (kept for ArchitectureShowcase) ───────────────────────
+export const ARCHITECTURE_NODES = [
+  { id: "user",         label: "Board / Executive",                  position: "left-top"    },
+  { id: "apps",         label: "Web / Mobile Applications",          position: "left-bottom" },
+  { id: "orchestration",label: "AI Orchestration Layer (Agents)",    position: "center", highlight: true },
+  { id: "knowledge",    label: "Knowledge Layer (RAG / Vector DB)",  position: "top"         },
+  { id: "llm",          label: "LLM Layer (OpenAI / Claude / Llama)", position: "bottom"     },
+  { id: "apis",         label: "APIs & Services",                    position: "right-top"   },
+  { id: "enterprise",   label: "Enterprise Systems (ERP, CRM, etc.)", position: "right-bottom"},
 ] as const;
 
-export const PLATFORM_FEATURES = [
-  {
-    title: "AI Orchestration",
-    description:
-      "LangGraph and agentic workflows with human-in-the-loop checkpoints, tracing, and enterprise guardrails.",
-  },
-  {
-    title: "Knowledge Layer",
-    description:
-      "RAG pipelines with vector search, document ingestion, and governed retrieval for accurate AI responses.",
-  },
-  {
-    title: "Cloud-Native Delivery",
-    description:
-      "AWS-hosted microservices, observability, CI/CD, and scalable infrastructure for production AI systems.",
-  },
-  {
-    title: "Enterprise Integration",
-    description:
-      "Secure APIs and event streams connecting ERP, CRM, and legacy systems to your AI platform.",
-  },
-] as const;
+// ── Aliases used by homepage sections that predate the category split ───────
+export const DELIVERY_PILLARS = VALUE_PILLARS;
+export const SERVICES = AI_DIGITAL_SERVICES;

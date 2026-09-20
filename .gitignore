@@ -43,3 +43,7 @@ next-env.d.ts
 
 # generated knowledge index — rebuilt from knowledge/*.md at build time
 /data/knowledge-index.json
+
+# lead-form submissions (local dev store; wire up real email/CRM before production)
+/data/leads.jsonl
+/data/uploads/

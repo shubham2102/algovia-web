@@ -1,28 +1,29 @@
 @import "tailwindcss";
 @import "./components/HeroSection/hero.css";
+@import "../components/marketing/marketing.css";
 
 :root {
   color-scheme: light;
 
-  /* Mockup brand palette */
-  --algovia-navy: #050714;
-  --algovia-navy-alt: #0a0b1e;
-  --algovia-purple: #6366f1;
-  --algovia-purple-light: #818cf8;
-  --algovia-purple-dark: #4f46e5;
-  --algovia-slate: #4b5563;
+  /* Algovia brand palette (Appendix A: Brand at a Glance) */
+  --algovia-navy: #0b2426; /* near-black teal */
+  --algovia-navy-alt: #024549; /* deep teal */
+  --algovia-purple: #02bb73; /* signature green — primary accent/CTA */
+  --algovia-purple-light: #029961; /* muted green — eyebrow labels/secondary accent */
+  --algovia-purple-dark: #019a5f;
+  --algovia-slate: #5a716f; /* muted gray-teal — body copy */
   --algovia-white: #ffffff;
-  --algovia-off-white: #f8f9fb;
-  --algovia-border-light: #e5e7eb;
-  --algovia-border-muted: #d1d5db;
+  --algovia-off-white: #ecf1f5; /* light blue-gray tint */
+  --algovia-border-light: #d7e3e6;
+  --algovia-border-muted: #c3d2d6;
 
-  /* Legacy aliases — keep existing component tokens working */
+  /* Aliases — component tokens reference these names, values above carry the brand palette */
   --algovia-dark-green: var(--algovia-navy);
   --algovia-bright-green: var(--algovia-purple);
   --algovia-yellow: var(--algovia-purple-light);
   --algovia-green: var(--algovia-purple);
   --algovia-green-light: var(--algovia-purple-light);
-  --algovia-green-muted: rgba(99, 102, 241, 0.12);
+  --algovia-green-muted: rgba(2, 187, 115, 0.12);
   --algovia-accent: var(--algovia-purple);
   --algovia-dark: var(--algovia-navy);
 
@@ -41,7 +42,7 @@
   /* Dark band surfaces (platform, CTA) */
   --surface-dark: var(--algovia-navy);
   --surface-dark-elevated: var(--algovia-navy-alt);
-  --surface-dark-card: #121528;
+  --surface-dark-card: #0f2e31;
   --foreground-on-dark: var(--algovia-white);
   --algovia-dark-elevated: var(--surface-dark-elevated);
   --algovia-dark-card: var(--surface-dark-card);
@@ -55,18 +56,18 @@
     135deg,
     var(--algovia-navy) 0%,
     var(--algovia-navy-alt) 45%,
-    #1e1b4b 100%
+    #03181a 100%
   );
   --gradient-hero: radial-gradient(
     ellipse 80% 50% at 50% -20%,
-    rgba(99, 102, 241, 0.12),
+    rgba(2, 187, 115, 0.12),
     transparent
   );
   --font-sans: var(--font-poppins), system-ui, sans-serif;
 
   /* Layout — section rhythm */
-  --layout-max-width: 2000px;
-  --layout-gutter: clamp(1.25rem, 4vw, 3rem);
+  --layout-max-width: 1400px;
+  --layout-gutter: clamp(1.5rem, 4vw, 3.25rem);
   --section-padding-y: clamp(4rem, 8vw, 8rem);
   --section-padding-compact: clamp(2.5rem, 5vw, 4rem);
   --section-stack-gap: clamp(2.5rem, 5vw, 4rem);
@@ -84,11 +85,11 @@
   --font-sans: var(--font-sans);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* Tailwind's own Preflight (in `@layer base`) already resets margin/padding/
+   box-sizing on *, ::before, ::after, ::backdrop. A second, unlayered `* {}`
+   reset here would always beat Tailwind's layered utilities (mt-*, p-*,
+   space-y-*, ...) regardless of specificity, per the CSS cascade-layers spec —
+   silently zeroing every margin/padding utility site-wide. Do not re-add it. */
 
 html {
   scroll-behavior: auto;
@@ -124,7 +125,7 @@ body {
 }
 
 ::selection {
-  background: rgba(99, 102, 241, 0.25);
+  background: rgba(2, 187, 115, 0.25);
   color: var(--foreground);
 }
 
@@ -184,15 +185,23 @@ body {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--algovia-border-strong);
   box-shadow:
-    0 4px 24px rgba(5, 7, 20, 0.06),
-    0 0 0 1px rgba(99, 102, 241, 0.04) inset;
+    0 4px 24px rgba(11, 36, 38, 0.06),
+    0 0 0 1px rgba(2, 187, 115, 0.04) inset;
 }
 
 .glass-panel-dark {
-  background: rgba(5, 7, 20, 0.72);
+  background: rgba(11, 36, 38, 0.72);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Tailwind's bg-[var(--gradient-brand)] arbitrary value does not reliably
+   resolve a gradient var() at build time, and a plain "bg-*"-named class is
+   itself intercepted by Tailwind's utility generator — so this is deliberately
+   named outside that pattern. */
+.btn-brand-gradient {
+  background: var(--gradient-brand);
 }
 
 .gradient-text {
@@ -230,12 +239,12 @@ h3 .copy-word {
 .card-surface {
   background: var(--surface-card);
   border: 1px solid var(--algovia-border);
-  box-shadow: 0 1px 3px rgba(5, 7, 20, 0.04);
+  box-shadow: 0 1px 3px rgba(11, 36, 38, 0.04);
 }
 
 .card-surface:hover {
-  border-color: rgba(99, 102, 241, 0.35);
-  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+  border-color: rgba(2, 187, 115, 0.35);
+  box-shadow: 0 8px 32px rgba(2, 187, 115, 0.1);
 }
 
 /* Architecture diagram connectors */
@@ -361,7 +370,7 @@ h3 .copy-word {
 /* Subtle scrollbar for in-section overflow */
 .section-scroll {
   scrollbar-width: thin;
-  scrollbar-color: rgba(99, 102, 241, 0.35) transparent;
+  scrollbar-color: rgba(2, 187, 115, 0.35) transparent;
 }
 
 .section-scroll::-webkit-scrollbar {
@@ -369,7 +378,7 @@ h3 .copy-word {
 }
 
 .section-scroll::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.35);
+  background: rgba(2, 187, 115, 0.35);
   border-radius: 4px;
 }
 
@@ -391,7 +400,7 @@ h3 .copy-word {
     165deg,
     var(--surface-dark) 0%,
     var(--surface-dark-elevated) 50%,
-    #121528 100%
+    #0f2e31 100%
   );
   color: var(--foreground-on-dark);
 }

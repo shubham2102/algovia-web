@@ -19,7 +19,9 @@ export default function HomePage() {
       <EngineeringSection />
       <IndustriesSection />
       <CaseStudiesSection />
-      <CTASection />
+      <CTASection
+        lead="Talk to Algovia AI or schedule a meeting to scope the engagement model that fits your next AI transformation."
+      />
     </>
   );
 }

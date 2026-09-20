@@ -12,10 +12,10 @@ import {
 import { gsap, ScrollTrigger, registerGsapPlugins } from "@/lib/gsap";
 import "./sticky-cards.css";
 
-const CARDS_ENTER_END = 60;
-const CARD_FLIP_TRIGGER = 120;
-const CARD_DISMISS_START = 180;
-const CARD_DISMISS_DURATION = 60;
+const CARDS_ENTER_END = 50;
+const CARD_FLIP_TRIGGER = 100;
+const CARD_DISMISS_START = 140;
+const CARD_DISMISS_DURATION = 45;
 
 const CARD_FLIP_TILT_ANGLES = [-10, -20, -5, 10];
 const CARD_DISMISS_TILT_ANGLES = [-50, -60, -45, 50];
@@ -23,26 +23,26 @@ const CARD_DISMISS_TILT_ANGLES = [-50, -60, -45, 50];
 const BACK_CARDS = [
   {
     id: "card-1",
-    title: "Lorem Ipsum Dolor",
-    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
+    title: "Ambition without Prioritization",
+    body: "Algovia structures and prioritizes use-cases, tying them directly to business targets, so effort & investment goes where it counts.",
     icon: LockOpen,
   },
   {
     id: "card-2",
-    title: "Consectetur Adipiscing",
-    body: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.",
+    title: "Technology without Foundations",
+    body: "Algovia diagnoses data & infrastructure readiness before any AI build begins, ensuring foundations are in place for technology that performs and scales.",
     icon: Layers,
   },
   {
     id: "card-3",
-    title: "Tempor Incididunt",
-    body: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    title: "Pilots without Adoption",
+    body: "Algovia embeds change management, business ownership & process redesign into solutions to enable effective adoption supported by the right operating model.",
     icon: Sparkles,
   },
   {
     id: "card-4",
-    title: "Magna Aliqua",
-    body: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    title: "Impact without Measurement",
+    body: "Algovia anchors engagements in client targets and KPIs to ensure that impact is realized and sustained long after go-live.",
     icon: Infinity,
   },
 ] as const;
@@ -52,6 +52,7 @@ export default function StickyCardsSection() {
   const headlineRef = useRef<HTMLDivElement>(null);
   const frontCardRef = useRef<HTMLDivElement>(null);
   const backCardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const fadeOverlayRef = useRef<HTMLDivElement>(null);
   const isFlippedRef = useRef(false);
 
   useGSAP(
@@ -175,6 +176,15 @@ export default function StickyCardsSection() {
               ),
             });
           });
+
+          // Fade to the next section's dark background over the last stretch,
+          // so the pin's trailing scroll-away reads as a deliberate transition.
+          const fadeProgress = gsap.utils.clamp(
+            0,
+            1,
+            gsap.utils.mapRange(svhToProgress(CARD_DISMISS_START + stickyCardCount * CARD_DISMISS_DURATION * 0.7), 1, 0, 1, progress),
+          );
+          gsap.set(fadeOverlayRef.current, { opacity: fadeProgress });
         },
       });
 
@@ -194,19 +204,22 @@ export default function StickyCardsSection() {
       aria-label="What Algovia AI can help you do"
     >
       <div ref={headlineRef} className="sticky-cards-section__headline">
-        <h2>What Algovia AI Can Help You Do</h2>
+        <h2>The AI Value Gap We Solve</h2>
       </div>
+
+      <div ref={fadeOverlayRef} className="sticky-cards-section__fade-overlay" aria-hidden />
 
       <div className="sticky-cards-section__deck">
         <div
           ref={frontCardRef}
           className="sticky-cards-section__card sticky-cards-section__card--front"
         >
-          <h3>Lorem Ipsum</h3>
-          <span className="sticky-cards-section__badge">Start here</span>
+          <h3>Advice without Accountability</h3>
+          <span className="sticky-cards-section__badge">The gap</span>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. A single
-            moment, held in place before everything begins to move.
+            Advisory consulting stops at recommendations. Technology vendors stop
+            at deployment. No one stays accountable for outcomes. Algovia bridges
+            that gap.
           </p>
           <div className="sticky-cards-section__icon">
             <ChevronDown className="h-6 w-6" strokeWidth={2} />

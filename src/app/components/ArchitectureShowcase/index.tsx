@@ -41,7 +41,7 @@ const NODES: ArchNode[] = [
   { id: "orchestration", label: "AI Orchestration Layer", sub: "(Agents)",                   cx: 250, cy: 232, highlight: true, Icon: Bot        },
   { id: "knowledge",     label: "Knowledge Layer",         sub: "(RAG / Vector DB)",           cx: 250, cy: 62,               Icon: Database   },
   { id: "llm",           label: "LLM Layer",               sub: "(OpenAI / Claude / Llama)",   cx: 250, cy: 406,              Icon: Brain      },
-  { id: "user",          label: "User / Client",            sub: "",                            cx: 66,  cy: 88,               Icon: Users      },
+  { id: "user",          label: "Board / Executive",        sub: "",                            cx: 66,  cy: 88,               Icon: Users      },
   { id: "apps",          label: "Web / Mobile",             sub: "Applications",                cx: 66,  cy: 378,              Icon: Smartphone },
   { id: "apis",          label: "APIs & Services",          sub: "",                            cx: 434, cy: 88,               Icon: Zap        },
   { id: "enterprise",    label: "Enterprise Systems",       sub: "(ERP, CRM, etc.)",            cx: 434, cy: 378,              Icon: Building2  },
@@ -161,22 +161,22 @@ export default function ArchitectureShowcase() {
       <div className="arch__inner">
         {/* ── Copy ──────────────────────────────────────────────────────── */}
         <div ref={copyRef} className="arch__copy">
-          <SectionLabel data-copy-item>The Algovia Platform</SectionLabel>
+          <SectionLabel data-copy-item>How Algovia Delivers</SectionLabel>
 
           <h2 data-copy-item className="arch__heading">
-            AI-native systems.
+            AI embedded into
             <br />
-            Built to scale.
+            how you operate.
           </h2>
 
           <p data-copy-item className="arch__lead">
-            From user experience to enterprise backends — orchestrated agents,
-            RAG knowledge layers, and governed LLM integrations, all in one
-            coherent platform.
+            From Board and Executive decisions to enterprise systems —
+            orchestrated agents, governed knowledge layers, and accountable
+            delivery, embedded into the workflows that run your business.
           </p>
 
-          <Link href="/platform" data-copy-item className="arch__cta">
-            Explore our platform
+          <Link href="/service-offerings" data-copy-item className="arch__cta">
+            Explore our service portfolio
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -194,16 +194,16 @@ export default function ArchitectureShowcase() {
             <defs>
               {/* Gradient stroke for each path */}
               <linearGradient id="arch-grad-v" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%"   stopColor="rgba(99,102,241,0.65)" />
-                <stop offset="100%" stopColor="rgba(99,102,241,0.25)" />
+                <stop offset="0%"   stopColor="rgba(2,187,115,0.65)" />
+                <stop offset="100%" stopColor="rgba(2,187,115,0.25)" />
               </linearGradient>
               <linearGradient id="arch-grad-d1" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%"   stopColor="rgba(99,102,241,0.5)" />
-                <stop offset="100%" stopColor="rgba(99,102,241,0.2)" />
+                <stop offset="0%"   stopColor="rgba(2,187,115,0.5)" />
+                <stop offset="100%" stopColor="rgba(2,187,115,0.2)" />
               </linearGradient>
               <linearGradient id="arch-grad-d2" x1="1" y1="0" x2="0" y2="1">
-                <stop offset="0%"   stopColor="rgba(99,102,241,0.5)" />
-                <stop offset="100%" stopColor="rgba(99,102,241,0.2)" />
+                <stop offset="0%"   stopColor="rgba(2,187,115,0.5)" />
+                <stop offset="100%" stopColor="rgba(2,187,115,0.2)" />
               </linearGradient>
             </defs>
 
@@ -268,7 +268,7 @@ export default function ArchitectureShowcase() {
               <circle
                 key={i}
                 cx={cx} cy={cy} r="3"
-                fill="rgba(99,102,241,0.55)"
+                fill="rgba(2,187,115,0.55)"
               />
             ))}
           </svg>

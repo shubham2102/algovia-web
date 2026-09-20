@@ -7,6 +7,18 @@
   color: var(--foreground);
 }
 
+/* Fades in as the cards finish dismissing, so the trailing scroll (after the
+   pin releases and this now-empty section scrolls past) reads as an
+   intentional transition into the next dark section rather than a blank void. */
+.sticky-cards-section__fade-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--surface-dark);
+  opacity: 0;
+  pointer-events: none;
+}
+
 .sticky-cards-section__headline {
   position: absolute;
   inset: 0;

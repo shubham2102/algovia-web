@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
@@ -16,7 +16,16 @@ export default function IndustriesSection() {
   const sectionRef  = useRef<HTMLElement>(null);
   const panelsRef   = useRef<HTMLDivElement>(null);
   const tabsRef     = useRef<HTMLDivElement>(null);
+  const tabButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [activeIdx, setActiveIdx] = useState(0);
+
+  // Keep the active tab visible when the list scrolls internally (short
+  // viewports where all tabs don't fit — see .ind__tabs). Driven off React
+  // state rather than the GSAP scrub callback so it isn't racy with the
+  // pin's lifecycle at the very end of the scroll range.
+  useEffect(() => {
+    tabButtonRefs.current[activeIdx]?.scrollIntoView({ block: "nearest", behavior: "auto" });
+  }, [activeIdx]);
 
   useGSAP(
     () => {
@@ -129,20 +138,21 @@ export default function IndustriesSection() {
 
         {/* ── Left: header + tabs ─────────────────────────────────────────── */}
         <div className="ind__header">
-          <SectionLabel>Industry Use Cases</SectionLabel>
+          <SectionLabel>Success Stories</SectionLabel>
           <h2 className="ind__heading">
-            Specialized AI that fits your workflow
+            AI delivering results across sectors
           </h2>
           <p className="ind__lead">
-            Unlock hidden revenue. Accelerate operations. Build smarter with
-            vertical AI tailored to your business.
+            From governments and energy operators to healthcare innovators and
+            retail manufacturers — Algovia delivers AI that moves from strategy
+            to measurable business impact.
           </p>
 
           <Link
-            href="/industries"
-            className="ind-panel__cta mt-0 mb-4"
+            href="/success-stories"
+            className="ind-panel__cta mt-0 mb-2"
           >
-            View all industries
+            View all success stories
             <ArrowRight className="h-4 w-4" strokeWidth={2} />
           </Link>
 
@@ -150,6 +160,9 @@ export default function IndustriesSection() {
             {INDUSTRIES.map((ind, i) => (
               <button
                 key={ind.id}
+                ref={(el) => {
+                  tabButtonRefs.current[i] = el;
+                }}
                 role="tab"
                 type="button"
                 aria-selected={activeIdx === i}
@@ -192,11 +205,11 @@ export default function IndustriesSection() {
                 <h3 className="ind-panel__title">{ind.title}</h3>
                 <p className="ind-panel__desc">{ind.description}</p>
                 <Link
-                  href={`/industries#${ind.id}`}
+                  href={`/success-stories#${ind.id}`}
                   className="ind-panel__cta"
                   tabIndex={activeIdx !== i ? -1 : 0}
                 >
-                  Explore {ind.title}
+                  View {ind.title} stories
                   <ArrowRight className="h-4 w-4" strokeWidth={2} />
                 </Link>
               </div>

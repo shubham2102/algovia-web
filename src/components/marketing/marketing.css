@@ -13,7 +13,7 @@
   background:
     radial-gradient(
       ellipse 70% 50% at 20% 0%,
-      rgba(99, 102, 241, 0.15),
+      rgba(2, 187, 115, 0.15),
       transparent 55%
     ),
     var(--background);
@@ -117,8 +117,8 @@
 }
 
 .page-card:hover {
-  border-color: rgba(99, 102, 241, 0.35);
-  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+  border-color: rgba(2, 187, 115, 0.35);
+  box-shadow: 0 8px 32px rgba(2, 187, 115, 0.1);
 }
 
 .page-card__title {
@@ -144,36 +144,6 @@
   color: transparent;
 }
 
-.page-cta-band {
-  margin: var(--section-padding-y) 0;
-  padding: clamp(3rem, 6vw, 4rem) var(--section-padding-compact);
-  border-radius: 1.25rem;
-  text-align: center;
-  background: var(--gradient-cta);
-}
-
-.page-cta-band__title {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 700;
-  color: var(--algovia-white);
-}
-
-.page-cta-band__desc {
-  margin: 1rem auto 0;
-  max-width: 32rem;
-  font-size: 0.9375rem;
-  line-height: 1.65;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.page-cta-band__actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
 @media (max-width: 1000px) {
   .page-hero {
     min-height: 70svh;
@@ -182,4 +152,170 @@
   .page-section {
     padding: clamp(3rem, 8vw, 4rem) 0;
   }
+}
+
+/* ── Pull-quote ────────────────────────────────────────────────────────── */
+.pull-quote {
+  position: relative;
+  margin: 2rem 0 0;
+  padding: 1.75rem clamp(1.5rem, 4vw, 2.5rem);
+  border-left: 3px solid var(--algovia-green);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  font-size: clamp(1.125rem, 2.2vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--foreground);
+}
+
+/* ── Tab switch (Service Portfolio categories) ────────────────────────── */
+.tab-switch {
+  display: inline-flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  border-radius: 999px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--algovia-border);
+}
+
+.tab-switch__btn {
+  padding: 0.625rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--algovia-muted);
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+
+.tab-switch__btn[aria-selected="true"] {
+  background: var(--algovia-green);
+  color: var(--algovia-white);
+}
+
+/* ── Newsroom / feed empty-state template ─────────────────────────────── */
+.newsroom-feed {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  border: 1px dashed var(--algovia-border-strong);
+  border-radius: 1rem;
+  padding: clamp(2.5rem, 5vw, 3.5rem) 1.5rem;
+  text-align: center;
+}
+
+.newsroom-feed__note {
+  font-size: 0.9375rem;
+  color: var(--algovia-muted);
+}
+
+.newsroom-feed__categories {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.newsroom-feed__tag {
+  padding: 0.375rem 0.875rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--algovia-muted);
+  background: var(--surface-card);
+  border: 1px solid var(--algovia-border);
+}
+
+/* ── Animated stat counter ────────────────────────────────────────────── */
+.stat-counter {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── Lead capture forms (Careers, Network, Contact, Schedule a Meeting) ── */
+.lead-form {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.lead-form > button,
+.lead-form > a {
+  justify-self: start;
+}
+
+.lead-form__grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .lead-form__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.lead-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.lead-form__field--full {
+  grid-column: 1 / -1;
+}
+
+.lead-form__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.lead-form__label-optional {
+  font-weight: 400;
+  color: var(--algovia-muted);
+}
+
+.lead-form__input,
+.lead-form__select,
+.lead-form__textarea {
+  width: 100%;
+  padding: 0.6875rem 0.875rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--algovia-border-strong);
+  background: var(--surface-card);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  font-family: inherit;
+}
+
+.lead-form__input:focus,
+.lead-form__select:focus,
+.lead-form__textarea:focus {
+  outline: 2px solid var(--algovia-green);
+  outline-offset: 1px;
+}
+
+.lead-form__textarea {
+  resize: vertical;
+  min-height: 6rem;
+}
+
+.lead-form__status {
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.lead-form__status--success {
+  color: var(--algovia-green);
+}
+
+.lead-form__status--error {
+  color: #c0392b;
 }

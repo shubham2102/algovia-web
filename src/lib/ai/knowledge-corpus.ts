@@ -16,22 +16,22 @@ const FALLBACK_CHUNKS: KnowledgeChunk[] = [
     id: "overview",
     category: "company",
     title: "Algovia Overview",
-    content: "Algovia is an AI-native engineering and consulting company. We help enterprises and ambitious startups design, build, and scale AI-native products and platforms from strategy to production.",
+    content: "Algovia AI is a leading AI Transformation and Execution firm that helps organizations move from strategy to execution, adoption, and measurable value, working primarily with Boards and Executive teams across governments and enterprises in the UAE, KSA, Europe, and Australia.",
     keywords: ["algovia", "company", "about", "who", "what"],
   },
   {
     id: "services",
     category: "services",
     title: "Algovia Services",
-    content: "Algovia delivers: AI Strategy & Consulting, AI Agents & Automation (LangGraph, CrewAI), Product Engineering, Cloud & DevOps (AWS, Kubernetes), Data Engineering, and Digital Transformation / Legacy Modernization.",
-    keywords: ["services", "strategy", "consulting", "agents", "cloud", "devops", "data", "engineering"],
+    content: "Algovia's Service Portfolio spans AI & Digital Solutions (AI Strategy, Artificial Intelligence, Computer Vision, Software Development, Data Engineering & Analytics, IoT & Embedded Systems) and Intelligent Business Solutions (Strategy & Operating Model, Governance/Risk/Compliance, Cost Optimization, Business Transformation, Capital Markets Solutions, Internal Audit & ICFR).",
+    keywords: ["services", "strategy", "consulting", "governance", "data", "engineering"],
   },
   {
     id: "engagement",
     category: "lead",
     title: "Engagement & CTAs",
-    content: "Engagement options: Talk to Algovia AI, Schedule Solution Workshop, Upload Requirements, Generate Architecture, Request Consultation. Discovery workshops are free and produce a written engagement outline.",
-    keywords: ["contact", "workshop", "consultation", "hire", "engage", "lead", "quote", "get started", "pricing"],
+    content: "Engagement options: Talk to Algovia AI, or Schedule a Meeting to discuss one of Algovia's seven engagement models (AI Value Discovery Sprint, AI Training Sprint, AI Transformation Roadmap, AI Proof of Value & Solution Build, Business Transformation & Change Management, AI Governance/Risk/Compliance Management, AI Adoption & Value Realization Office).",
+    keywords: ["contact", "workshop", "consultation", "hire", "engage", "lead", "quote", "get started", "schedule"],
   },
 ];
 

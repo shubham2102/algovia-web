@@ -1,8 +1,18 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { ArrowUp, RefreshCw, Sparkles } from "lucide-react";
 import { AI_PROMPTS } from "@/lib/constants";
+import LeadForm from "@/components/forms/LeadForm";
+import {
+  getOrCreateSessionId,
+  getStoredContact,
+  storeContact,
+  isFollowupResolved,
+  markFollowupResolved,
+  type StoredContact,
+} from "@/lib/chatSession";
 import "./hero.css";
 
 interface Message {
@@ -17,13 +27,22 @@ interface Props {
 
 // ── Lightweight inline markdown renderer ────────────────────────────────────
 function parseLine(text: string): React.ReactNode {
-  const parts = text.split(/(\*\*[^*]+?\*\*|\*[^*]+?\*)/g);
+  const parts = text.split(/(\*\*[^*]+?\*\*|\*[^*]+?\*|\[[^\]]+?\]\([^)]+?\))/g);
   if (parts.length === 1) return text;
   return (
     <>
       {parts.map((p, i) => {
         if (p.startsWith("**") && p.endsWith("**")) return <strong key={i}>{p.slice(2, -2)}</strong>;
         if (p.startsWith("*")  && p.endsWith("*"))  return <em      key={i}>{p.slice(1, -1)}</em>;
+        const linkMatch = p.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+        if (linkMatch) {
+          const [, label, href] = linkMatch;
+          return (
+            <Link key={i} href={href!} className="agent-md__link">
+              {label}
+            </Link>
+          );
+        }
         return p;
       })}
     </>
@@ -122,8 +141,38 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
   const [loading, setLoading]           = useState(false);
   const [streaming, setStreaming]       = useState(false);
   const [loadingLabel, setLoadingLabel] = useState("Thinking");
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [followupState, setFollowupState] = useState<"hidden" | "ask" | "form" | "confirmed">("hidden");
+  const [storedContact, setStoredContact] = useState<StoredContact | null>(null);
   const convoRef                        = useRef<HTMLDivElement>(null);
   const hasMessages                     = messages.length > 0;
+
+  // Session id + any contact already shared in a previous visit persist across
+  // reloads (localStorage) so the widget never re-asks someone it already knows.
+  // One-time sync from that external store on mount, not a derived-state loop.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSessionId(getOrCreateSessionId());
+    const existing = getStoredContact();
+    if (existing) {
+      setStoredContact(existing);
+      setFollowupState("confirmed");
+    }
+  }, []);
+
+  const handleDismissFollowup = useCallback(() => {
+    setFollowupState("hidden");
+    markFollowupResolved();
+  }, []);
+
+  const handleShareSuccess = useCallback((values: Record<string, string>) => {
+    const contact: StoredContact = { name: values.name, email: values.email, company: values.company, phone: values.phone };
+    storeContact(contact);
+    setStoredContact(contact);
+    markFollowupResolved();
+    setFollowupState("confirmed");
+  }, []);
 
   // ── Cycle loading labels for agentic feel ─────────────────────────────────
   useEffect(() => {
@@ -165,12 +214,37 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
         const res = await fetch("/api/chat", {
           method:  "POST",
           headers: { "Content-Type": "application/json" },
-          body:    JSON.stringify({ messages: updated }),
+          body:    JSON.stringify({ messages: updated, conversationId, sessionId }),
         });
 
         if (!res.ok || !res.body) {
           setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong. Please try again." }]);
           return;
+        }
+
+        const returnedConversationId = res.headers.get("X-Conversation-Id");
+        if (returnedConversationId) setConversationId(returnedConversationId);
+
+        // Only ever surface the follow-up prompt when this turn actually shows
+        // buying intent (never after a generic Q&A answer), and never once the
+        // visitor has already been asked or is already known — see chatSession.ts.
+        if (!isFollowupResolved()) {
+          const intent = res.headers.get("X-Intent");
+          const contactKnown = res.headers.get("X-Contact-Known") === "1";
+          const maySuggest = res.headers.get("X-May-Suggest-Followup") === "1";
+
+          if (intent === "lead") {
+            if (contactKnown || storedContact) {
+              markFollowupResolved();
+              setFollowupState("confirmed");
+            } else if (maySuggest) {
+              setFollowupState((prev) => {
+                if (prev !== "hidden") return prev;
+                markFollowupResolved(); // shown once — never ask again, even if ignored
+                return "ask";
+              });
+            }
+          }
         }
 
         // Thinking phase ends → streaming phase begins
@@ -201,7 +275,7 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
         setStreaming(false);
       }
     },
-    [loading, streaming, messages, onFirstMessage],
+    [loading, streaming, messages, onFirstMessage, conversationId, sessionId, storedContact],
   );
 
   return (
@@ -239,6 +313,42 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
                   </div>
                 </AgentTurn>
               )}
+
+              {followupState === "ask" && (
+                <p className="hero-ai__followup-line">
+                  Want our team to follow up on this?{" "}
+                  <button type="button" className="hero-ai__followup-link" onClick={() => setFollowupState("form")}>
+                    Share your details
+                  </button>
+                  <span className="hero-ai__followup-sep">·</span>
+                  <button type="button" className="hero-ai__followup-link hero-ai__followup-link--muted" onClick={handleDismissFollowup}>
+                    Not now
+                  </button>
+                </p>
+              )}
+
+              {followupState === "form" && (
+                <LeadForm
+                  formType="chat"
+                  conversationId={conversationId}
+                  sessionId={sessionId}
+                  submitLabel="Send my details"
+                  onSuccess={handleShareSuccess}
+                  successMessage="✓ Thanks — our team will follow up shortly."
+                  fields={[
+                    { name: "name", label: "Name", type: "text", required: true },
+                    { name: "email", label: "Work email", type: "email", required: true },
+                    { name: "company", label: "Company name", type: "text", required: false },
+                    { name: "phone", label: "Phone number", type: "tel", required: false },
+                  ]}
+                />
+              )}
+
+              {followupState === "confirmed" && (
+                <p className="hero-ai__followup-line hero-ai__followup-line--confirmed">
+                  ✓ We have your details{storedContact?.email ? ` (${storedContact.email})` : ""} — our team will follow up.
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -273,7 +383,7 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
           {hasMessages && (
             <button
               type="button"
-              onClick={() => { setMessages([]); setInput(""); setStreaming(false); setLoading(false); }}
+              onClick={() => { setMessages([]); setInput(""); setStreaming(false); setLoading(false); setConversationId(null); }}
               className="hero-ai__reset"
               aria-label="New conversation"
               disabled={loading || streaming}

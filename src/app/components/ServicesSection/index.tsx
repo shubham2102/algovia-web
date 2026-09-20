@@ -1,27 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Cloud, Code2, Database, Sparkles, Workflow } from "lucide-react";
+import { ArrowRight, Code2 } from "lucide-react";
 import SectionViewport from "@/components/ui/SectionViewport";
 import SectionLabel from "@/components/ui/SectionLabel";
 import Reveal from "@/components/animations/Reveal";
 import { SERVICES } from "@/lib/constants";
-
-const colorMap: Record<string, string> = {
-  purple: "bg-[var(--algovia-green-muted)] text-[var(--algovia-green)]",
-  orange: "bg-orange-500/20 text-orange-400",
-  green: "bg-emerald-500/20 text-emerald-400",
-  blue: "bg-blue-500/20 text-blue-400",
-  indigo: "bg-indigo-500/20 text-indigo-400",
-};
-
-const iconMap: Record<string, React.ElementType> = {
-  code: Code2,
-  sparkles: Sparkles,
-  cloud: Cloud,
-  database: Database,
-  transform: Workflow,
-};
 
 export default function ServicesSection() {
   return (
@@ -41,41 +25,36 @@ export default function ServicesSection() {
               and agentic systems engineered for measurable enterprise impact.
             </p>
             <Link
-              href="/platform"
+              href="/service-offerings"
               className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--algovia-green)] hover:text-[var(--algovia-green-light)]"
             >
-              See how we work
+              View all services
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </Reveal>
 
         <div className="section-scroll max-h-[min(58dvh,520px)] space-y-3 overflow-y-auto pr-2 lg:max-h-[min(62dvh,560px)]">
-          {SERVICES.map((service, i) => {
-            const Icon = iconMap[service.icon] ?? Code2;
-            return (
-              <Reveal key={service.title} delay={i * 0.04}>
-                <article
-                  data-reveal-item
-                  className="card-surface flex gap-4 rounded-2xl p-4 transition-all sm:p-5"
-                >
-                  <span
-                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl sm:h-12 sm:w-12 ${colorMap[service.color]}`}
-                  >
-                    <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
-                  </span>
-                  <div className="min-w-0">
-                    <h3 className="font-semibold text-[var(--foreground)]">
-                      {service.title}
-                    </h3>
-                    <p className="mt-1 text-sm leading-relaxed text-[var(--algovia-muted)]">
-                      {service.description}
-                    </p>
-                  </div>
-                </article>
-              </Reveal>
-            );
-          })}
+          {SERVICES.map((service, i) => (
+            <Reveal key={service.title} delay={i * 0.04}>
+              <article
+                data-reveal-item
+                className="card-surface flex gap-4 rounded-2xl p-4 transition-all sm:p-5"
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--algovia-green-muted)] text-[var(--algovia-green)] sm:h-12 sm:w-12">
+                  <Code2 className="h-5 w-5 sm:h-6 sm:w-6" />
+                </span>
+                <div className="min-w-0">
+                  <h3 className="font-semibold text-[var(--foreground)]">
+                    {service.title}
+                  </h3>
+                  <p className="mt-1 text-sm leading-relaxed text-[var(--algovia-muted)]">
+                    {service.whyNow}
+                  </p>
+                </div>
+              </article>
+            </Reveal>
+          ))}
         </div>
       </div>
     </SectionViewport>

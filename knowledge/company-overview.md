@@ -1,22 +1,28 @@
 ---
-id: overview
+id: company-overview
 category: company
-title: Algovia Overview
-keywords: algovia, company, about, who, what, mission, ai, consulting, engineering
+title: About Algovia AI
+keywords: algovia, company, about, who, what, mission, vision, founders, profile, transformation, execution
 ---
 
-Algovia is an AI-native engineering and consulting company. We help enterprises and ambitious startups design, build, and scale AI-native products and platforms — from strategy through to production.
+Algovia AI is a leading AI Transformation and Execution firm that helps organizations move from strategy to execution, adoption, and measurable value. It combines senior business transformation expertise with AI build capability to deliver solutions embedded into operating models, workflows, governance, and performance management.
 
-We pair large-language-model interfaces with a living network of agents, verified vendors, and on-demand contributors to turn plain-language requests into finished, real-world outcomes. Our work spans every layer: data infrastructure, AI orchestration, product engineering, cloud delivery, and the user experiences that make it all usable.
+Algovia is not a traditional consultancy and not a software vendor — it is the partner that connects both, and stays accountable until AI becomes business as usual.
 
-Our team has shipped AI systems across retail, financial services, industrial operations, enterprise IT, media, and trading. We bring both deep technical depth and business pragmatism — every engagement is scoped to produce measurable outcomes, not research artifacts.
+Algovia AI works primarily with Boards and Executive teams across governments and enterprises in the UAE, the Kingdom of Saudi Arabia, Europe, and Australia, backed by an international network of AI and industry experts, and delivered through an advisory, implementation, and value-realization engagement model.
 
-Engagement models: fixed-scope delivery, team augmentation, platform licensing, and strategic advisory. All engagements begin with a structured discovery workshop to align on goals, constraints, and the right level of AI ambition for the problem.
+Vision: To lead globally in intelligent AI execution, enabling people and industries to operate with greater impact, agility, and autonomy.
 
-Core beliefs:
-- AI should replace friction, not create it
-- Every completed job should enrich a shared intelligence layer
-- Value should flow back to the people who contribute knowledge, labor, and local context
-- Trust, transparency, and protected payments are non-negotiable at every layer
+Mission: Algovia creates competitive advantage through AI-driven execution that combines deep research, industry expertise, and the activation of organizational knowledge to deliver innovation, agility, and measurable impact at scale.
 
-To get started: Talk to Algovia AI on the homepage, schedule a Solution Workshop, or upload your project requirements.
+Founded by business transformation executives and AI builders — the four co-founders are:
+- Houssam Abiad, Board Director & Co-Founder — former Deputy Lord Mayor, 20+ years across public, private, and startup sectors, urban and infrastructure transformation.
+- Mohamad Kinawi, Board Director & Co-Founder — electronic engineer, AI strategist, and investment banker with global experience in London, Frankfurt, and Shanghai.
+- Lara El Khayat, Chief Executive Officer & Co-Founder — 24 years of advisory experience across GRC and Business Transformation, former Partner at global consulting firms, worked with ADNOC, Mubadala, Majid Al Futtaim, TAQA, Saudia.
+- Carmen Hamze, Business Partner & Co-Founder — 14+ years advising public-sector and energy organizations across the GCC, former Partner at Roland Berger and Monitor Deloitte.
+
+Extended leadership includes Marek Tatara, PhD (Chief Scientific Officer / Head of AI) and Łukasz Fedorowicz (Head of AI Design), plus a Chief Technology Officer.
+
+Algovia works with a network of 700+ cross-disciplinary professionals across Artificial Intelligence, Software Engineering, Data Analytics, Business Intelligence, and Digital and Business Transformation, spanning 9 industry sectors: Government & Public Sector, Financial Services, Energy, Technology/Media/Telecommunications, Real Estate, Healthcare, Education, Transport & Aviation, and Retail & Manufacturing.
+
+Offices: Dubai, UAE and Jeddah, KSA. General contact: connect@algovia.ai.

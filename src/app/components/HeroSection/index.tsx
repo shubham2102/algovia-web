@@ -39,15 +39,13 @@ export default function HeroSection() {
       {/* Intro — absolutely positioned in upper-center, fades when active */}
       <div className="hero__intro">
         <p className="hero__eyebrow" data-hero-item>
-          AI‑Powered Engineering Partner
+          AI Transformation &amp; Execution
         </p>
         <h1 className="hero__headline" data-hero-item>
-          Build AI systems
-          <br />
-          <span className="hero__headline-accent">that ship.</span>
+          From strategy to <span className="hero__headline-accent">execution that sticks.</span>
         </h1>
         <p className="hero__lead" data-hero-item>
-          Ask Algovia AI anything about your product — strategy, architecture, or go-to-market.
+          Ask Algovia AI anything about your AI transformation — service offerings, engagement models, or success stories.
         </p>
       </div>
 

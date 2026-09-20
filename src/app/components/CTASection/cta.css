@@ -11,7 +11,7 @@
     165deg,
     var(--surface-dark) 0%,
     var(--surface-dark-elevated) 50%,
-    #121528 100%
+    #0f2e31 100%
   );
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -23,7 +23,7 @@
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
+    radial-gradient(circle, rgba(2, 187, 115, 0.08) 1px, transparent 1px);
   background-size: 30px 30px;
   pointer-events: none;
 }
@@ -42,7 +42,7 @@
   height: min(50vw, 520px);
   top: -20%;
   left: -10%;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(2, 187, 115, 0.18) 0%, transparent 60%);
 }
 
 .cta__glow-r {
@@ -50,7 +50,7 @@
   height: min(40vw, 400px);
   bottom: -20%;
   right: -5%;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(2, 187, 115, 0.12) 0%, transparent 60%);
 }
 
 /* ── Inner content ──────────────────────────────────────────────────────────── */
@@ -108,7 +108,7 @@
 
 .cta__heading em {
   font-style: normal;
-  background: linear-gradient(135deg, var(--algovia-purple-light) 0%, #a78bfa 60%, var(--algovia-green-light) 100%);
+  background: linear-gradient(135deg, var(--algovia-purple-light) 0%, var(--algovia-purple) 60%, var(--algovia-green-light) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -144,7 +144,7 @@
   font-weight: 600;
   color: var(--algovia-navy);
   background: #fff;
-  box-shadow: 0 4px 20px rgba(5, 7, 20, 0.25);
+  box-shadow: 0 4px 20px rgba(11, 36, 38, 0.25);
   transition:
     background 0.2s ease,
     box-shadow 0.2s ease,
@@ -153,7 +153,7 @@
 
 .cta__btn-primary:hover {
   background: rgba(255, 255, 255, 0.93);
-  box-shadow: 0 8px 32px rgba(5, 7, 20, 0.35);
+  box-shadow: 0 8px 32px rgba(11, 36, 38, 0.35);
   transform: translateY(-1px);
 }
 
