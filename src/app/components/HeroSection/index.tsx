@@ -1,8 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap, registerGsapPlugins } from "@/lib/gsap";
+import { SITE } from "@/lib/constants";
 import AIAssistantPanel from "./AIAssistantPanel";
 import "./hero.css";
 
@@ -47,6 +49,14 @@ export default function HeroSection() {
         <p className="hero__lead" data-hero-item>
           Ask Algovia AI anything about your AI transformation — service offerings, engagement models, or success stories.
         </p>
+        <div className="hero__actions" data-hero-item>
+          <Link href="/service-offerings" className="hero__cta-primary">
+            Explore our services
+          </Link>
+          <a href={SITE.workshopUrl} target="_blank" rel="noopener noreferrer" className="hero__cta-secondary">
+            Speak to our team
+          </a>
+        </div>
       </div>
 
       {/* Shell — flex-end anchors the panel to the bottom */}

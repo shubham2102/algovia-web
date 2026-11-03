@@ -4,6 +4,7 @@ import PageHero from "@/components/marketing/PageHero";
 import PageSection from "@/components/marketing/PageSection";
 import CTASection from "@/app/components/CTASection";
 import { createPageMetadata } from "@/lib/metadata";
+import { SITE } from "@/lib/constants";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Research & Learn",
@@ -76,9 +77,9 @@ export default function ResearchPage() {
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link href="/service-offerings?engagement=02#schedule" className="hero__cta-primary">
-            Schedule a Training Conversation
-          </Link>
+          <a href={SITE.workshopUrl} target="_blank" rel="noopener noreferrer" className="hero__cta-primary">
+            Request a Training Conversation
+          </a>
           <Link
             href="/service-offerings#engage"
             className="inline-flex items-center rounded-full border border-[var(--algovia-border-strong)] px-5 py-2.5 text-sm font-medium text-[var(--foreground)] hover:bg-[var(--surface-hover)]"

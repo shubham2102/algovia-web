@@ -11,7 +11,7 @@ export default function SectionLabel({
   return (
     <span
       {...props}
-      className={`inline-block text-xs font-semibold tracking-[0.2em] text-[var(--algovia-green-light)] uppercase ${className}`}
+      className={`inline-block text-xs font-semibold tracking-[0.2em] text-[var(--algovia-green-ink)] uppercase ${className}`}
     >
       {children}
     </span>

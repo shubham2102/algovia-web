@@ -160,9 +160,12 @@ export default function Menu() {
     const nav = navRef.current;
     if (!nav) return;
 
+    // Only the homepage hero is tall enough to leave the nav transparent over it;
+    // on inner pages, headings scroll under the nav almost immediately, so it
+    // turns solid after a short scroll to keep text from overlapping.
     const getHeroThreshold = () => {
       const hero = document.querySelector(".hero") as HTMLElement | null;
-      return (hero?.offsetHeight ?? window.innerHeight) * 0.9;
+      return hero ? hero.offsetHeight * 0.9 : 24;
     };
 
     const updateNavTopClass = () => {

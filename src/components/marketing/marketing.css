@@ -1,3 +1,5 @@
+@import "./sections.css";
+
 .page-hero {
   position: relative;
   min-height: 80svh;
@@ -31,7 +33,7 @@
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--algovia-green-light);
+  color: var(--algovia-green-ink);
   margin-bottom: 1.25rem;
 }
 
@@ -71,7 +73,7 @@
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--algovia-green-light);
+  color: var(--algovia-green-ink);
   margin-bottom: 1rem;
 }
 
@@ -192,7 +194,7 @@
 }
 
 .tab-switch__btn[aria-selected="true"] {
-  background: var(--algovia-green);
+  background: var(--algovia-green-ink);
   color: var(--algovia-white);
 }
 
@@ -313,7 +315,7 @@
 }
 
 .lead-form__status--success {
-  color: var(--algovia-green);
+  color: var(--algovia-green-ink);
 }
 
 .lead-form__status--error {

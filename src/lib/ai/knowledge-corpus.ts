@@ -30,7 +30,7 @@ const FALLBACK_CHUNKS: KnowledgeChunk[] = [
     id: "engagement",
     category: "lead",
     title: "Engagement & CTAs",
-    content: "Engagement options: Talk to Algovia AI, or Schedule a Meeting to discuss one of Algovia's seven engagement models (AI Value Discovery Sprint, AI Training Sprint, AI Transformation Roadmap, AI Proof of Value & Solution Build, Business Transformation & Change Management, AI Governance/Risk/Compliance Management, AI Adoption & Value Realization Office).",
+    content: "Engagement options: Talk to Algovia AI, or Request a Meeting (Calendly) to discuss one of Algovia's seven engagement models (AI Value Discovery Sprint, AI Training Sprint, AI Transformation Roadmap, AI Proof of Value & Solution Build, Business Transformation & Change Management, AI Governance/Risk/Compliance Management, AI Adoption & Value Realization Office).",
     keywords: ["contact", "workshop", "consultation", "hire", "engage", "lead", "quote", "get started", "schedule"],
   },
 ];

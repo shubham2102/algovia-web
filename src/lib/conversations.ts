@@ -56,7 +56,7 @@ export async function linkConversationContact(conversationId: string, contactId:
   await sql`UPDATE conversations SET contact_id = ${contactId} WHERE id = ${conversationId}`;
 }
 
-/** Pulls a `?engagement=<id>` (or `#schedule?engagement=<id>`) reference out of assistant text, if present. */
+/** Pulls a `?engagement=<id>` reference out of assistant text, if present. */
 export function extractRecommendedEngagement(text: string): string | undefined {
   const match = text.match(/engagement=(\d{2})/);
   return match?.[1];

@@ -21,4 +21,4 @@ Intelligent Business Solutions — the governance and transformation capabilitie
 - Cost Optimization — AI-enabled cost optimization assessment & solutions. Savings delivered without cutting into what clients experience.
 - Business Transformation — Business process transformation, customer experience transformation. Leaner processes and better customer experience.
 - Capital Markets Solutions — IPO readiness assessment, IPO GRC framework implementation. Quick alignment to listing requirements under tight deadlines.
-- Internal Audit & ICFR — AI-enabled internal audit services, digitized ICFR services. Financial and process control gaps identified and mitigated in real time.
+- Internal Audit — AI-enabled internal audit services and digitized internal audit services. Financial and process control gaps identified and mitigated in real time.

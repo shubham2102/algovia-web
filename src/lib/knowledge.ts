@@ -1,3 +1,5 @@
+import { SITE } from "@/lib/constants";
+
 export const ALGOVIA_KNOWLEDGE = `
 Algovia AI is a leading AI Transformation and Execution firm that helps organizations move from strategy to execution, adoption, and measurable value. We combine senior business transformation expertise with AI build capability to deliver solutions embedded into operating models, workflows, governance, and performance management.
 
@@ -39,7 +41,7 @@ Intelligent Business Solutions:
 - Cost Optimization: AI-Enabled Cost Optimization Assessment & Solutions
 - Business Transformation: Business Process Transformation, Customer Experience Transformation
 - Capital Markets Solutions: IPO Readiness Assessment, IPO GRC Framework Implementation
-- Internal Audit & ICFR: AI-Enabled Internal Audit Services, Digitized ICFR Services
+- Internal Audit: AI-Enabled Internal Audit Services, Digitized Internal Audit Services
 
 Seven Engagement Models (Let's Engage):
 01. AI Value Discovery Sprint (2–3 Weeks): Executive diagnostic & 2–3 prioritized use cases → A business case leadership can act on.
@@ -61,7 +63,7 @@ Selected Success Stories:
 - Mayo Clinic (Healthcare): Silver Medal (46th/896 teams) on Kaggle for stroke etiology classification.
 - Komatsu (Retail & Manufacturing): Drone-based forest mapping with 3D surface reconstruction and tree characterization.
 
-Schedule a Meeting: Every engagement starts with a conversation about the outcome you are aiming to achieve, not a generic sales call.
+Request a Meeting (Calendly): Every engagement starts with a conversation about the outcome you are aiming to achieve, not a generic sales call.
 `.trim();
 
 export function getFallbackResponse(query: string): string {
@@ -111,7 +113,7 @@ This is a core strength — our co-founders include former Partners from global 
 - AI Strategy, Artificial Intelligence (Agentic AI, GenAI, ML), Computer Vision, Software Development, Data Engineering & Analytics, IoT & Embedded Systems
 
 **Intelligent Business Solutions** — governance & transformation:
-- Strategy & Operating Model, GRC, Cost Optimization, Business Transformation, Capital Markets Solutions, Internal Audit & ICFR
+- Strategy & Operating Model, GRC, Cost Optimization, Business Transformation, Capital Markets Solutions, Internal Audit
 
 All engagements follow one of seven models: from a 2-week Discovery Sprint to a full Managed Adoption & Value Realization Office.
 
@@ -132,7 +134,7 @@ Seven engagement models are available:
 6. **AI Governance, Risk and Compliance Management** — governance framework
 7. **AI Adoption & Value Realization Office** — sustained outcomes
 
-Use the **Schedule a Meeting** form to connect with our team → [Let's Engage](/service-offerings#schedule)`;
+Request a meeting with our team → [Request a Meeting](${SITE.workshopUrl})`;
   }
 
   if (q.includes("team") || q.includes("founder") || q.includes("who")) {
@@ -145,7 +147,9 @@ Algovia was founded by four co-founders with deep cross-sector expertise:
 - **Carmen Hamze** — Business Partner & Co-Founder, 14+ years advising public-sector and energy organizations (ADNOC, Aramco, DEWA), former Partner at Roland Berger and Monitor Deloitte
 
 Extended leadership includes:
-- **Marek Tatara, PhD** — Chief Scientific Officer / Head of AI, 40+ AI projects, Assistant Professor at Gdańsk University of Technology
+- **Krzysztof Radecki** — Chief Technology Officer, data integration, agentic systems and cloud
+- **Radosław Szmit** — Chief Business Officer, AI, computer vision and IoT for manufacturing
+- **Marek Tatara, PhD** — Chief Scientific Officer, 40+ AI projects, Assistant Professor at Gdańsk University of Technology
 - **Łukasz Fedorowicz** — Head of AI Design, 20+ years in UX and Interaction Design`;
   }
 
@@ -159,5 +163,5 @@ Try asking about:
 - Specific industries or success stories
 - Our engagement models (Discovery Sprint, Transformation Roadmap, etc.)
 
-Or [schedule a meeting](/service-offerings#schedule) to speak directly with our team.`;
+Or [request a meeting](${SITE.workshopUrl}) to speak directly with our team.`;
 }

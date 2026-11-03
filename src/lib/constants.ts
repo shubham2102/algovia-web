@@ -1,8 +1,7 @@
 export const SITE = {
   name: "Algovia AI",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://algovia.ai",
-  workshopUrl: process.env.NEXT_PUBLIC_WORKSHOP_URL ?? "/service-offerings#schedule",
-  uploadUrl: process.env.NEXT_PUBLIC_UPLOAD_URL ?? "/service-offerings#schedule",
+  workshopUrl: process.env.NEXT_PUBLIC_WORKSHOP_URL ?? "https://calendly.com/algovia/workshop",
 } as const;
 
 export const NAV_ITEMS = [
@@ -15,16 +14,16 @@ export const NAV_ITEMS = [
 
 export const NAV_DROPDOWNS: Record<string, readonly { label: string; href: string }[]> = {
   "/company": [
-    { label: "About Us",          href: "/company#about"   },
-    { label: "Press",             href: "/company#press"   },
-    { label: "Careers & Network", href: "/company#careers" },
-    { label: "Contact",           href: "/company#contact" },
+    { label: "About Us",              href: "/company#about"              },
+    { label: "Vision & Mission",      href: "/company#vision-mission"     },
+    { label: "Our Value Proposition", href: "/company#value-proposition"  },
+    { label: "The AI Value Gap",      href: "/company#value-gap"          },
+    { label: "Contact",               href: "/company#contact"            },
   ],
   "/service-offerings": [
-    { label: "Our Value Proposition", href: "/service-offerings#value-proposition" },
-    { label: "AI & Digital Solutions", href: "/service-offerings#ai-digital" },
-    { label: "Intelligent Business Solutions", href: "/service-offerings#intelligent-business" },
-    { label: "Let's Engage",          href: "/service-offerings#engage" },
+    { label: "Our Service Portfolio",          href: "/service-offerings#service-portfolio"    },
+    { label: "Proprietary AI Solutions",       href: "/service-offerings#proprietary"          },
+    { label: "Our Engagement Models",          href: "/service-offerings#engage"               },
   ],
   "/success-stories": [
     { label: "Government & Public Sector",    href: "/success-stories#government"    },
@@ -52,24 +51,22 @@ export const HERO_BADGES = [
 
 export const AI_PROMPTS = [
   {
-    id: "where-to-start",
-    label: "We don't know where to start",
-    text: "We don't know where to start with AI. What should we do first?",
+    id: "ai-strategy",
+    label: "We need an AI strategy",
+    text: "We need an AI strategy. Where should we start?",
+    engagementId: "01",
   },
   {
-    id: "pilots-not-scaled",
-    label: "Pilots that never scaled",
-    text: "We have AI pilots that never scaled. How can Algovia help?",
+    id: "stalled-pilots",
+    label: "Our pilots have stalled",
+    text: "Our AI pilots have stalled and never scaled. How can Algovia help?",
+    engagementId: "04",
   },
   {
-    id: "governance",
-    label: "AI governance",
-    text: "We need governance for AI we're already using",
-  },
-  {
-    id: "specific-service",
-    label: "Explore a specific service",
-    text: "I want to explore a specific service from Algovia's portfolio",
+    id: "governance-at-scale",
+    label: "We need to scale AI with the right governance",
+    text: "We need to scale AI with the right governance.",
+    engagementId: "06",
   },
 ] as const;
 
@@ -81,35 +78,23 @@ export const TRUST_LOGOS = [
   "Aramco",
 ] as const;
 
-// ── Value Proposition pillars (Service Offerings page) ───────────────────────
-export const VALUE_PILLARS = [
+// ── Value Proposition pillars (Company page) ─────────────────────────────────
+export const WHY_ALGOVIA = [
   {
     title: "Senior Business Transformation Expertise",
-    description:
-      "Our team has led enterprise-scale transformation programs across governments and large corporations as accountable execution owners, not just advisers. This allows us to navigate the true complexity of change and drive the targeted results that matter most to you.",
-    stat: "20+",
-    statLabel: "years of transformation leadership",
+    body: "Our team has led enterprise-scale transformation programs across governments and large corporations as accountable execution owners, not just advisers.",
   },
   {
     title: "Deep Cross-Sector Operational Understanding",
-    description:
-      "Having operated inside the functions & industry sectors we transform, we design solutions tailored to how your business actually works. No generic frameworks. Just targeted solutions that drive faster adoption and tangible business impact.",
-    stat: "9",
-    statLabel: "industry sectors served",
+    body: "Having operated inside the functions & industry sectors we transform, we design solutions tailored to how your business actually works. No generic frameworks.",
   },
   {
     title: "Proven AI Design & Execution Capability",
-    description:
-      "With 700+ cross-disciplinary AI professionals, we bring deep technical expertise that is rarely available in a single partner. Our proven track record across numerous successful AI designs and deployments gives clients confidence that has been tested & delivered at scale.",
-    stat: "700+",
-    statLabel: "cross-disciplinary professionals",
+    body: "With 700+ cross-disciplinary AI professionals, we bring deep technical expertise that is rarely available in a single partner.",
   },
   {
     title: "Digital Transformation & Change Management",
-    description:
-      "Deploying AI without managing change guarantees failure. Our proven approach embeds governance, business ownership, and process redesign into engagements, ensuring solutions are embraced and sustained to extract lasting business value.",
-    stat: "40+",
-    statLabel: "successful AI projects delivered",
+    body: "Deploying AI without managing change guarantees failure. Our proven approach embeds governance, business ownership, and process redesign into every engagement.",
   },
 ] as const;
 
@@ -117,33 +102,33 @@ export const VALUE_PILLARS = [
 export const AI_VALUE_GAP = [
   {
     id: "01",
-    title: "Ambition without Prioritization",
-    problem: "Organizations know AI matters but struggle to identify use cases that are material, feasible, and worth scaling.",
-    solution: "Algovia structures and prioritizes use-cases, tying them directly to business targets, so effort & investment goes where it counts.",
+    title: "Ambition without prioritization",
+    problem: "Use cases that are material, feasible and worth scaling are hard to pick.",
+    solution: "We prioritize use cases tied to business targets, so investment goes where it counts.",
   },
   {
     id: "02",
-    title: "Technology without Foundations",
-    problem: "Tools are deployed into environments that are not ready to support them, including fragmented data & systems operating in silos.",
-    solution: "Algovia diagnoses data & infrastructure readiness before any AI build begins, ensuring foundations are in place for a technology that performs and scales.",
+    title: "Technology without foundations",
+    problem: "Tools land on siloed data and systems that are not ready for them.",
+    solution: "We assess data and infrastructure readiness before any build begins.",
   },
   {
     id: "03",
-    title: "Pilots without Adoption",
-    problem: "AI initiatives stop at proof of concept because they are not embedded into workflows, roles, or governance.",
-    solution: "Algovia embeds change management, business ownership & process redesign into solutions to enable effective adoption supported by the right operating model.",
+    title: "Pilots without adoption",
+    problem: "AI stalls at proof of concept, never embedded in workflows or roles.",
+    solution: "We embed change management & ownership to drive adoption.",
   },
   {
     id: "04",
-    title: "Advice without Accountability",
-    problem: "Advisory consulting stops at recommendations; technology vendors stop at deployment. No one is accountable for outcomes.",
-    solution: "Algovia bridges the gap, embedding governance, risk, and controls from day one, while remaining accountable for delivery, adoption, and measurable outcomes.",
+    title: "Advice without accountability",
+    problem: "Consultants stop at advice, vendors at deployment. No one owns outcomes.",
+    solution: "We stay accountable with you for delivery, results & effective governance.",
   },
   {
     id: "05",
-    title: "Impact without Measurement",
-    problem: "Benefits are promised but rarely tracked through clear KPIs, baselines, and value realization routines.",
-    solution: "Algovia anchors engagements in client targets and KPIs to ensure that impact is realized and sustained.",
+    title: "Impact without measurement",
+    problem: "Benefits are promised but rarely tracked against KPIs.",
+    solution: "We anchor every project in KPIs, so impact is realized and sustained.",
   },
 ] as const;
 
@@ -232,9 +217,9 @@ export const INTELLIGENT_BUSINESS_SERVICES = [
   },
   {
     id: "internal-audit",
-    title: "Internal Audit & ICFR",
-    whyNow: "Board & Shareholders expect transparency that only progressive audit and ICFR solutions can deliver.",
-    delivers: ["AI-Enabled Internal Audit Services", "Digitized ICFR Services"],
+    title: "Internal Audit",
+    whyNow: "Board & Shareholders expect transparency that only progressive audit solutions can deliver.",
+    delivers: ["AI-Enabled Internal Audit Services", "Digitized Internal Audit Services"],
     impact: "Financial & process control gaps identified & mitigated in real-time, not year-end.",
   },
 ] as const;
@@ -397,14 +382,12 @@ export const CASE_STUDIES = [
 
 export const FOOTER_LINKS = {
   products: [
-    { label: "AI & Digital Solutions",          href: "/service-offerings#ai-digital"            },
-    { label: "Intelligent Business Solutions",   href: "/service-offerings#intelligent-business"  },
-    { label: "Let's Engage",                     href: "/service-offerings#engage"                },
+    { label: "Our Service Portfolio",            href: "/service-offerings#service-portfolio"     },
+    { label: "Proprietary AI Solutions",         href: "/service-offerings#proprietary"           },
+    { label: "Our Engagement Models",            href: "/service-offerings#engage"                },
   ],
   company: [
     { label: "About Us",          href: "/company#about"   },
-    { label: "Careers & Network", href: "/company#careers" },
-    { label: "Press",             href: "/company#press"   },
     { label: "Contact",           href: "/company#contact" },
   ],
   resources: [
@@ -420,17 +403,5 @@ export const FOOTER_LINKS = {
   ],
 } as const;
 
-// ── Architecture nodes (kept for ArchitectureShowcase) ───────────────────────
-export const ARCHITECTURE_NODES = [
-  { id: "user",         label: "Board / Executive",                  position: "left-top"    },
-  { id: "apps",         label: "Web / Mobile Applications",          position: "left-bottom" },
-  { id: "orchestration",label: "AI Orchestration Layer (Agents)",    position: "center", highlight: true },
-  { id: "knowledge",    label: "Knowledge Layer (RAG / Vector DB)",  position: "top"         },
-  { id: "llm",          label: "LLM Layer (OpenAI / Claude / Llama)", position: "bottom"     },
-  { id: "apis",         label: "APIs & Services",                    position: "right-top"   },
-  { id: "enterprise",   label: "Enterprise Systems (ERP, CRM, etc.)", position: "right-bottom"},
-] as const;
-
 // ── Aliases used by homepage sections that predate the category split ───────
-export const DELIVERY_PILLARS = VALUE_PILLARS;
 export const SERVICES = AI_DIGITAL_SERVICES;

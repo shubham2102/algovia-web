@@ -21,7 +21,7 @@ Founded by business transformation executives and AI builders — the four co-fo
 - Lara El Khayat, Chief Executive Officer & Co-Founder — 24 years of advisory experience across GRC and Business Transformation, former Partner at global consulting firms, worked with ADNOC, Mubadala, Majid Al Futtaim, TAQA, Saudia.
 - Carmen Hamze, Business Partner & Co-Founder — 14+ years advising public-sector and energy organizations across the GCC, former Partner at Roland Berger and Monitor Deloitte.
 
-Extended leadership includes Marek Tatara, PhD (Chief Scientific Officer / Head of AI) and Łukasz Fedorowicz (Head of AI Design), plus a Chief Technology Officer.
+Leadership also includes Krzysztof Radecki (Chief Technology Officer — data integration, agentic systems and cloud; former Director at JLL), Radosław Szmit (Chief Business Officer — AI, computer vision and IoT for manufacturing; co-founder of punctum), Marek Tatara, PhD (Chief Scientific Officer — 40+ AI projects, Assistant Professor at Gdańsk University of Technology) and Łukasz Fedorowicz (Head of AI Design — 20+ years in UX and interaction design).
 
 Algovia works with a network of 700+ cross-disciplinary professionals across Artificial Intelligence, Software Engineering, Data Analytics, Business Intelligence, and Digital and Business Transformation, spanning 9 industry sectors: Government & Public Sector, Financial Services, Energy, Technology/Media/Telecommunications, Real Estate, Healthcare, Education, Transport & Aviation, and Retail & Manufacturing.
 

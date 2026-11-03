@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUp, RefreshCw, Sparkles } from "lucide-react";
-import { AI_PROMPTS } from "@/lib/constants";
+import { AI_PROMPTS, ENGAGEMENTS } from "@/lib/constants";
 import LeadForm from "@/components/forms/LeadForm";
 import {
   getOrCreateSessionId,
@@ -37,6 +37,13 @@ function parseLine(text: string): React.ReactNode {
         const linkMatch = p.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
         if (linkMatch) {
           const [, label, href] = linkMatch;
+          if (/^https?:\/\//.test(href!)) {
+            return (
+              <a key={i} href={href} target="_blank" rel="noopener noreferrer" className="agent-md__link">
+                {label}
+              </a>
+            );
+          }
           return (
             <Link key={i} href={href!} className="agent-md__link">
               {label}
@@ -108,6 +115,17 @@ function renderMarkdown(text: string): React.ReactNode {
   return nodes;
 }
 
+type JoinState = "hidden" | "choose" | "careers" | "network" | "done";
+
+const JOIN_FIELDS = [
+  { name: "fullName", label: "Full name", type: "text", required: true },
+  { name: "email", label: "Email", type: "email", required: true },
+  { name: "expertise", label: "Area of expertise", type: "text", required: true, full: true },
+  { name: "linkedin", label: "LinkedIn profile URL", type: "text", required: false },
+  { name: "phone", label: "Phone number", type: "tel", required: false },
+  { name: "cv", label: "CV / resume", type: "file", required: false, accept: ".pdf,.doc,.docx", full: true },
+] as const;
+
 // ── Agent turn ───────────────────────────────────────────────────────────────
 function AgentTurn({
   children,
@@ -145,6 +163,7 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [followupState, setFollowupState] = useState<"hidden" | "ask" | "form" | "confirmed">("hidden");
   const [storedContact, setStoredContact] = useState<StoredContact | null>(null);
+  const [joinState, setJoinState] = useState<JoinState>("hidden");
   const convoRef                        = useRef<HTMLDivElement>(null);
   const hasMessages                     = messages.length > 0;
 
@@ -160,6 +179,21 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
       setFollowupState("confirmed");
     }
   }, []);
+
+  const startJoin = useCallback(() => {
+    onFirstMessage?.();
+    setJoinState("choose");
+  }, [onFirstMessage]);
+
+  // Deep link from other pages (e.g. Our Team → "Join the Network").
+  useEffect(() => {
+    const openFromHash = () => {
+      if (window.location.hash === "#join-network") startJoin();
+    };
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
+    return () => window.removeEventListener("hashchange", openFromHash);
+  }, [startJoin]);
 
   const handleDismissFollowup = useCallback(() => {
     setFollowupState("hidden");
@@ -195,7 +229,7 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
 
   // ── Send ───────────────────────────────────────────────────────────────────
   const sendMessage = useCallback(
-    async (text: string) => {
+    async (text: string, engagementId?: string) => {
       const trimmed = text.trim();
       if (!trimmed || loading || streaming) return;
 
@@ -214,7 +248,7 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
         const res = await fetch("/api/chat", {
           method:  "POST",
           headers: { "Content-Type": "application/json" },
-          body:    JSON.stringify({ messages: updated, conversationId, sessionId }),
+          body:    JSON.stringify({ messages: updated, conversationId, sessionId, engagementHint: engagementId }),
         });
 
         if (!res.ok || !res.body) {
@@ -268,6 +302,22 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
             return copy;
           });
         }
+
+        // Starting-point prompts always end with a link to the matching engagement model.
+        const engagement = ENGAGEMENTS.find((e) => e.id === engagementId);
+        if (engagement) {
+          setMessages((prev) => {
+            const copy = [...prev];
+            const last = copy[copy.length - 1];
+            if (last?.role === "assistant" && !last.content.includes("engagement=")) {
+              copy[copy.length - 1] = {
+                ...last,
+                content: `${last.content}\n\n**Recommended path:** [${engagement.title}](/service-offerings?engagement=${engagement.id}#engage)`,
+              };
+            }
+            return copy;
+          });
+        }
       } catch {
         setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong. Please try again." }]);
       } finally {
@@ -284,7 +334,7 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
       {/* ── Conversation area ─────────────────────────────────────────── */}
       <div className="hero-ai__convo-wrap">
         <div ref={convoRef} className="hero-ai__convo" data-lenis-prevent>
-          {hasMessages && (
+          {(hasMessages || joinState !== "hidden") && (
             <div className="hero-ai__thread">
               {messages.map((msg, i) => {
                 const isLastAssistant = msg.role === "assistant" && i === messages.length - 1;
@@ -310,6 +360,48 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
                     <span className="agent-turn__thinking-dot" />
                     <span className="agent-turn__thinking-dot" />
                     <span className="agent-turn__thinking-text">{loadingLabel}…</span>
+                  </div>
+                </AgentTurn>
+              )}
+
+              {joinState !== "hidden" && (
+                <AgentTurn dataMsg="ai">
+                  <div className="agent-md">
+                    {joinState === "choose" && (
+                      <>
+                        <p className="agent-md__p">Great — which best describes you?</p>
+                        <div className="hero-ai__join-choices">
+                          <button type="button" className="hero-ai__chip" onClick={() => setJoinState("careers")}>
+                            I&apos;d like to join the Algovia team
+                          </button>
+                          <button type="button" className="hero-ai__chip" onClick={() => setJoinState("network")}>
+                            I&apos;m an expert who wants to join the network
+                          </button>
+                        </div>
+                      </>
+                    )}
+                    {(joinState === "careers" || joinState === "network") && (
+                      <>
+                        <p className="agent-md__p">
+                          {joinState === "careers"
+                            ? "Tell us a little about you and our team will be in touch."
+                            : "Share your details and expertise — we'll reach out about select AI transformation engagements."}
+                        </p>
+                        <LeadForm
+                          key={joinState}
+                          formType={joinState}
+                          conversationId={conversationId}
+                          sessionId={sessionId}
+                          submitLabel={joinState === "careers" ? "Send my application" : "Join the network"}
+                          successMessage="✓ Thank you — we've received your details."
+                          onSuccess={() => setJoinState("done")}
+                          fields={JOIN_FIELDS}
+                        />
+                      </>
+                    )}
+                    {joinState === "done" && (
+                      <p className="agent-md__p">✓ Thank you — we&apos;ve received your details and will be in touch.</p>
+                    )}
                   </div>
                 </AgentTurn>
               )}
@@ -356,15 +448,25 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
 
       {/* ── Input area ─────────────────────────────────────────────────── */}
       <div className="hero-ai__bottom">
-        {!hasMessages && (
-          <div className="hero-ai__chips" role="list">
-            {AI_PROMPTS.map((p) => (
-              <button key={p.id} type="button" role="listitem" className="hero-ai__chip"
-                onClick={() => sendMessage(p.text)}>
-                {p.label}
-              </button>
-            ))}
-          </div>
+        {!hasMessages && joinState === "hidden" && (
+          <>
+            <div className="hero-ai__example">
+              <span className="hero-ai__example-tag">Example</span>
+              <p><strong>Q:</strong> We have AI pilots that never scaled. Where do we start?</p>
+              <p>
+                <strong>A:</strong>{" "}Pilots usually stall on adoption, not technology. We&apos;d run an AI Proof of Value &amp; Solution Build, then set up an Adoption &amp; Value Realization Office to embed it and track KPIs.
+              </p>
+            </div>
+            <p className="hero-ai__chips-label">Where are you starting from?</p>
+            <div className="hero-ai__chips" role="list">
+              {AI_PROMPTS.map((p) => (
+                <button key={p.id} type="button" role="listitem" className="hero-ai__chip"
+                  onClick={() => sendMessage(p.text, p.engagementId)}>
+                  {p.label}
+                </button>
+              ))}
+            </div>
+          </>
         )}
 
         <form
@@ -383,7 +485,7 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
           {hasMessages && (
             <button
               type="button"
-              onClick={() => { setMessages([]); setInput(""); setStreaming(false); setLoading(false); setConversationId(null); }}
+              onClick={() => { setMessages([]); setInput(""); setStreaming(false); setLoading(false); setConversationId(null); setJoinState("hidden"); }}
               className="hero-ai__reset"
               aria-label="New conversation"
               disabled={loading || streaming}
@@ -400,6 +502,23 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
             <ArrowUp className="h-4 w-4" />
           </button>
         </form>
+
+        <div className="hero-ai__interest">
+          <span>Are you interested in our services, or would you like to join our network?</span>
+          <span className="hero-ai__interest-actions">
+            <button
+              type="button"
+              className="hero-ai__interest-btn"
+              disabled={loading || streaming}
+              onClick={() => sendMessage("I'm interested in Algovia's services. What do you offer and how do we start?")}
+            >
+              Our services
+            </button>
+            <button type="button" className="hero-ai__interest-btn" onClick={startJoin}>
+              Join our network
+            </button>
+          </span>
+        </div>
 
         <p className="hero-ai__disclaimer">Algovia AI can make mistakes. Verify important details.</p>
       </div>

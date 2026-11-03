@@ -2,7 +2,7 @@
 id: engagements
 category: lead
 title: Let's Engage — the seven engagement models
-keywords: engage, engagement, workshop, sprint, roadmap, proof of value, change management, governance, adoption, value realization, schedule a meeting, pricing
+keywords: engage, engagement, workshop, sprint, roadmap, proof of value, change management, governance, adoption, value realization, request a meeting, pricing
 ---
 
 Algovia has seven signature engagement models, each scoped around a business outcome:
@@ -21,4 +21,4 @@ Algovia has seven signature engagement models, each scoped around a business out
 
 07. AI Adoption & Value Realization Office — Managed Service. AI adoption monitoring, KPI dashboards, and continuous optimization. Outcome: value that is measured, sustained, and scaled long after AI solution go-live.
 
-Every engagement starts with a conversation about the outcome the client is aiming to achieve — not a generic sales call. Visitors can schedule a meeting directly through the "Schedule a Meeting" form on the Service Offerings page, which asks for name, work email, company, job title, country/market, area of interest (the engagement model), preferred meeting format, and an optional message.
+Every engagement starts with a conversation about the outcome the client is aiming to achieve — not a generic sales call. Visitors can request a meeting directly with the "Request a Meeting" button, which opens Algovia's Calendly booking page.

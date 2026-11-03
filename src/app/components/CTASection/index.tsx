@@ -73,11 +73,13 @@ export default function CTASection({
           </button>
 
           <a
-            href="/service-offerings#schedule"
+            href={SITE.workshopUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="cta__btn-ghost"
           >
             <Calendar className="h-4 w-4" strokeWidth={2} />
-            Schedule a Meeting
+            Request a Meeting
           </a>
         </div>
       </div>

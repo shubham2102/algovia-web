@@ -11,7 +11,7 @@
   --algovia-purple: #02bb73; /* signature green — primary accent/CTA */
   --algovia-purple-light: #029961; /* muted green — eyebrow labels/secondary accent */
   --algovia-purple-dark: #019a5f;
-  --algovia-slate: #5a716f; /* muted gray-teal — body copy */
+  --algovia-slate: #475f5d; /* muted gray-teal — body copy (darkened from brand #5a716f for WCAG AA on light surfaces) */
   --algovia-white: #ffffff;
   --algovia-off-white: #ecf1f5; /* light blue-gray tint */
   --algovia-border-light: #d7e3e6;
@@ -23,6 +23,7 @@
   --algovia-yellow: var(--algovia-purple-light);
   --algovia-green: var(--algovia-purple);
   --algovia-green-light: var(--algovia-purple-light);
+  --algovia-green-ink: #017a4c; /* accessible green for small text on light surfaces (>= 4.5:1) */
   --algovia-green-muted: rgba(2, 187, 115, 0.12);
   --algovia-accent: var(--algovia-purple);
   --algovia-dark: var(--algovia-navy);
@@ -73,6 +74,19 @@
   --section-stack-gap: clamp(2.5rem, 5vw, 4rem);
   --section-header-gap: 1rem;
   --content-gap: clamp(1.25rem, 2vw, 2rem);
+}
+
+/* Keyboard navigation — a clearly visible focus ring on every interactive element */
+:where(a, button, input, select, textarea, summary, [role="tab"], [tabindex]):focus-visible {
+  outline: 3px solid var(--algovia-green-ink);
+  outline-offset: 3px;
+  border-radius: 0.375rem;
+}
+
+.band-dark :where(a, button, input, select, textarea, [role="tab"]):focus-visible,
+.site-nav :where(a, button):focus-visible,
+.hero-ai :where(a, button, input):focus-visible {
+  outline-color: #5fe3ae;
 }
 
 @theme inline {

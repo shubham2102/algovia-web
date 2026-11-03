@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
     const messages: ChatMessage[] = body.messages ?? [];
     const requestedConversationId: string | null = body.conversationId ?? null;
     const sessionId: string | null = body.sessionId ?? null;
+    const engagementHint: string | undefined = typeof body.engagementHint === "string" ? body.engagementHint : undefined;
 
     const lastUser = [...messages].reverse().find((m) => m.role === "user");
     if (!lastUser?.content?.trim()) {
@@ -65,7 +66,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const stream = await streamChatResponse(messages);
+    const stream = await streamChatResponse(messages, engagementHint);
     const persistedStream = withPersistence(stream, async (assistantText) => {
       if (!conversationId) return;
       await appendMessage(conversationId, "assistant", assistantText).catch((err) =>

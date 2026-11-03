@@ -26,21 +26,30 @@ export const FOUNDERS = [
   },
 ] as const;
 
-// ── Extended leadership team (beyond the four co-founders) ──────────────────
+// ── Leadership team (beyond the four co-founders) — photos in /public/team ─────
 export const LEADERSHIP = [
   {
     name: "Krzysztof Radecki",
     role: "Chief Technology Officer",
-    bio: "Bio not yet available.",
+    photo: "/team/krzysztof-radecki.png",
+    bio: "Krzysztof Radecki is the CTO and an expert in data integration, agentic systems, and cloud. He architects enterprise-grade agentic AI products for industries like banking and telco. A former Director at JLL.",
+  },
+  {
+    name: "Radosław Szmit",
+    role: "Chief Business Officer",
+    photo: "/team/radoslaw-szmit.png",
+    bio: "Radosław Szmit, Chief Business Officer, drives business and delivery activities in AI, computer vision, and IoT for manufacturing projects. Co-founder of punctum.",
   },
   {
     name: "Marek Tatara, PhD",
-    role: "Chief Scientific Officer / Head of AI",
-    bio: "Marek is a researcher working on machine learning, signal processing, and embedded computing since 2006. He has led over 40 successful AI projects, advised on 200+ AI implementations, and served as a Tech Lead in numerous R&D initiatives. He combines academic expertise as an Assistant Professor at Gdańsk University of Technology with extensive commercial experience in Computer Vision.",
+    role: "Chief Scientific Officer",
+    photo: "/team/marek-tatara.png",
+    bio: "Marek is a researcher working on machine learning, signal processing and embedded computing since 2006. He led over 40 successful AI projects, advised on 200+ AI implementations, and served as a Tech Lead in numerous R&D initiatives. He combines academic expertise as an Assistant Professor at Gdańsk University of Technology with extensive commercial experience in Computer Vision.",
   },
   {
     name: "Łukasz Fedorowicz",
     role: "Head of AI Design",
-    bio: "Łukasz has over 20 years of experience in Design, specializing in UX, User Research, and Interaction Design. He has conducted numerous in-depth interviews, usability audits, and design sprints, driving user-centered innovations for top-tier clients, and has mentored design teams and led cross-functional projects to enhance digital experiences across commercial, technology, education, and finance sectors.",
+    photo: "/team/lukasz-fedorowicz.png",
+    bio: "Łukasz has over 20 years of experience in Design, specializing in UX, User Research, and Interaction Design. He conducted numerous in-depth interviews (IDIs), usability audits, and design sprints, driving user-centered innovations for top-tier clients. He also mentored design teams and led cross-functional projects to enhance digital experiences. Łukasz has led design initiatives for commercial, technology, education and finance sectors, ensuring accessibility and usability are at the core of every solution.",
   },
 ] as const;

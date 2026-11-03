@@ -20,7 +20,7 @@ const variants: Record<ButtonVariant, string> = {
   secondary:
     "bg-[var(--surface-card)] text-[var(--foreground)] hover:bg-[var(--surface-hover)] border border-[var(--algovia-border-strong)]",
   ghost:
-    "bg-transparent text-[var(--algovia-green)] hover:text-[var(--algovia-green-light)] font-medium",
+    "bg-transparent text-[var(--algovia-green-ink)] hover:text-[var(--foreground)] font-medium",
   "outline-light":
     "bg-transparent text-white border border-white/30 hover:bg-white/10",
 };

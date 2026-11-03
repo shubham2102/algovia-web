@@ -3,6 +3,7 @@ import { retrieveChunks, formatRetrievedContext } from "./retrieve";
 import { retrieveChunksVector } from "./vector-retrieve";
 import { buildSystemPrompt } from "./prompts";
 import { getFallbackResponse } from "@/lib/knowledge";
+import { SITE } from "@/lib/constants";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -97,6 +98,7 @@ function anthropicStream(upstream: ReadableStream<Uint8Array>): ReadableStream<U
 
 export async function streamChatResponse(
   messages: ChatMessage[],
+  engagementHint?: string,
 ): Promise<ReadableStream<Uint8Array>> {
   const lastUser = [...messages].reverse().find((m) => m.role === "user");
   if (!lastUser) return fallbackStream("Please send a message.");
@@ -106,7 +108,7 @@ export async function streamChatResponse(
     (await retrieveChunksVector(lastUser.content)) ??
     retrieveChunks(lastUser.content, intent);
   const context = formatRetrievedContext(chunks);
-  const systemPrompt = buildSystemPrompt(context, intent);
+  const systemPrompt = buildSystemPrompt(context, intent, engagementHint);
 
   // ── Try OpenAI ──────────────────────────────────────────────────────────────
   const openaiKey = process.env.OPENAI_API_KEY;
@@ -157,15 +159,15 @@ export async function streamChatResponse(
   }
 
   // ── Fallback ────────────────────────────────────────────────────────────────
-  // Use the top retrieved chunk directly — it already contains the right knowledge.
-  // getFallbackResponse is only a last resort when the chunk list is empty.
+  // Offline answers stay short: buying-intent questions get a concise service
+  // summary + meeting link rather than the top retrieved chunk (often a long
+  // company overview). Otherwise use the top chunk, then the canned answers.
+  if (intent === "lead") {
+    return fallbackStream(
+      `Algovia helps you move AI from strategy to measurable value through **AI & Digital Solutions** (AI strategy, agentic AI, computer vision, data, software, IoT) and **Intelligent Business Solutions** (operating model, governance & risk, cost optimization, transformation).\n\n[Request a Meeting](${SITE.workshopUrl}) to scope the right engagement with our team.`,
+    );
+  }
   const topChunk = chunks[0];
-  const fallbackText = topChunk
-    ? topChunk.content
-    : getFallbackResponse(lastUser.content);
-  const suffix =
-    intent === "lead"
-      ? "\n\n**Next step:** [Schedule a Meeting](/service-offerings#schedule) with our team."
-      : "";
-  return fallbackStream(`${fallbackText}${suffix}`);
+  const fallbackText = topChunk ? topChunk.content : getFallbackResponse(lastUser.content);
+  return fallbackStream(fallbackText);
 }

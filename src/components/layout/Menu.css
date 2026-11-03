@@ -105,7 +105,7 @@
 }
 
 .site-nav.top .site-nav__link.is-active {
-  color: var(--algovia-purple);
+  color: var(--algovia-green-ink);
 }
 
 /* Links when overlay is open over light hero */

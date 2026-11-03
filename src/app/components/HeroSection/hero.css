@@ -154,13 +154,34 @@
   gap: 0.4rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--algovia-purple);
+  color: var(--algovia-green-ink);
   transition: color 0.2s ease, gap 0.2s ease;
 }
 
 .hero__cta-secondary:hover {
-  color: var(--algovia-purple-dark);
+  color: var(--foreground);
   gap: 0.55rem;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.hero__actions .hero__cta-secondary {
+  padding: 0.75rem 1.35rem;
+  border-radius: 9999px;
+  border: 1.5px solid var(--algovia-green-ink);
+  font-weight: 600;
+}
+
+.hero__actions .hero__cta-secondary:hover {
+  background: var(--algovia-green-ink);
+  color: var(--algovia-white);
+  gap: 0.4rem;
 }
 
 /* ══ AI Panel ══════════════════════════════════════════════════════════════════
@@ -503,7 +524,7 @@
 .hero-ai__chip:hover {
   border-color: rgba(2, 187, 115, 0.4);
   background: rgba(2, 187, 115, 0.05);
-  color: var(--algovia-purple);
+  color: var(--algovia-green-ink);
   transform: translateY(-1px);
 }
 
@@ -624,9 +645,8 @@
 
 .hero-ai__disclaimer {
   text-align: center;
-  font-size: 0.5625rem;
+  font-size: 0.75rem;
   color: var(--algovia-muted);
-  opacity: 0.4;
   letter-spacing: 0.01em;
 }
 
@@ -693,3 +713,41 @@
     justify-content: flex-start;
   }
 }
+
+/* ── Empty state: intro and panel stack in normal flow at every size ──────────
+   (example Q&A, starting points and the services/network row make the panel
+   tall enough that the old absolutely-centered intro would collide with it).
+   Once a conversation starts, the original absolute layout takes over. */
+.hero:not(.hero--active) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: auto;
+  min-height: 100dvh;
+  max-height: none;
+}
+
+.hero:not(.hero--active) .hero__intro {
+  position: static;
+  transform: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 640px;
+  padding: 5.5rem var(--layout-gutter) 1rem;
+}
+
+.hero:not(.hero--active) .hero__shell {
+  flex: none;
+  width: 100%;
+  height: auto;
+  padding-bottom: 1.25rem;
+}
+
+.hero:not(.hero--active) .hero-ai__bottom { gap: 0.625rem; }
+
+/* The intro leaves the flow when a conversation starts; skip the positional
+   transition so it just fades instead of sliding from its old static spot. */
+.hero--active .hero__intro { transition: opacity 0.3s ease; }

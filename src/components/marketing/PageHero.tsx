@@ -4,10 +4,11 @@ import "./marketing.css";
 interface PageHeroProps {
   eyebrow?: string;
   title: string;
-  lead: string;
+  lead?: string;
+  media?: React.ReactNode;
 }
 
-export default function PageHero({ eyebrow, title, lead }: PageHeroProps) {
+export default function PageHero({ eyebrow, title, lead, media }: PageHeroProps) {
   return (
     <section className="page-hero">
       <div className="page-hero__bg" aria-hidden />
@@ -15,7 +16,8 @@ export default function PageHero({ eyebrow, title, lead }: PageHeroProps) {
         <div className="page-hero__inner">
           {eyebrow && <p className="page-hero__eyebrow">{eyebrow}</p>}
           <h1 className="page-hero__title">{title}</h1>
-          <p className="page-hero__lead">{lead}</p>
+          {media}
+          {lead && <p className="page-hero__lead">{lead}</p>}
         </div>
       </Container>
     </section>
