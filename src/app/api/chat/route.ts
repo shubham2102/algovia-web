@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const stream = await streamChatResponse(messages, engagementHint);
+    const { stream, sources } = await streamChatResponse(messages, engagementHint);
     const persistedStream = withPersistence(stream, async (assistantText) => {
       if (!conversationId) return;
       await appendMessage(conversationId, "assistant", assistantText).catch((err) =>
@@ -87,6 +87,7 @@ export async function POST(request: NextRequest) {
       "X-Intent": intent,
     };
     if (conversationId) headers["X-Conversation-Id"] = conversationId;
+    if (sources.length > 0) headers["X-Sources"] = encodeURIComponent(JSON.stringify(sources));
 
     return new Response(persistedStream, { headers });
   } catch (error) {

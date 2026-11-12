@@ -30,15 +30,41 @@ export default function OurTeamPage() {
       <PageSection id="founders" label="Co-Founders" title="Our Founders" elevated>
         <div className="page-card-grid page-card-grid--2">
           {FOUNDERS.map((person) => (
-            <article key={person.name} className="page-card">
-              <h3 className="page-card__title">{person.name}</h3>
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--algovia-green-ink)]">{person.role}</p>
-              <p className="mt-0.5 text-xs text-[var(--algovia-muted)]">{person.subtitle}</p>
-              <p className="page-card__text mt-3">{person.bio}</p>
+            <article key={person.name} className="page-card founder-card">
+              <Image
+                src={person.photo}
+                alt={`Portrait of ${person.name}`}
+                width={240}
+                height={240}
+                className="founder-card__photo"
+              />
+              <div className="founder-card__body">
+                <h3 className="page-card__title">{person.name}</h3>
+                <p className="founder-card__role">{person.role}</p>
+                <p className="page-card__text mt-3">{person.bio}</p>
+              </div>
             </article>
           ))}
         </div>
       </PageSection>
+
+      {/* ── Strategic delivery partners ──────────────────────────────── */}
+      <section id="delivery-partners-band" className="page-section">
+        <Container>
+          <div id="delivery-partners" className="partner-block partner-block--first">
+            <DacLogo className="partner-block__logo" />
+            <div>
+              <h3 className="partner-block__title">Our Strategic Delivery Partners</h3>
+              <p className="partner-block__text">
+                At Algovia.AI, we combine our expertise in AI, technology, and business transformation with a carefully curated global network of specialist partners to deliver innovative, scalable, and impactful solutions.
+              </p>
+              <p className="partner-block__text">
+                As part of this ecosystem, our strategic partnership with DAC Digital strengthens our access to international expertise, advanced technology capabilities, and delivery capacity, enabling us to better serve clients across the Middle East, North Africa, and Australia.
+              </p>
+            </div>
+          </div>
+        </Container>
+      </section>
 
       {/* ── The People Behind Intelligent Execution ───────────────────── */}
       <section id="leadership" className="people-band">
@@ -47,13 +73,15 @@ export default function OurTeamPage() {
           <div className="people-band__grid">
             {LEADERSHIP.map((person) => (
               <article key={person.name} className="person-card">
-                <Image
-                  src={person.photo}
-                  alt={`Portrait of ${person.name}`}
-                  width={88}
-                  height={88}
-                  className="person-card__photo"
-                />
+                <span className="person-card__photo-wrap">
+                  <Image
+                    src={person.photo}
+                    alt={`Portrait of ${person.name}`}
+                    width={176}
+                    height={176}
+                    className="person-card__photo"
+                  />
+                </span>
                 <h3 className="person-card__name">{person.name}</h3>
                 <p className="person-card__role">{person.role}</p>
                 <p className="person-card__bio">{person.bio}</p>
@@ -73,19 +101,6 @@ export default function OurTeamPage() {
           <p>
             Our ecosystem also includes Subject Matter Resources that span various industries, including Government &amp; Public Sector, Financial Services, Energy, Technology, Media, Telecommunication, Real Estate, Healthcare, Education, Transport, Retail &amp; Manufacturing, and various business advisory domains.
           </p>
-        </div>
-
-        <div id="delivery-partners" className="partner-block">
-          <DacLogo className="partner-block__logo" />
-          <div>
-            <h3 className="partner-block__title">Our Strategic Delivery Partners</h3>
-            <p className="partner-block__text">
-              At Algovia.AI, we combine our expertise in AI, technology, and business transformation with a carefully curated global network of specialist partners to deliver innovative, scalable, and impactful solutions.
-            </p>
-            <p className="partner-block__text">
-              As part of this ecosystem, our strategic partnership with DAC Digital strengthens our access to international expertise, advanced technology capabilities, and delivery capacity, enabling us to better serve clients across the Middle East, North Africa, and Australia.
-            </p>
-          </div>
         </div>
 
         <div className="mt-8">

@@ -96,17 +96,32 @@ function anthropicStream(upstream: ReadableStream<Uint8Array>): ReadableStream<U
   });
 }
 
+export interface ChatStream {
+  stream: ReadableStream<Uint8Array>;
+  /** Titles of the knowledge-base entries the answer was grounded on. */
+  sources: string[];
+}
+
 export async function streamChatResponse(
   messages: ChatMessage[],
   engagementHint?: string,
-): Promise<ReadableStream<Uint8Array>> {
+): Promise<ChatStream> {
   const lastUser = [...messages].reverse().find((m) => m.role === "user");
-  if (!lastUser) return fallbackStream("Please send a message.");
+  if (!lastUser) return { stream: fallbackStream("Please send a message."), sources: [] };
 
   const intent = detectIntent(lastUser.content);
+  if (intent === "greeting") {
+    return {
+      sources: [],
+      stream: fallbackStream(
+        "Hi, I'm Algovia AI. Ask me about our products and services, our proprietary AI solutions, or our success stories — what would you like to explore?",
+      ),
+    };
+  }
   const chunks =
     (await retrieveChunksVector(lastUser.content)) ??
     retrieveChunks(lastUser.content, intent);
+  const sources = [...new Set(chunks.slice(0, 2).map((c) => c.title))];
   const context = formatRetrievedContext(chunks);
   const systemPrompt = buildSystemPrompt(context, intent, engagementHint);
 
@@ -128,7 +143,7 @@ export async function streamChatResponse(
           stream: true,
         }),
       });
-      if (res.ok && res.body) return openaiStream(res.body);
+      if (res.ok && res.body) return { stream: openaiStream(res.body), sources };
     } catch { /* fall through */ }
   }
 
@@ -154,7 +169,7 @@ export async function streamChatResponse(
           })),
         }),
       });
-      if (res.ok && res.body) return anthropicStream(res.body);
+      if (res.ok && res.body) return { stream: anthropicStream(res.body), sources };
     } catch { /* fall through */ }
   }
 
@@ -163,11 +178,14 @@ export async function streamChatResponse(
   // summary + meeting link rather than the top retrieved chunk (often a long
   // company overview). Otherwise use the top chunk, then the canned answers.
   if (intent === "lead") {
-    return fallbackStream(
+    return {
+      sources,
+      stream: fallbackStream(
       `Algovia helps you move AI from strategy to measurable value through **AI & Digital Solutions** (AI strategy, agentic AI, computer vision, data, software, IoT) and **Intelligent Business Solutions** (operating model, governance & risk, cost optimization, transformation).\n\n[Request a Meeting](${SITE.workshopUrl}) to scope the right engagement with our team.`,
-    );
+      ),
+    };
   }
   const topChunk = chunks[0];
   const fallbackText = topChunk ? topChunk.content : getFallbackResponse(lastUser.content);
-  return fallbackStream(fallbackText);
+  return { stream: fallbackStream(fallbackText), sources };
 }

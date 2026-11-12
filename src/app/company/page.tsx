@@ -8,6 +8,7 @@ import { createPageMetadata } from "@/lib/metadata";
 import { WHY_ALGOVIA, SITE } from "@/lib/constants";
 import LeadForm from "@/components/forms/LeadForm";
 import { HeroCTAPrimary } from "@/components/ui/AILink";
+import { UserRound, Globe2, Building2, Cog, Handshake } from "lucide-react";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Company",
@@ -43,40 +44,69 @@ export default function CompanyPage() {
   return (
     <>
       <PageHero
+        tone="dark"
         eyebrow="Company"
-        title="From AI Ambition to Measurable Value"
+        title={
+          <>
+            From AI Ambition to <span className="page-hero__accent">Measurable Value</span>
+          </>
+        }
         lead="Smarter Execution. Greater Impact."
       />
 
       {/* ── 1.1.1 Profile ──────────────────────────────────────────────── */}
-      <PageSection id="about" title="About Algovia AI" elevated>
-        <div className="mt-4 max-w-3xl">
-          <p className="about-lead">
-            Algovia AI is a leading AI Transformation and Execution firm that helps organizations move from strategy to execution, adoption, and measurable value. We combine senior business transformation expertise with AI build capability to deliver solutions embedded into operating models, workflows, governance, and performance management.
-          </p>
-          <blockquote className="pull-quote">
-            &ldquo;We are not a traditional consultancy. We are not a software vendor. We are the partner that connects both, and stays accountable until AI becomes business as usual.&rdquo;
-          </blockquote>
-          <p className="about-sub">
-            Algovia AI works primarily with Boards and Executive teams across governments and enterprises in the UAE, the Kingdom of Saudi Arabia, Europe, and Australia, backed by an international network of AI and industry experts, and delivered through an advisory, implementation, and value-realization engagement model.
-          </p>
-        </div>
+      <section id="about" className="who" aria-labelledby="who-title">
+        <Container>
+          <p className="who__label">Who we are</p>
+          <h2 id="who-title" className="who__title">An AI Transformation Execution Firm</h2>
 
-        <div className="fact-grid">
-          {[
-            { label: "Founded by",       value: "Business transformation executives & AI builders" },
-            { label: "Markets",          value: "UAE · KSA · Europe · Australia" },
-            { label: "Primary clients",  value: "Boards & Executives across governments and enterprises" },
-            { label: "Engagement model", value: "Advisory, implementation & value realization" },
-            { label: "Network",          value: "700+ AI & industry professionals" },
-          ].map(({ label, value }) => (
-            <div key={label} className="fact-card">
-              <p className="fact-card__label">{label}</p>
-              <p className="fact-card__value">{value}</p>
-            </div>
-          ))}
-        </div>
-      </PageSection>
+          <div className="who__grid">
+            <ol className="who__steps">
+              <li className="who__step">
+                <h3 className="who__step-label">What we do</h3>
+                <p>
+                  ALGOVIA helps organizations turn AI ambition into execution, by developing and embedding AI solutions into operating models, workflows and governance.
+                </p>
+              </li>
+              <li className="who__step">
+                <h3 className="who__step-label">Our ecosystem</h3>
+                <p>
+                  Our ecosystem of leading AI and technology partners gives us access to{" "}
+                  <strong className="who__accent">700+ AI, data and software professionals</strong>, plus{" "}
+                  <strong className="who__accent">proprietary AI solutions</strong> proven globally, so clients implement AI faster and more cost-efficiently.
+                </p>
+              </li>
+              <li className="who__step">
+                <h3 className="who__step-label">Our difference</h3>
+                <p>
+                  We are not a traditional consultancy or a technology vendor.{" "}
+                  <strong className="who__strong">
+                    We are the partner that connects both and enables you to realize tangible ROI linked to your business targets.
+                  </strong>
+                </p>
+              </li>
+            </ol>
+
+            <ul className="who__facts">
+              {[
+                { icon: <UserRound aria-hidden />, label: "Founded by", value: "Business transformation executives and AI builders" },
+                { icon: <Globe2 aria-hidden />, label: "Markets", value: "UAE · KSA · Europe · Australia" },
+                { icon: <Building2 aria-hidden />, label: "Primary clients", value: "Boards and executives across governments and enterprises" },
+                { icon: <Cog aria-hidden />, label: "Engagement model", value: "Advisory, implementation and value realization" },
+                { icon: <Handshake aria-hidden />, label: "Partnership", value: "International network of AI and industry experts" },
+              ].map(({ icon, label, value }) => (
+                <li key={label} className="who__fact">
+                  <span className="who__fact-icon">{icon}</span>
+                  <div>
+                    <p className="who__fact-label">{label}</p>
+                    <p className="who__fact-value">{value}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Container>
+      </section>
 
       {/* ── 1.1.2 Vision & Mission ─────────────────────────────────────── */}
       <section id="vision-mission" className="vm-band" aria-label="Vision and Mission">

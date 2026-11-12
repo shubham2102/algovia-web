@@ -1,45 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import PageSection from "@/components/marketing/PageSection";
-import { SECTORS, splitClientTitle, type Sector } from "@/lib/case-studies";
+import Container from "@/components/ui/Container";
+import { SECTORS } from "@/lib/case-studies";
+import CaseStudyCard from "./CaseStudyCard";
 
 const ALL = "all";
-
-function StoryCard({ id, client, challenge }: { id: string; client: string; challenge: string }) {
-  const { name, headline } = splitClientTitle(client);
-  return (
-    <article className="page-card story-card flex flex-col">
-      <h3 className="page-card__title">{name}</h3>
-      {headline && <p className="story-card__headline">{headline}</p>}
-      <p className="page-card__text story-card__excerpt flex-1">{challenge}</p>
-      <Link href={`/success-stories/${id}`} className="story-card__cta">
-        View case study
-        <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.5} />
-      </Link>
-    </article>
-  );
-}
-
-function SectorSection({ sector, elevated }: { sector: Sector; elevated: boolean }) {
-  const columns = sector.studies.length >= 6 ? "sm:grid-cols-2 lg:grid-cols-3" : "sm:grid-cols-2";
-  return (
-    <PageSection id={sector.id} title={sector.title} elevated={elevated}>
-      {sector.intro && (
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--algovia-muted)]">{sector.intro}</p>
-      )}
-      {sector.studies.length > 0 && (
-        <div className={`mt-6 grid gap-5 ${columns}`}>
-          {sector.studies.map((s) => (
-            <StoryCard key={s.id} id={s.id} client={s.client} challenge={s.challenge} />
-          ))}
-        </div>
-      )}
-    </PageSection>
-  );
-}
 
 export default function SuccessStoriesBrowser() {
   const [active, setActive] = useState<string>(ALL);
@@ -64,6 +30,13 @@ export default function SuccessStoriesBrowser() {
 
   return (
     <>
+      <section className="page-section stories-intro" aria-labelledby="stories-title">
+        <Container>
+          <h2 id="stories-title" className="stories-intro__title">AI Built for your Business</h2>
+          <p className="stories-intro__sub">See how we build what matters.</p>
+        </Container>
+      </section>
+
       <div id="stories-filter" className="stories-filter">
         <div className="stories-filter__inner" role="group" aria-label="Filter success stories by sector">
           <button type="button" className="stories-filter__chip" aria-pressed={active === ALL} onClick={() => select(ALL)}>
@@ -83,9 +56,30 @@ export default function SuccessStoriesBrowser() {
         </div>
       </div>
 
-      {visible.map((sector, i) => (
-        <SectorSection key={sector.id} sector={sector} elevated={i % 2 === 0} />
-      ))}
+      <section className="page-section stories-grid-section">
+        <Container>
+          {visible.map((sector) => (
+            <div key={sector.id} id={sector.id} className="stories-sector">
+              <h3 className="stories-sector__title">{sector.title}</h3>
+              {sector.intro && <p className="stories-sector__intro">{sector.intro}</p>}
+              {sector.studies.length > 0 && (
+                <div className="cs__grid">
+                  {sector.studies.map((s) => (
+                    <CaseStudyCard
+                      key={s.id}
+                      id={s.id}
+                      client={s.client}
+                      challenge={s.challenge}
+                      sectorId={sector.id}
+                      sectorLabel={sector.shortTitle}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </Container>
+      </section>
     </>
   );
 }

@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowUp, RefreshCw, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowUp, ArrowUpRight, Check, Copy, Plus, RefreshCw, RotateCcw, Sparkles, Square } from "lucide-react";
 import { AI_PROMPTS, ENGAGEMENTS } from "@/lib/constants";
 import LeadForm from "@/components/forms/LeadForm";
 import {
@@ -11,6 +11,8 @@ import {
   storeContact,
   isFollowupResolved,
   markFollowupResolved,
+  loadChat,
+  saveChat,
   type StoredContact,
 } from "@/lib/chatSession";
 import "./hero.css";
@@ -18,11 +20,29 @@ import "./hero.css";
 interface Message {
   role: "user" | "assistant";
   content: string;
+  /** Starting-point prompt that produced this user turn, so a retry keeps its hint. */
+  engagementId?: string;
+  /** Assistant turn that failed to load; rendered with a retry action. */
+  error?: boolean;
+  /** The visitor stopped this turn; shown as a neutral note rather than a failure. */
+  stopped?: boolean;
+  /** Knowledge-base entries the answer was grounded on (from the API's X-Sources header). */
+  sources?: string[];
 }
+
+// Follow-up questions offered under the latest answer; ones already asked are skipped.
+const FOLLOW_UPS = [
+  { label: "Show me relevant success stories", text: "Can you show me relevant success stories?" },
+  { label: "How do your engagements work?", text: "How do your engagement models work?" },
+  { label: "How do we get started?", text: "How do we get started with Algovia?" },
+  { label: "Which industries do you serve?", text: "Which industries do you serve?" },
+] as const;
 
 interface Props {
   className?: string;
   onFirstMessage?: () => void;
+  /** The thread was cleared (or the only open flow was cancelled) — return to the landing state. */
+  onReset?: () => void;
 }
 
 // ── Lightweight inline markdown renderer ────────────────────────────────────
@@ -53,6 +73,26 @@ function parseLine(text: string): React.ReactNode {
         return p;
       })}
     </>
+  );
+}
+
+function ActionLink({ kicker, label, href }: { kicker?: string; label: string; href: string }) {
+  const external = /^https?:\/\//.test(href);
+  const content = (
+    <>
+      {label}
+      {external ? <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden /> : <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden />}
+    </>
+  );
+  return (
+    <div className="agent-cta">
+      {kicker && <span className="agent-cta__kicker">{kicker}</span>}
+      {external ? (
+        <a href={href} target="_blank" rel="noopener noreferrer" className="agent-cta__btn">{content}</a>
+      ) : (
+        <Link href={href} className="agent-cta__btn">{content}</Link>
+      )}
+    </div>
   );
 }
 
@@ -108,6 +148,15 @@ function renderMarkdown(text: string): React.ReactNode {
       continue;
     }
 
+    // A line that is only a link (or "Recommended path: [link]") becomes an action button.
+    const cta = line.trim().match(/^(?:\*\*(Recommended path):\*\*\s*)?\[([^\]]+)\]\(([^)]+)\)\.?$/);
+    if (cta) {
+      const [, kicker, label, href] = cta;
+      nodes.push(<ActionLink key={i} kicker={kicker} label={label!} href={href!} />);
+      i++;
+      continue;
+    }
+
     nodes.push(<p key={i} className="agent-md__p">{parseLine(line)}</p>);
     i++;
   }
@@ -126,45 +175,141 @@ const JOIN_FIELDS = [
   { name: "cv", label: "CV / resume", type: "file", required: false, accept: ".pdf,.doc,.docx", full: true },
 ] as const;
 
+// ── Agent trace: what the assistant is doing / did ───────────────────────────
+function AgentTrace({ status, sources }: { status: "working" | "drafting" | "done"; sources?: string[] }) {
+  const [understood, setUnderstood] = useState(false);
+
+  useEffect(() => {
+    if (status !== "working") return;
+    const t = setTimeout(() => setUnderstood(true), 900);
+    return () => clearTimeout(t);
+  }, [status]);
+
+  if (status === "done") {
+    if (!sources?.length) return null;
+    return (
+      <div className="agent-trace agent-trace--done">
+        <span className="agent-trace__summary">
+          <Check className="h-3 w-3" strokeWidth={3} aria-hidden />
+          Searched Algovia&apos;s knowledge base
+        </span>
+        {sources.map((title) => (
+          <span key={title} className="agent-trace__source">{title}</span>
+        ))}
+      </div>
+    );
+  }
+
+  const steps = [
+    { label: "Understanding your question", state: status === "drafting" || understood ? "done" : "active" },
+    { label: "Searching Algovia's knowledge base", state: status === "drafting" ? "done" : understood ? "active" : "pending" },
+    { label: "Drafting a response", state: status === "drafting" ? "active" : "pending" },
+  ] as const;
+
+  return (
+    <ol className="agent-trace" aria-live="polite" aria-label="Assistant progress">
+      {steps.map((step) => (
+        <li key={step.label} className={`agent-trace__step agent-trace__step--${step.state}`}>
+          <span className="agent-trace__mark" aria-hidden>
+            {step.state === "done" && <Check className="h-3 w-3" strokeWidth={3} />}
+          </span>
+          {step.label}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 // ── Agent turn ───────────────────────────────────────────────────────────────
 function AgentTurn({
   children,
   dataMsg,
   streaming,
+  copyText,
+  error,
+  stopped,
+  onRetry,
+  onRegenerate,
+  trace,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   dataMsg?: string;
   streaming?: boolean;
+  copyText?: string;
+  error?: boolean;
+  stopped?: boolean;
+  onRetry?: () => void;
+  onRegenerate?: () => void;
+  trace?: React.ReactNode;
 }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    if (!copyText) return;
+    try {
+      await navigator.clipboard.writeText(copyText.replace(/\*\*/g, ""));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* clipboard unavailable (insecure context / denied) — nothing to do */
+    }
+  };
+
+  const showActions = Boolean(copyText) && !streaming && !error;
+
   return (
     <div
-      className={`agent-turn${streaming ? " agent-turn--streaming" : ""}`}
+      className={`agent-turn${streaming ? " agent-turn--streaming" : ""}${error ? " agent-turn--error" : ""}${stopped ? " agent-turn--stopped" : ""}`}
       {...(dataMsg ? { "data-msg": dataMsg } : {})}
     >
-      <div className="agent-turn__header">
-        <span className="agent-turn__icon">
+      <div className="agent-turn__head">
+        <span className="agent-turn__icon" aria-hidden>
           <Sparkles className="h-3 w-3" strokeWidth={2.5} />
         </span>
         <span className="agent-turn__label">Algovia AI</span>
       </div>
-      <div className="agent-turn__body">{children}</div>
+      <div className="agent-turn__main">
+        {trace}
+        {children && <div className="agent-turn__body">{children}</div>}
+        {error && onRetry && (
+          <button type="button" className="agent-turn__action agent-turn__action--retry" onClick={onRetry}>
+            <RotateCcw className="h-3.5 w-3.5" strokeWidth={2.5} />
+            Try again
+          </button>
+        )}
+        {showActions && (
+          <div className="agent-turn__actions">
+            <button type="button" className="agent-turn__action" onClick={handleCopy} aria-label={copied ? "Copied" : "Copy response"}>
+              {copied ? <Check className="h-3.5 w-3.5" strokeWidth={2.5} /> : <Copy className="h-3.5 w-3.5" />}
+              {copied ? "Copied" : "Copy"}
+            </button>
+            {onRegenerate && (
+              <button type="button" className="agent-turn__action" onClick={onRegenerate} aria-label="Regenerate response">
+                <RefreshCw className="h-3.5 w-3.5" />
+                Regenerate
+              </button>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
 // ── Component ────────────────────────────────────────────────────────────────
-export default function AIAssistantPanel({ className = "", onFirstMessage }: Props) {
+export default function AIAssistantPanel({ className = "", onFirstMessage, onReset }: Props) {
   const [messages, setMessages]         = useState<Message[]>([]);
   const [input, setInput]               = useState("");
   const [loading, setLoading]           = useState(false);
   const [streaming, setStreaming]       = useState(false);
-  const [loadingLabel, setLoadingLabel] = useState("Thinking");
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [followupState, setFollowupState] = useState<"hidden" | "ask" | "form" | "confirmed">("hidden");
   const [storedContact, setStoredContact] = useState<StoredContact | null>(null);
   const [joinState, setJoinState] = useState<JoinState>("hidden");
+  const [hydrated, setHydrated]     = useState(false);
   const convoRef                        = useRef<HTMLDivElement>(null);
+  const abortRef                        = useRef<AbortController | null>(null);
   const hasMessages                     = messages.length > 0;
 
   // Session id + any contact already shared in a previous visit persist across
@@ -178,7 +323,35 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
       setStoredContact(existing);
       setFollowupState("confirmed");
     }
+
+    // Bring back the thread if the visitor left (e.g. followed a link in an
+    // answer) and returned. A reply cut off mid-way is replaced by a retry card.
+    const saved = loadChat<Message>();
+    if (saved) {
+      const kept = saved.inFlight && saved.messages[saved.messages.length - 1]?.role === "assistant"
+        ? saved.messages.slice(0, -1)
+        : saved.messages;
+      const interrupted = saved.inFlight || kept[kept.length - 1]?.role === "user";
+      setMessages(
+        interrupted
+          ? [...kept, { role: "assistant", content: "That answer was interrupted when you left the page.", error: true }]
+          : kept,
+      );
+      setConversationId(saved.conversationId);
+      if (!existing && (saved.followupState === "ask" || saved.followupState === "form")) {
+        setFollowupState(saved.followupState);
+      }
+      onFirstMessage?.();
+    }
+    setHydrated(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount-only restore
   }, []);
+
+  // Keep the snapshot current (after the restore above, so it never overwrites it).
+  useEffect(() => {
+    if (!hydrated) return;
+    saveChat<Message>({ messages, conversationId, followupState, inFlight: loading || streaming });
+  }, [hydrated, messages, conversationId, followupState, loading, streaming]);
 
   const startJoin = useCallback(() => {
     onFirstMessage?.();
@@ -208,15 +381,6 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
     setFollowupState("confirmed");
   }, []);
 
-  // ── Cycle loading labels for agentic feel ─────────────────────────────────
-  useEffect(() => {
-    if (!loading) return;
-    const labels = ["Thinking", "Analyzing", "Researching", "Drafting response"];
-    let idx = 0;
-    const iv = setInterval(() => { idx = (idx + 1) % labels.length; setLoadingLabel(labels[idx]!); }, 1800);
-    return () => clearInterval(iv);
-  }, [loading]);
-
   // ── Auto-scroll to latest message ─────────────────────────────────────────
   useEffect(() => {
     const convo = convoRef.current;
@@ -225,34 +389,40 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
       convo.scrollTo({ top: convo.scrollHeight, behavior: "smooth" });
     });
     return () => cancelAnimationFrame(raf);
-  }, [messages, loading]);
+  }, [messages, loading, joinState, followupState]);
 
   // ── Send ───────────────────────────────────────────────────────────────────
   const sendMessage = useCallback(
-    async (text: string, engagementId?: string) => {
+    async (text: string, engagementId?: string, base: Message[] = messages) => {
       const trimmed = text.trim();
       if (!trimmed || loading || streaming) return;
 
-      const isFirst = messages.length === 0;
+      const isFirst = base.length === 0;
       setInput("");
+      // Asking something new means moving on from any open form.
+      setJoinState("hidden");
+      setFollowupState((prev) => (prev === "ask" || prev === "form" ? "hidden" : prev));
 
       // Build the updated message list synchronously so we can pass it to the API
-      const updated: Message[] = [...messages, { role: "user", content: trimmed }];
+      const updated: Message[] = [...base, { role: "user", content: trimmed, engagementId }];
       setMessages(updated);
       if (isFirst) onFirstMessage?.();
 
       setLoading(true);
-      setLoadingLabel("Thinking");
+
+      const controller = new AbortController();
+      abortRef.current = controller;
 
       try {
         const res = await fetch("/api/chat", {
           method:  "POST",
+          signal:  controller.signal,
           headers: { "Content-Type": "application/json" },
-          body:    JSON.stringify({ messages: updated, conversationId, sessionId, engagementHint: engagementId }),
+          body:    JSON.stringify({ messages: updated.map(({ role, content }) => ({ role, content })), conversationId, sessionId, engagementHint: engagementId }),
         });
 
         if (!res.ok || !res.body) {
-          setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong. Please try again." }]);
+          setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong while generating that answer.", error: true }]);
           return;
         }
 
@@ -281,10 +451,16 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
           }
         }
 
+        let sources: string[] | undefined;
+        try {
+          const raw = res.headers.get("X-Sources");
+          if (raw) sources = JSON.parse(decodeURIComponent(raw)) as string[];
+        } catch { /* malformed header — just skip the sources */ }
+
         // Thinking phase ends → streaming phase begins
         setLoading(false);
         setStreaming(true);
-        setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
+        setMessages((prev) => [...prev, { role: "assistant", content: "", sources }]);
 
         const reader  = res.body.getReader();
         const decoder = new TextDecoder();
@@ -319,8 +495,19 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
           });
         }
       } catch {
-        setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong. Please try again." }]);
+        if (controller.signal.aborted) {
+          // Stopped by the visitor: keep whatever streamed so far. If nothing
+          // had arrived yet, leave a retryable note instead of a dangling question.
+          setMessages((prev) =>
+            prev[prev.length - 1]?.role === "user"
+              ? [...prev, { role: "assistant", content: "You stopped this response.", error: true, stopped: true }]
+              : prev,
+          );
+        } else {
+          setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong while generating that answer.", error: true }]);
+        }
       } finally {
+        if (abortRef.current === controller) abortRef.current = null;
         setLoading(false);
         setStreaming(false);
       }
@@ -328,11 +515,62 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
     [loading, streaming, messages, onFirstMessage, conversationId, sessionId, storedContact],
   );
 
+  const stopGenerating = useCallback(() => abortRef.current?.abort(), []);
+
+  const resetChat = useCallback(() => {
+    abortRef.current?.abort();
+    setMessages([]);
+    setInput("");
+    setStreaming(false);
+    setLoading(false);
+    setConversationId(null);
+    setJoinState("hidden");
+    setFollowupState((prev) => (prev === "ask" || prev === "form" ? "hidden" : prev));
+    onReset?.();
+  }, [onReset]);
+
+  // Close the join flow and carry on chatting (or go back to the landing view if nothing was said yet).
+  const closeJoin = useCallback(() => {
+    setJoinState("hidden");
+    if (messages.length === 0) onReset?.();
+  }, [messages.length, onReset]);
+
+  useEffect(() => {
+    if (joinState === "hidden" && followupState !== "form") return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      if (joinState !== "hidden") closeJoin();
+      else setFollowupState("hidden");
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [joinState, followupState, closeJoin]);
+
+  // Offer a few follow-ups once the latest answer is complete.
+  const lastMessage = messages[messages.length - 1];
+  const asked = new Set(messages.filter((m) => m.role === "user").map((m) => m.content));
+  const suggestions = FOLLOW_UPS.filter((q) => !asked.has(q.text)).slice(0, 3);
+  const showSuggestions =
+    lastMessage?.role === "assistant" && !lastMessage.error && !loading && !streaming && joinState === "hidden" && suggestions.length > 0;
+
+  // Drop the last answer (failed, stopped or unsatisfying) and its question, then ask again.
+  const retryLast = useCallback(() => {
+    const lastUser = [...messages].reverse().find((m) => m.role === "user");
+    if (!lastUser) return;
+    sendMessage(lastUser.content, lastUser.engagementId, messages.slice(0, -2));
+  }, [messages, sendMessage]);
+
   return (
     <div id="ai-panel" className={`hero-ai ${className}`.trim()} role="region" aria-label="Algovia AI assistant">
 
       {/* ── Conversation area ─────────────────────────────────────────── */}
       <div className="hero-ai__convo-wrap">
+        <div className="hero-ai__chat-head">
+          <button type="button" className="hero-ai__newchat" onClick={resetChat}>
+            <Plus className="h-3.5 w-3.5" strokeWidth={2.5} />
+            New chat
+          </button>
+        </div>
         <div ref={convoRef} className="hero-ai__convo" data-lenis-prevent>
           {(hasMessages || joinState !== "hidden") && (
             <div className="hero-ai__thread">
@@ -340,29 +578,30 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
                 const isLastAssistant = msg.role === "assistant" && i === messages.length - 1;
                 return msg.role === "user" ? (
                   <div key={i} data-msg="user" className="user-turn">
-                    <div className="user-turn__header">
-                      <span className="user-turn__avatar">YOU</span>
-                      <span className="user-turn__name">You</span>
-                    </div>
                     <p className="user-turn__text">{msg.content}</p>
                   </div>
                 ) : (
-                  <AgentTurn key={i} dataMsg="ai" streaming={isLastAssistant && streaming}>
+                  <AgentTurn
+                    key={i}
+                    dataMsg="ai"
+                    streaming={isLastAssistant && streaming}
+                    copyText={msg.content}
+                    error={msg.error}
+                    stopped={msg.stopped}
+                    onRetry={isLastAssistant ? retryLast : undefined}
+                    onRegenerate={isLastAssistant ? retryLast : undefined}
+                    trace={
+                      msg.error ? undefined : (
+                        <AgentTrace status={isLastAssistant && streaming ? "drafting" : "done"} sources={msg.sources} />
+                      )
+                    }
+                  >
                     <div className="agent-md">{renderMarkdown(msg.content)}</div>
                   </AgentTurn>
                 );
               })}
 
-              {loading && (
-                <AgentTurn dataMsg="ai">
-                  <div className="agent-turn__thinking">
-                    <span className="agent-turn__thinking-dot" />
-                    <span className="agent-turn__thinking-dot" />
-                    <span className="agent-turn__thinking-dot" />
-                    <span className="agent-turn__thinking-text">{loadingLabel}…</span>
-                  </div>
-                </AgentTurn>
-              )}
+              {loading && <AgentTurn dataMsg="ai" trace={<AgentTrace status="working" />} />}
 
               {joinState !== "hidden" && (
                 <AgentTurn dataMsg="ai">
@@ -376,6 +615,11 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
                           </button>
                           <button type="button" className="hero-ai__chip" onClick={() => setJoinState("network")}>
                             I&apos;m an expert who wants to join the network
+                          </button>
+                        </div>
+                        <div className="hero-ai__form-actions">
+                          <button type="button" className="hero-ai__form-link" onClick={closeJoin}>
+                            Cancel
                           </button>
                         </div>
                       </>
@@ -397,13 +641,40 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
                           onSuccess={() => setJoinState("done")}
                           fields={JOIN_FIELDS}
                         />
+                        <div className="hero-ai__form-actions">
+                          <button type="button" className="hero-ai__form-link" onClick={() => setJoinState("choose")}>
+                            ← Back
+                          </button>
+                          <span className="hero-ai__followup-sep">·</span>
+                          <button type="button" className="hero-ai__form-link" onClick={closeJoin}>
+                            Cancel and continue chatting
+                          </button>
+                        </div>
                       </>
                     )}
                     {joinState === "done" && (
-                      <p className="agent-md__p">✓ Thank you — we&apos;ve received your details and will be in touch.</p>
+                      <>
+                        <p className="agent-md__p">✓ Thank you — we&apos;ve received your details and will be in touch.</p>
+                        <div className="hero-ai__form-actions">
+                          <button type="button" className="hero-ai__form-link" onClick={closeJoin}>
+                            Continue chatting
+                          </button>
+                        </div>
+                      </>
                     )}
                   </div>
                 </AgentTurn>
+              )}
+
+              {showSuggestions && (
+                <div className="hero-ai__suggestions" role="list" aria-label="Suggested follow-up questions">
+                  {suggestions.map((q) => (
+                    <button key={q.label} type="button" role="listitem" className="hero-ai__suggestion" onClick={() => sendMessage(q.text)}>
+                      {q.label}
+                      <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden />
+                    </button>
+                  ))}
+                </div>
               )}
 
               {followupState === "ask" && (
@@ -420,6 +691,7 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
               )}
 
               {followupState === "form" && (
+                <div className="hero-ai__followup-form">
                 <LeadForm
                   formType="chat"
                   conversationId={conversationId}
@@ -434,6 +706,12 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
                     { name: "phone", label: "Phone number", type: "tel", required: false },
                   ]}
                 />
+                <div className="hero-ai__form-actions">
+                  <button type="button" className="hero-ai__form-link" onClick={() => setFollowupState("hidden")}>
+                    Not now — continue chatting
+                  </button>
+                </div>
+                </div>
               )}
 
               {followupState === "confirmed" && (
@@ -450,13 +728,6 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
       <div className="hero-ai__bottom">
         {!hasMessages && joinState === "hidden" && (
           <>
-            <div className="hero-ai__example">
-              <span className="hero-ai__example-tag">Example</span>
-              <p><strong>Q:</strong> We have AI pilots that never scaled. Where do we start?</p>
-              <p>
-                <strong>A:</strong>{" "}Pilots usually stall on adoption, not technology. We&apos;d run an AI Proof of Value &amp; Solution Build, then set up an Adoption &amp; Value Realization Office to embed it and track KPIs.
-              </p>
-            </div>
             <p className="hero-ai__chips-label">Where are you starting from?</p>
             <div className="hero-ai__chips" role="list">
               {AI_PROMPTS.map((p) => (
@@ -477,48 +748,21 @@ export default function AIAssistantPanel({ className = "", onFirstMessage }: Pro
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask Algovia AI anything about your project…"
+            placeholder={hasMessages ? "Ask a follow-up…" : "Ask Algovia AI anything about your project…"}
             className="hero-ai__input"
-            disabled={loading || streaming}
+            readOnly={loading || streaming}
             autoComplete="off"
           />
-          {hasMessages && (
-            <button
-              type="button"
-              onClick={() => { setMessages([]); setInput(""); setStreaming(false); setLoading(false); setConversationId(null); setJoinState("hidden"); }}
-              className="hero-ai__reset"
-              aria-label="New conversation"
-              disabled={loading || streaming}
-            >
-              <RefreshCw className="h-3.5 w-3.5" />
+          {loading || streaming ? (
+            <button type="button" className="hero-ai__send hero-ai__send--stop" aria-label="Stop generating" onClick={stopGenerating}>
+              <Square className="h-3.5 w-3.5" fill="currentColor" />
+            </button>
+          ) : (
+            <button type="submit" disabled={!input.trim()} className="hero-ai__send" aria-label="Send">
+              <ArrowUp className="h-4 w-4" />
             </button>
           )}
-          <button
-            type="submit"
-            disabled={loading || streaming || !input.trim()}
-            className="hero-ai__send"
-            aria-label="Send"
-          >
-            <ArrowUp className="h-4 w-4" />
-          </button>
         </form>
-
-        <div className="hero-ai__interest">
-          <span>Are you interested in our services, or would you like to join our network?</span>
-          <span className="hero-ai__interest-actions">
-            <button
-              type="button"
-              className="hero-ai__interest-btn"
-              disabled={loading || streaming}
-              onClick={() => sendMessage("I'm interested in Algovia's services. What do you offer and how do we start?")}
-            >
-              Our services
-            </button>
-            <button type="button" className="hero-ai__interest-btn" onClick={startJoin}>
-              Join our network
-            </button>
-          </span>
-        </div>
 
         <p className="hero-ai__disclaimer">Algovia AI can make mistakes. Verify important details.</p>
       </div>

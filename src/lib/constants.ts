@@ -6,7 +6,7 @@ export const SITE = {
 
 export const NAV_ITEMS = [
   { label: "Company",           href: "/company",           hasDropdown: true  },
-  { label: "Service Offerings", href: "/service-offerings", hasDropdown: true  },
+  { label: "Products & Services", href: "/service-offerings", hasDropdown: true  },
   { label: "Success Stories",   href: "/success-stories",   hasDropdown: true  },
   { label: "Research & Learn",  href: "/research",          hasDropdown: true  },
   { label: "Our Team",          href: "/our-team",          hasDropdown: false },
@@ -21,8 +21,8 @@ export const NAV_DROPDOWNS: Record<string, readonly { label: string; href: strin
     { label: "Contact",               href: "/company#contact"            },
   ],
   "/service-offerings": [
-    { label: "Our Service Portfolio",          href: "/service-offerings#service-portfolio"    },
     { label: "Proprietary AI Solutions",       href: "/service-offerings#proprietary"          },
+    { label: "Our Service Portfolio",          href: "/service-offerings#service-portfolio"    },
     { label: "Our Engagement Models",          href: "/service-offerings#engage"               },
   ],
   "/success-stories": [
@@ -85,8 +85,8 @@ export const WHY_ALGOVIA = [
     body: "Our team has led enterprise-scale transformation programs across governments and large corporations as accountable execution owners, not just advisers.",
   },
   {
-    title: "Deep Cross-Sector Operational Understanding",
-    body: "Having operated inside the functions & industry sectors we transform, we design solutions tailored to how your business actually works. No generic frameworks.",
+    title: "End-to-End AI Transformation Partner",
+    body: "As your single partner across the AI journey, we prioritize the right use cases, build tailored AI solutions and optimize adoption and ROI.",
   },
   {
     title: "Proven AI Design & Execution Capability",
@@ -382,8 +382,8 @@ export const CASE_STUDIES = [
 
 export const FOOTER_LINKS = {
   products: [
-    { label: "Our Service Portfolio",            href: "/service-offerings#service-portfolio"     },
     { label: "Proprietary AI Solutions",         href: "/service-offerings#proprietary"           },
+    { label: "Our Service Portfolio",            href: "/service-offerings#service-portfolio"     },
     { label: "Our Engagement Models",            href: "/service-offerings#engage"                },
   ],
   company: [

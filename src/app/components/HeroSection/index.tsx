@@ -1,10 +1,9 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap, registerGsapPlugins } from "@/lib/gsap";
-import { SITE } from "@/lib/constants";
+import HeroBeams from "@/components/ui/HeroBeams";
 import AIAssistantPanel from "./AIAssistantPanel";
 import "./hero.css";
 
@@ -36,32 +35,22 @@ export default function HeroSection() {
       aria-label="Algovia AI engineering partner"
     >
       <div className="hero__bg" aria-hidden />
-      <div className="hero__grid" aria-hidden />
+      <HeroBeams />
 
       {/* Intro — absolutely positioned in upper-center, fades when active */}
       <div className="hero__intro">
-        <p className="hero__eyebrow" data-hero-item>
-          AI Transformation &amp; Execution
-        </p>
         <h1 className="hero__headline" data-hero-item>
-          From strategy to <span className="hero__headline-accent">execution that sticks.</span>
+          <span className="hero__headline-accent">AI Transformation.</span>
+          <span className="hero__headline-line">Executed, Adopted, Measured.</span>
         </h1>
         <p className="hero__lead" data-hero-item>
-          Ask Algovia AI anything about your AI transformation — service offerings, engagement models, or success stories.
+          Exploring AI for your business? <strong>Ask ALGOVIA AI</strong>
         </p>
-        <div className="hero__actions" data-hero-item>
-          <Link href="/service-offerings" className="hero__cta-primary">
-            Explore our services
-          </Link>
-          <a href={SITE.workshopUrl} target="_blank" rel="noopener noreferrer" className="hero__cta-secondary">
-            Speak to our team
-          </a>
-        </div>
       </div>
 
       {/* Shell — flex-end anchors the panel to the bottom */}
       <div className="hero__shell">
-        <AIAssistantPanel onFirstMessage={() => setConversationActive(true)} />
+        <AIAssistantPanel onFirstMessage={() => setConversationActive(true)} onReset={() => setConversationActive(false)} />
       </div>
     </section>
   );

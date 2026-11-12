@@ -6,6 +6,7 @@ import { ReactLenis, useLenis } from "lenis/react";
 import Menu from "@/components/layout/Menu";
 import Footer from "@/components/layout/Footer";
 import TransitionProvider from "@/providers/TransitionProvider";
+import ScrollReveal from "@/components/animations/ScrollReveal";
 import { gsap, ScrollTrigger, registerGsapPlugins } from "@/lib/gsap";
 
 const MOBILE_BREAKPOINT = 1000;
@@ -78,6 +79,7 @@ function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="page">
       <LenisScrollSync />
+      <ScrollReveal />
       <Menu />
       {/* <TransitionProvider> */}
         <div className="page-wrapper">

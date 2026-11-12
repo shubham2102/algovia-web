@@ -30,7 +30,7 @@ export default function ResearchPage() {
         elevated
       >
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--algovia-muted)]">
-          This section is a content hub for articles, points of view, and short-form insights on AI transformation, governance, and execution. Content is published as Algovia delivers and learns — more to come.
+          This section is a content hub for articles, points of view, and short-form insights on AI transformation, governance, and execution.
         </p>
         <p className="mt-4 text-sm italic text-[var(--algovia-muted)]">More to come.</p>
       </PageSection>

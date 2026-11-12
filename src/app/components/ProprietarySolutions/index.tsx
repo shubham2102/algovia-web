@@ -1,7 +1,32 @@
 "use client";
 
-import { useState } from "react";
-import { BarChart3, Factory, Layers, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  BarChart3,
+  Factory,
+  HeartPulse,
+  Layers,
+  ChevronRight,
+  ReceiptText,
+  Gauge,
+  MessagesSquare,
+  Cog,
+  Coins,
+  DraftingCompass,
+  FilePenLine,
+  Boxes,
+  Cpu,
+  Dna,
+  ClipboardPlus,
+  ScanLine,
+  Stethoscope,
+  Users,
+  UsersRound,
+  Route,
+  HardHat,
+  TrafficCone,
+  Bus,
+} from "lucide-react";
 import Container from "@/components/ui/Container";
 import DacLogo from "@/components/ui/DacLogo";
 
@@ -10,13 +35,14 @@ interface Solution {
   title: string;
   tagline: string;
   description: string;
-  impact: string;
-  impactNote?: string;
+  icon: React.ReactNode;
 }
 
 interface Suite {
   id: string;
   label: string;
+  /** Shown with an asterisk — solutions apply across industry sectors. */
+  crossSector?: boolean;
   heading: string;
   icon: React.ReactNode;
   solutions: Solution[];
@@ -26,14 +52,50 @@ const SUITES: Suite[] = [
   {
     id: "enterprises",
     label: "AI for Enterprises",
+    crossSector: true,
     heading: "Data That Answers, Checks and Acts",
     icon: <BarChart3 aria-hidden />,
     solutions: [
-      { id: "invoice", title: "Invoice Verification & Fraud Detection", tagline: "Every invoice checked before the money leaves", description: "Every line matched to PO, contract and supplier data. Duplicates and changed bank details stopped before payment.", impact: "Stop leakage before payment" },
-      { id: "cfo", title: "CFO Cockpit", tagline: "Finance questions answered in seconds", description: "Ask finance questions in plain language; get the number, its source and the drill-down, live.", impact: "Faster, trusted finance decisions" },
-      { id: "agent", title: "AI Agent: Talk to Your Data", tagline: "Ask your business anything, live", description: "One agent across all your systems: live performance summaries and answers as charts, docs or slides.", impact: "Real-time insight, no report backlog" },
-      { id: "process", title: "AI Process Automation", tagline: "Agents that do the work, not just suggest it", description: "Agents read, decide and update your systems on high-volume tasks, logging every step.", impact: "Scale your business efficiently" },
-      { id: "llm-cost", title: "LLM Cost Control", tagline: "Same AI quality, a fraction of the bill", description: "Every AI call measured and routed to the right model, with quality proven before any change.", impact: "Lower AI spend, proven quality" },
+      {
+        id: "invoice",
+        icon: <ReceiptText aria-hidden />,
+        title: "Invoice Verification & Fraud Detection",
+        tagline: "Every invoice checked before payment",
+        description:
+          "Every invoice is matched to PO, contract & payment history before payment. Duplicates, prices and bank-detail changes are held for review, with the reason.",
+      },
+      {
+        id: "cfo",
+        icon: <Gauge aria-hidden />,
+        title: "CFO Cockpit",
+        tagline: "Trusted finance answers in seconds",
+        description:
+          "Ask finance questions in plain language. AI queries your ERP and data warehouse through one governed data model, and returns the figure, its source and the drill-down.",
+      },
+      {
+        id: "agent",
+        icon: <MessagesSquare aria-hidden />,
+        title: "AI Agent: Talk to Your Data",
+        tagline: "Ask your business anything, live",
+        description:
+          "One AI agent on top of your existing data. Ask in plain language and get live answers, summaries, charts or ready-made slides.",
+      },
+      {
+        id: "process",
+        icon: <Cog aria-hidden />,
+        title: "AI Process Automation",
+        tagline: "Agents that do the work, so you scale efficiently",
+        description:
+          "AI agents read documents, apply your rules and update systems for high-volume transactions. Your people handle only exceptions, and every action is traceable.",
+      },
+      {
+        id: "llm-cost",
+        icon: <Coins aria-hidden />,
+        title: "LLM Cost Control",
+        tagline: "Same AI quality, at lower AI spend",
+        description:
+          "Every AI task is tracked for cost and routed to the most cost-effective model that can do the job. Quality is tested first, so your AI bill drops while results stay the same.",
+      },
     ],
   },
   {
@@ -42,24 +104,143 @@ const SUITES: Suite[] = [
     heading: "AI Across Your Manufacturing Value Chain",
     icon: <Factory aria-hidden />,
     solutions: [
-      { id: "ai4cad", title: "AI4CAD: CAD Drawing Analysis", tagline: "No one retypes a parts list again", description: "Any CAD file, PDF or scan turned into structured parts, dimensions and notes, each traced to the sheet.", impact: "Engineering hours cut to minutes" },
-      { id: "ai4quotation", title: "AI4Quotation: Tender Automation", tagline: "Respond to tenders faster, buy smarter", description: "RFQs costed straight from drawings; supplier quotes in any format compared on true landed cost.", impact: "Win more bids, cut procurement cost" },
-      { id: "okkast", title: "OkKast: Precast Quality Inspection", tagline: "Every element checked before it ships", description: "Ceiling cameras check every precast element against its BIM model: dimensions, openings, anchors, cracks.", impact: "Less rework, millimetre-level checks" },
-      { id: "ai4machines", title: "AI4Machines & AI4Optimization", tagline: "All your machines in one intelligent model", description: "All machine data in one model, powering OEE, predictive maintenance and quality analytics.", impact: "Higher uptime, fewer defects" },
-      { id: "company-dna", title: "Company DNA: Knowledge Base", tagline: "Your know-how, instantly searchable", description: "Documents, drawings, quotes and machine data in one secure, searchable knowledge base.", impact: "Know-how retained and reused" },
+      {
+        id: "ai4cad",
+        icon: <DraftingCompass aria-hidden />,
+        title: "AI4CAD: CAD Drawing Analysis",
+        tagline: "Engineering hours cut to minutes",
+        description:
+          "AI reads technical drawings (CAD files, PDFs or scans) and extracts parts lists, dimensions and notes, each linked back to the drawing for one-click checks.",
+      },
+      {
+        id: "ai4quotation",
+        icon: <FilePenLine aria-hidden />,
+        title: "AI4Quotation: Tender Automation",
+        tagline: "Win more bids, cut procurement cost",
+        description:
+          "AI prices tenders directly from drawings and compares supplier quotes in any format on true total cost, so your team responds faster and negotiates better.",
+      },
+      {
+        id: "okkast",
+        icon: <Boxes aria-hidden />,
+        title: "OkKast: Precast Quality Inspection",
+        tagline: "Every element checked before it ships",
+        description:
+          "Overhead cameras check every precast element against its design model, measuring dimensions, openings, anchors and cracks, so defects are caught before delivery.",
+      },
+      {
+        id: "ai4machines",
+        icon: <Cpu aria-hidden />,
+        title: "AI4Machines & AI4Optimization",
+        tagline: "Higher uptime, fewer defects",
+        description:
+          "AI brings all machine and production data into one view, tracking performance, predicting maintenance and flagging quality issues before they cause downtime.",
+      },
+      {
+        id: "company-dna",
+        icon: <Dna aria-hidden />,
+        title: "Company DNA: Knowledge Base",
+        tagline: "Your know-how, instantly searchable",
+        description:
+          "AI connects your documents, drawings, quotes and machine data in one secure, searchable knowledge base, so expertise stays with the company.",
+      },
+    ],
+  },
+  {
+    id: "healthcare",
+    label: "AI for Healthcare",
+    heading: "Smarter Care, Better Outcomes for Patients",
+    icon: <HeartPulse aria-hidden />,
+    solutions: [
+      {
+        id: "clinical-docs",
+        icon: <ClipboardPlus aria-hidden />,
+        title: "Clinical Documentation AI",
+        tagline: "More time with patients, less admin",
+        description:
+          "Notes, referral letters and discharge summaries drafted by AI from the consultation, then reviewed and signed by the clinician.",
+      },
+      {
+        id: "imaging",
+        icon: <ScanLine aria-hidden />,
+        title: "Imaging & Pathology AI",
+        tagline: "Urgent scans first, fewer missed findings",
+        description:
+          "AI flags urgent findings in radiology and digital pathology and prioritizes critical patients up the worklist.",
+      },
+      {
+        id: "decision-support",
+        icon: <Stethoscope aria-hidden />,
+        title: "Clinical Decision Support",
+        tagline: "The right guideline at the point of care",
+        description:
+          "Protocols, prescriptions and patient history surfaced in the clinician’s workflow, giving a clear, comprehensive view of each patient for evidence-based decisions.",
+      },
+      {
+        id: "population-health",
+        icon: <Users aria-hidden />,
+        title: "Population Health & Risk Stratification",
+        tagline: "Reach high-risk patients earlier",
+        description:
+          "Electronic Health Record, lab and claims data used to identify patients at risk of complications, admission or readmission.",
+      },
+      {
+        id: "remote-monitoring",
+        icon: <HeartPulse aria-hidden />,
+        title: "Remote Patient Monitoring",
+        tagline: "Care that continues at home",
+        description:
+          "Device and app readings monitored continuously, with alerts routed to care teams when readings fall outside safe ranges.",
+      },
     ],
   },
   {
     id: "specialized",
     label: "Specialized AI Solutions",
+    crossSector: true,
     heading: "Proven AI for Smarter Infrastructure, Logistics & Talent",
     icon: <Layers aria-hidden />,
     solutions: [
-      { id: "bot", title: "Build, Operate & Transfer AI Teams", tagline: "Your own AI team, built and handed over", description: "Vetted AI engineers selected with you, run through a 6-month trial, then transferred to you with full training.", impact: "1,100+", impactNote: "tech jobs built; under 4% turnover" },
-      { id: "routes", title: "Delivery Route Optimization", tagline: "Fewer kilometres, full control of every pickup", description: "Optimized pick-up and delivery routes with live tracking, quantity reconciliation and temperature checks.", impact: "Up to 26%", impactNote: "fewer km in live delivery networks" },
-      { id: "oculo", title: "Oculo: 360° Site Monitoring", tagline: "Your whole site, captured and assessed", description: "Helmet-mounted 360° cameras track progress against plan and pin every defect to the floor plan.", impact: "360°", impactNote: "site record on every walk" },
-      { id: "assets", title: "Smart Asset Monitoring", tagline: "Thousands of field assets, one live view", description: "Live monitoring, alerts and auto-routed service tickets for critical field assets, on one map.", impact: "20,000+", impactNote: "devices monitored in real time" },
-      { id: "transport", title: "Smart Transport Data Management", tagline: "Live data on every user's phone", description: "Timetables, live locations and routes unified and published to Google Maps and journey apps.", impact: "3.8M+", impactNote: "live-data requests in a single day" },
+      {
+        id: "bot",
+        icon: <UsersRound aria-hidden />,
+        title: "Build, Operate & Transfer AI Teams",
+        tagline: "Your own AI team: 1,100+ tech jobs built",
+        description:
+          "Together we select vetted AI engineers who work alongside your business through a 6-month trial. The team then transfers to your organization fully trained.",
+      },
+      {
+        id: "routes",
+        icon: <Route aria-hidden />,
+        title: "Delivery Route Optimization",
+        tagline: "Up to 26% fewer km in live networks",
+        description:
+          "AI plans optimized routes and tracks every vehicle live, matching expected pickup quantities with what is loaded and checking the temperature of goods in transit.",
+      },
+      {
+        id: "oculo",
+        icon: <HardHat aria-hidden />,
+        title: "Oculo: 360° Site Monitoring",
+        tagline: "Your whole site, analyzed in real time",
+        description:
+          "Helmet-mounted 360° cameras capture every site walk, and AI compares progress against the plan, flagging delays and defects on the floor plan.",
+      },
+      {
+        id: "assets",
+        icon: <TrafficCone aria-hidden />,
+        title: "Smart Asset Monitoring",
+        tagline: "20,000+ devices, one live view",
+        description:
+          "Critical field assets are monitored live on one map, and AI flags faults instantly, routing service tickets to the right team for faster fixes.",
+      },
+      {
+        id: "transport",
+        icon: <Bus aria-hidden />,
+        title: "Smart Transport Data Management",
+        tagline: "3.8M+ live-data requests in a day",
+        description:
+          "Timetables, live vehicle locations and routes are unified in one platform and published to Google Maps and journey apps, giving users real-time information.",
+      },
     ],
   },
 ];
@@ -70,12 +251,18 @@ export default function ProprietarySolutions() {
   const [selected, setSelected] = useState<{ suiteId: string; solutionId: string } | null>(null);
 
   const suite = selected ? SUITES.find((s) => s.id === selected.suiteId) : null;
-  const solution = suite?.solutions.find((s) => s.id === selected?.solutionId);
+
+  // The detail panel opens below the suite cards, often off-screen: bring it into view.
+  useEffect(() => {
+    if (!selected) return;
+    document.getElementById("proprietary-detail")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [selected]);
 
   return (
     <section id="proprietary" className="proprietary">
       <Container>
-        <h2 className="proprietary__title">Our Proprietary AI Solutions Powered by DAC Digital</h2>
+        <p className="proprietary__eyebrow">Powered by DAC Digital</p>
+        <h2 className="proprietary__title">Our Proprietary AI Solutions</h2>
         <div className="proprietary__intro">
           <DacLogo className="proprietary__logo" />
           <p>
@@ -88,7 +275,10 @@ export default function ProprietarySolutions() {
             <div key={s.id} className="suite-card">
               <div className="suite-card__head">
                 <span className="suite-card__icon">{s.icon}</span>
-                <h3 className="suite-card__title">{s.label}</h3>
+                <h3 className="suite-card__title">
+                  {s.label}
+                  {s.crossSector ? "*" : ""}
+                </h3>
               </div>
               <ul className="suite-card__list">
                 {s.solutions.map((item) => {
@@ -114,18 +304,23 @@ export default function ProprietarySolutions() {
         </div>
 
         <div id="proprietary-detail" aria-live="polite">
-          {suite && solution && (
-            <article className="solution-detail">
+          {suite && (
+            <article key={suite.id} className="solution-detail">
               <p className="solution-detail__eyebrow">AI Solutions Suite &nbsp;|&nbsp; {suite.label}</p>
-              <p className="solution-detail__suite">{suite.heading}</p>
-              <h3 className="solution-detail__title">{solution.title}</h3>
-              <p className="solution-detail__tagline">{solution.tagline}</p>
-              <p className="solution-detail__text">{solution.description}</p>
-              <div className="solution-detail__impact">
-                <p className="solution-detail__impact-label">Business impact</p>
-                <p className="solution-detail__impact-value">{solution.impact}</p>
-                {solution.impactNote && <p className="solution-detail__impact-note">{solution.impactNote}</p>}
-              </div>
+              <h3 className="solution-detail__suite">{suite.heading}</h3>
+              <ul className="solution-detail__grid">
+                {suite.solutions.map((item) => (
+                  <li
+                    key={item.id}
+                    className={`solution-tile${item.id === selected?.solutionId ? " solution-tile--active" : ""}`}
+                  >
+                    <span className="solution-tile__icon">{item.icon}</span>
+                    <h4 className="solution-tile__title">{item.title}</h4>
+                    <p className="solution-tile__tagline">{item.tagline}</p>
+                    <p className="solution-tile__text">{item.description}</p>
+                  </li>
+                ))}
+              </ul>
             </article>
           )}
         </div>
@@ -135,6 +330,7 @@ export default function ProprietarySolutions() {
             <li key={pill}>{pill}</li>
           ))}
         </ul>
+        <p className="proprietary__footnote">* Solutions are applicable across industry sectors.</p>
       </Container>
     </section>
   );

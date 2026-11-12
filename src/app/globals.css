@@ -426,3 +426,51 @@ h3 .copy-word {
 .section-band--dark .section-intro p {
   color: rgba(255, 255, 255, 0.72);
 }
+
+
+/* ── Brand banner: animated light beams (HeroBeams) ──────────────────────────── */
+.hero-beams {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-beams__beam {
+  position: absolute;
+  top: -25%;
+  right: var(--x);
+  width: var(--w);
+  height: 160%;
+  transform-origin: 50% 0;
+  transform: rotate(var(--a));
+  background: linear-gradient(180deg, transparent 0%, var(--c) 30%, var(--c) 55%, transparent 100%);
+  filter: blur(var(--b));
+  opacity: var(--o1);
+  animation: beamShimmer var(--d) ease-in-out var(--delay) infinite alternate;
+}
+
+.hero-beams__beam--1 { --x: 6%;   --a: 29deg; --w: 3px;   --b: 1px;  --c: rgba(190, 220, 230, 0.85); --o1: 0.35; --o2: 0.9;  --d: 5.5s; --delay: 0s;    }
+.hero-beams__beam--2 { --x: 9%;   --a: 40deg; --w: 110px; --b: 28px; --c: rgba(2, 187, 115, 0.2);    --o1: 0.35; --o2: 0.85; --d: 8s;   --delay: -2s;   }
+.hero-beams__beam--3 { --x: 2%;   --a: 23deg; --w: 6px;   --b: 2px;  --c: rgba(215, 255, 170, 0.9);  --o1: 0.2;  --o2: 1;    --d: 4.2s; --delay: -1s;   }
+.hero-beams__beam--4 { --x: -4%;  --a: 19deg; --w: 190px; --b: 34px; --c: rgba(2, 187, 115, 0.55);   --o1: 0.45; --o2: 0.95; --d: 7s;   --delay: -3.5s; }
+.hero-beams__beam--5 { --x: 13%;  --a: 47deg; --w: 2px;   --b: 1px;  --c: rgba(200, 235, 235, 0.7);  --o1: 0.15; --o2: 0.8;  --d: 6.4s; --delay: -4s;   }
+.hero-beams__beam--6 { --x: 0%;   --a: 33deg; --w: 46px;  --b: 14px; --c: rgba(95, 227, 174, 0.4);  --o1: 0.25; --o2: 0.9;  --d: 5s;   --delay: -0.5s; }
+
+@keyframes beamShimmer {
+  0%   { opacity: var(--o1); translate: 0 0; }
+  45%  { opacity: var(--o2); }
+  62%  { opacity: calc(var(--o2) * 0.55); }
+  100% { opacity: var(--o2); translate: -18px 6px; }
+}
+
+@media (max-width: 767px) {
+  /* Narrow screens: keep the broad glows subtle so text stays crisp */
+  .hero-beams__beam--2,
+  .hero-beams__beam--4,
+  .hero-beams__beam--6 { --o1: 0.12; --o2: 0.4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-beams__beam { animation: none; opacity: calc((var(--o1) + var(--o2)) / 2); }
+}

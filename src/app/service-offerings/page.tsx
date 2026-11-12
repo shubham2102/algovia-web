@@ -8,9 +8,9 @@ import { ENGAGEMENTS, SITE } from "@/lib/constants";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Service Offerings",
+  title: "Products & Services",
   description:
-    "Algovia AI service portfolio — AI & Digital Solutions, Intelligent Business Solutions, proprietary AI solutions, and seven engagement models designed around your business outcomes.",
+    "Algovia AI products and services — proprietary AI solutions, the AI & Digital and Intelligent Business service portfolio, and seven engagement models designed around your business outcomes.",
   path: "/service-offerings",
 });
 
@@ -24,14 +24,14 @@ export default async function ServiceOfferingsPage({
   return (
     <>
       <PageHero
-        eyebrow="Service Offerings"
-        title="From strategy to execution, adoption, and value"
-        lead="Most firms stop at strategy or software. Algovia combines business transformation expertise, deep operational understanding, and proven AI execution to embed intelligent AI into the decisions, workflows, and operating models that drive real performance."
+        eyebrow="Products & Services"
+        title="Proprietary AI Solutions. End-to-End Services. Real Value."
+        lead="ALGOVIA combines ready-built proprietary AI solutions with a full suite of services that take AI from idea to impact. You gain the speed of proven AI and the precision of services tailored to your business, delivering measurable results."
       />
 
-      <ServicePortfolio />
-
       <ProprietarySolutions />
+
+      <ServicePortfolio />
 
       <PageSection
         id="engage"

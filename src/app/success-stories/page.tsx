@@ -27,7 +27,7 @@ export default function SuccessStoriesPage() {
       <CTASection
         eyebrow="Your sector. Our expertise."
         heading="AI built for"
-        headingAccent="your industry."
+        headingAccent="your business."
         lead="Practical AI, shaped around your challenges and built to deliver value."
       />
     </>

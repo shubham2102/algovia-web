@@ -21,6 +21,24 @@
     var(--background);
 }
 
+/* Dark brand banner — used where a page opens on the brand-green gradient */
+.page-hero--dark .page-hero__bg {
+  background:
+    radial-gradient(ellipse 60% 60% at 85% 0%, rgba(2, 187, 115, 0.22), transparent 60%),
+    linear-gradient(160deg, #06201f 0%, #0b2f2e 55%, #024549 130%);
+}
+
+.page-hero--dark .page-hero__eyebrow { color: #5fe3ae; }
+.page-hero--dark .page-hero__title { color: #fff; }
+.page-hero--dark .page-hero__lead { color: rgba(255, 255, 255, 0.78); }
+
+.page-hero__accent {
+  background: linear-gradient(135deg, #5fe3ae 0%, #02bb73 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .page-hero__inner {
   position: relative;
   z-index: 1;

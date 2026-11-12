@@ -108,6 +108,20 @@
   color: var(--algovia-green-ink);
 }
 
+/* Links on the dark brand banner (home + dark page heroes): keep the light styling */
+.site-nav.top.on-dark .site-nav__link {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.site-nav.top.on-dark .site-nav__link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.site-nav.top.on-dark .site-nav__link.is-active {
+  color: var(--algovia-green-light);
+}
+
 /* Links when overlay is open over light hero */
 .site-nav.menu-open.top .site-nav__link {
   color: rgba(255, 255, 255, 0.7);
@@ -153,6 +167,13 @@
   box-shadow: 0 4px 20px rgba(11, 36, 38, 0.12);
 }
 
+/* CTA on the dark brand banner */
+.site-nav.top.on-dark .site-nav__container .hero__cta-primary {
+  background: var(--algovia-white);
+  color: var(--algovia-navy);
+  box-shadow: none;
+}
+
 /* CTA when overlay open at top */
 .site-nav.menu-open.top .site-nav__container .hero__cta-primary {
   background: rgba(255, 255, 255, 0.1);
@@ -187,6 +208,14 @@
 
 .site-nav.top .site-nav__toggle-btn:hover {
   background: rgba(11, 36, 38, 0.06);
+}
+
+.site-nav.top.on-dark .site-nav__toggle-btn {
+  color: var(--foreground-on-dark);
+}
+
+.site-nav.top.on-dark .site-nav__toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* White hamburger when overlay is open */

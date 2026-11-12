@@ -9,7 +9,7 @@ Most firms stop at strategy or software. Algovia combines business transformatio
 
 Four pillars:
 1. Senior Business Transformation Expertise — Algovia's team has led enterprise-scale transformation programs across governments and large corporations as accountable execution owners, not just advisers.
-2. Deep Cross-Sector Operational Understanding — having operated inside the functions and industry sectors it transforms, Algovia designs solutions tailored to how the business actually works, not generic frameworks.
+2. End-to-End AI Transformation Partner — as the single partner across the AI journey, Algovia prioritizes the right use cases, builds tailored AI solutions, and optimizes adoption and ROI.
 3. Proven AI Design & Execution Capability — 700+ cross-disciplinary AI professionals bring technical expertise rarely available in a single partner.
 4. Digital Transformation & Change Management — Algovia embeds governance, business ownership, and process redesign into every engagement so solutions are embraced and sustained.
 

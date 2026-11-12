@@ -179,3 +179,31 @@
 .cs-card:hover .cs-card__cta-icon {
   transform: translate(2px, -2px);
 }
+
+/* Sector tile used when a case study has no photo */
+.cs-card__img-wrap--art {
+  background:
+    radial-gradient(ellipse 80% 90% at 85% 0%, rgba(2, 187, 115, 0.38), transparent 60%),
+    linear-gradient(150deg, #06201f 0%, #0b2f2e 60%, #024549 130%);
+}
+
+.cs-card__art {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: rgba(95, 227, 174, 0.55);
+}
+
+.cs-card__art svg { width: 28%; height: auto; }
+
+.cs-card__img-wrap--art .cs-card__img-fade { display: none; }
+
+/* Four-up grid is too tight for the longer titles here; cap at three */
+.stories-sector .cs__grid {
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .stories-sector .cs__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

@@ -11,30 +11,28 @@
   height: 100dvh;
   max-height: 100dvh;
   overflow: hidden;
+  color: #fff;
+
+  /* The hero sits on the dark brand banner: re-point the light-surface tokens
+     the chat UI is built on so text, borders and cards read on dark. */
+  --foreground: #ffffff;
+  --algovia-muted: rgba(255, 255, 255, 0.74);
+  --algovia-slate: rgba(255, 255, 255, 0.78);
+  --algovia-green-ink: #5fe3ae;
+  --algovia-border: rgba(255, 255, 255, 0.16);
+  --algovia-border-strong: rgba(255, 255, 255, 0.28);
+  --surface-card: rgba(255, 255, 255, 0.07);
+  --surface-elevated: rgba(255, 255, 255, 0.1);
 }
 
-/* Background gradient */
+/* Background — brand-green banner; HeroBeams animates on top of it */
 .hero__bg {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 55% at 50% 0%, rgba(2, 187, 115, 0.11), transparent 58%),
-    radial-gradient(ellipse 55% 45% at 20% 80%, rgba(2, 187, 115, 0.07), transparent 50%),
-    radial-gradient(ellipse 45% 40% at 80% 75%, rgba(16, 185, 129, 0.05), transparent 45%),
-    var(--background);
-}
-
-/* Subtle grid overlay */
-.hero__grid {
-  position: absolute;
-  inset: 0;
-  opacity: 0.45;
-  background-image:
-    linear-gradient(rgba(11, 36, 38, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(11, 36, 38, 0.035) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, black 20%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, black 20%, transparent 70%);
+    radial-gradient(ellipse 65% 60% at 88% 0%, rgba(2, 187, 115, 0.2), transparent 60%),
+    radial-gradient(ellipse 50% 45% at 10% 100%, rgba(2, 187, 115, 0.1), transparent 55%),
+    linear-gradient(160deg, #06201f 0%, #0b2f2e 55%, #024549 135%);
 }
 
 /* ── Intro — absolute, centered in upper half, fades when active ─────────────── */
@@ -45,7 +43,7 @@
   top: 50%;
   left: 50%;
   width: 100%;
-  max-width: 640px;
+  max-width: 52rem;
   padding: 0 var(--layout-gutter);
   text-align: center;
   transform: translate(-50%, -65%);
@@ -75,52 +73,38 @@
 
 /* ── Typography ─────────────────────────────────────────────────────────────── */
 
-.hero__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--algovia-green-light);
-  margin-bottom: 1.25rem;
-}
-
-.hero__eyebrow::before {
-  content: "";
-  width: 1.5rem;
-  height: 1px;
-  background: linear-gradient(90deg, var(--algovia-bright-green), transparent);
-}
-
 .hero__headline {
-  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
-  font-weight: 700;
-  line-height: 1.06;
-  letter-spacing: -0.035em;
-  color: var(--foreground);
-  margin-bottom: 1.125rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: #fff;
+  margin-bottom: 1.5rem;
 }
 
 .hero__headline-accent {
-  background: linear-gradient(
-    135deg,
-    var(--algovia-purple-light) 0%,
-    var(--algovia-purple) 50%,
-    var(--algovia-purple-dark) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #02bb73;
+}
+
+.hero__headline-line {
+  color: #fff;
 }
 
 .hero__lead {
-  font-size: clamp(1rem, 1.6vw, 1.125rem);
-  line-height: 1.65;
-  color: var(--algovia-muted);
+  font-size: clamp(1.0625rem, 1.8vw, 1.375rem);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.82);
   max-width: 40rem;
   margin: 0 auto;
+  text-wrap: balance;
+}
+
+.hero__lead strong {
+  font-weight: 700;
+  color: #5fe3ae;
 }
 
 /* ── Hero CTA (used by nav AILink component) ────────────────────────────────── */
@@ -198,118 +182,113 @@
   gap: 0;
 }
 
-/* ── Conversation wrapper — expands when hero--active ───────────────────────── */
+/* ── Conversation area — expands when hero--active ──────────────────────────── */
 
 .hero-ai__convo-wrap {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 0;
   overflow: hidden;
-  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.4s ease;
   margin-bottom: 0;
+  opacity: 0;
+  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin-bottom 0.4s ease, opacity 0.3s ease;
 }
 
-/* Grows to fill the viewport above the input bar */
+/* Grows to fill the viewport above the input bar, clear of the nav */
 .hero--active .hero-ai__convo-wrap {
-  height: calc(100svh - 12rem);
+  height: calc(100svh - 18rem);
   margin-bottom: 1rem;
+  opacity: 1;
+}
+
+/* Slim bar above the thread: just the "New chat" control */
+.hero-ai__chat-head {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 0.5rem;
+}
+
+.hero-ai__newchat {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 9999px;
+  border: 1px solid var(--algovia-border-strong);
+  background: var(--surface-card);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--foreground);
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.hero-ai__newchat:hover {
+  border-color: var(--algovia-green-ink);
+  background: rgba(2, 187, 115, 0.08);
+  color: var(--algovia-green-ink);
 }
 
 /* justify-content: flex-end on a scroll container breaks in many browsers —
    use margin-top: auto on the thread child instead (reliable cross-browser) */
 .hero-ai__convo {
-  height: 100%;
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
-  scrollbar-width: none;
-  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(11, 36, 38, 0.18) transparent;
+  padding: 0 0.25rem;
   touch-action: pan-y;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%);
   mask-image: linear-gradient(to bottom, transparent 0%, black 6%);
 }
 
-.hero-ai__convo::-webkit-scrollbar { display: none; }
-
 .hero-ai__thread {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 0.75rem 0;
+  gap: 1.5rem;
+  padding: 1rem 0 0.75rem;
   margin-top: auto; /* pushes thread to bottom when content is short */
 }
 
-/* ── User turn — card with avatar + name header ──────────────────────────────── */
+/* ── User turn — brand-navy bubble ──────────────────────────────────────────── */
 
 .user-turn {
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-  padding: 1.125rem 1.375rem;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(2, 187, 115, 0.14);
-  border-radius: 1.25rem;
-  box-shadow: 0 2px 12px rgba(11, 36, 38, 0.06);
   align-self: flex-end;
-  max-width: 72%;
-}
-
-.user-turn__header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.user-turn__avatar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.625rem;
-  height: 1.625rem;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--algovia-purple);
-  color: #fff;
-  font-size: 0.5625rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-}
-
-.user-turn__name {
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--algovia-purple);
+  max-width: min(78%, 34rem);
+  padding: 0.75rem 1.125rem;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1.25rem 1.25rem 0.375rem 1.25rem;
+  animation: turnIn 0.3s ease both;
 }
 
 .user-turn__text {
-  font-size: 1rem;
-  line-height: 1.65;
-  color: var(--foreground);
-  font-weight: 400;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #fff;
+  font-weight: 450;
+  overflow-wrap: anywhere;
 }
 
-/* ── Agent turn — dark glass card ────────────────────────────────────────────── */
+/* ── Agent turn — avatar + open text on the window surface ─────────────────── */
 
 .agent-turn {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 1.25rem 1.5rem;
-  background: rgba(11, 36, 38, 0.87);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 1.25rem;
-  align-self: flex-start;
+  gap: 0.5rem;
   width: 100%;
+  animation: turnIn 0.35s ease both;
 }
 
-.agent-turn__header {
+.agent-turn__head {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -319,60 +298,205 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.625rem;
-  height: 1.625rem;
+  width: 1.5rem;
+  height: 1.5rem;
   flex-shrink: 0;
   border-radius: 50%;
-  background: var(--gradient-brand);
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(2, 187, 115, 0.4);
+  background: rgba(2, 187, 115, 0.18);
+  border: 1px solid rgba(95, 227, 174, 0.45);
+  color: #5fe3ae;
+}
+
+.agent-turn__main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .agent-turn__label {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.04em;
+  color: var(--algovia-green-ink);
 }
 
-.agent-turn__body {
-  padding-left: 0;
+.agent-turn__body { padding-left: 0; }
+
+/* Work trace: live steps while answering, a one-line summary afterwards */
+.agent-trace {
+  list-style: none;
+  margin: 0;
+  padding: 0.625rem 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border-radius: 0.75rem;
+  background: var(--surface-card);
+  border: 1px solid var(--algovia-border);
 }
 
-/* Thinking / loading state */
-.agent-turn__thinking {
+.agent-trace__step {
   display: flex;
   align-items: center;
-  gap: 0.375rem;
-}
-
-.agent-turn__thinking-dot {
-  display: inline-block;
-  width: 0.3125rem;
-  height: 0.3125rem;
-  border-radius: 50%;
-  background: var(--algovia-green-light);
-  opacity: 0.5;
-  animation: agentPulse 1.2s ease-in-out infinite;
-}
-
-.agent-turn__thinking-dot:nth-child(2) { animation-delay: 0.2s; }
-.agent-turn__thinking-dot:nth-child(3) { animation-delay: 0.4s; }
-
-.agent-turn__thinking-text {
+  gap: 0.625rem;
   font-size: 0.8125rem;
-  color: rgba(255, 255, 255, 0.45);
-  margin-left: 0.25rem;
-  font-style: italic;
+  color: var(--algovia-muted);
+  transition: color 0.2s ease;
 }
 
-@keyframes agentPulse {
-  0%, 80%, 100% { opacity: 0.2; transform: scale(0.85); }
-  40% { opacity: 1; transform: scale(1); }
+.agent-trace__step--active { color: var(--foreground); font-weight: 600; }
+.agent-trace__step--done { color: var(--algovia-green-ink); }
+
+.agent-trace__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--algovia-border-strong);
 }
 
-/* ── Markdown inside agent turn — white text on dark card ────────────────────── */
+.agent-trace__step--done .agent-trace__mark {
+  border-color: var(--algovia-green-ink);
+  background: var(--algovia-green-ink);
+  color: #fff;
+}
+
+.agent-trace__step--active .agent-trace__mark {
+  border-color: rgba(2, 187, 115, 0.3);
+  border-top-color: var(--algovia-purple);
+  animation: traceSpin 0.8s linear infinite;
+}
+
+@keyframes traceSpin { to { transform: rotate(360deg); } }
+
+.agent-trace--done {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 0.5rem;
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+.agent-trace__summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--algovia-green-ink);
+}
+
+.agent-trace__source {
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+  background: rgba(2, 187, 115, 0.1);
+  border: 1px solid rgba(2, 187, 115, 0.25);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--algovia-green-ink);
+}
+
+/* Per-answer actions */
+.agent-turn__actions {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 0.125rem;
+}
+
+.agent-turn__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--algovia-muted);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.agent-turn__action:hover { background: rgba(2, 187, 115, 0.1); color: var(--algovia-green-ink); }
+
+.agent-turn--error .agent-turn__icon { background: #8f2d22; border-color: #ff9b8f; color: #fff; }
+.agent-turn--error .agent-turn__label { color: #ffa99e; }
+.agent-turn--error .agent-md__p { color: #ffa99e; }
+
+.agent-turn--stopped .agent-turn__icon { color: #5fe3ae; }
+.agent-turn--stopped .agent-turn__label { color: var(--algovia-green-ink); }
+.agent-turn--stopped .agent-md__p { color: var(--algovia-muted); }
+
+.agent-turn__action--retry {
+  align-self: flex-start;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--algovia-green-ink);
+  border-radius: 9999px;
+  color: var(--algovia-green-ink);
+}
+
+@keyframes turnIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .user-turn, .agent-turn { animation: none; }
+  .agent-trace__step--active .agent-trace__mark { animation: none; }
+}
+
+/* Back / cancel links under inline forms */
+.hero-ai__form-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.75rem;
+}
+
+.hero-ai__form-link {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--algovia-green-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.hero-ai__form-link:hover { color: var(--foreground); }
+
+
+/* Suggested follow-ups */
+.hero-ai__suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.hero-ai__suggestion {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 9999px;
+  border: 1px solid var(--algovia-border-strong);
+  background: var(--surface-card);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--foreground);
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.hero-ai__suggestion:hover {
+  border-color: var(--algovia-green-ink);
+  background: rgba(2, 187, 115, 0.08);
+  color: var(--algovia-green-ink);
+}
+
+/* ── Markdown inside an agent turn ───────────────────────────────────────────── */
 
 .agent-md {
   display: flex;
@@ -381,24 +505,61 @@
 }
 
 .agent-md__p {
-  font-size: 1rem;
+  font-size: 0.9375rem;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.88);
+  color: var(--foreground);
   margin: 0;
 }
 
 .agent-md__gap { height: 0.35rem; }
 
 .agent-md__link {
-  color: var(--algovia-green-light);
+  color: var(--algovia-green-ink);
   font-weight: 600;
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
 }
+
+.agent-md__link:hover { color: var(--foreground); }
+
+/* Link-only lines (meeting link, recommended path) render as action buttons */
+.agent-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 0.5rem;
+}
+
+.agent-cta__kicker {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--algovia-muted);
+}
+
+.agent-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 9999px;
+  background: #02bb73;
+  color: #0b2426;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.agent-cta__btn:hover { background: #5fe3ae; transform: translateY(-1px); }
 
 .agent-md__hr {
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--algovia-border);
   margin: 0.4rem 0;
 }
 
@@ -415,11 +576,14 @@
 .agent-md__ul li {
   font-size: 0.9375rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--foreground);
 }
 
-.agent-md strong { color: #fff; }
-.agent-md em { color: var(--algovia-green-light); font-style: italic; }
+.agent-md__ul li::marker,
+.agent-md__ol li::marker { color: var(--algovia-green-ink); }
+
+.agent-md strong { color: var(--foreground); font-weight: 700; }
+.agent-md em { color: var(--algovia-green-ink); font-style: italic; }
 
 /* ── Markdown table ──────────────────────────────────────────────────────────── */
 
@@ -427,7 +591,7 @@
   overflow-x: auto;
   margin: 0.25rem 0;
   border-radius: 0.625rem;
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  border: 1px solid var(--algovia-border);
 }
 
 .agent-md__table {
@@ -437,9 +601,7 @@
   line-height: 1.5;
 }
 
-.agent-md__table thead tr {
-  background: rgba(255, 255, 255, 0.06);
-}
+.agent-md__table thead tr { background: var(--surface-elevated); }
 
 .agent-md__table th {
   padding: 0.5rem 0.875rem;
@@ -448,20 +610,18 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--algovia-muted);
   white-space: nowrap;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  border-bottom: 1px solid var(--algovia-border);
 }
 
 .agent-md__table td {
   padding: 0.4375rem 0.875rem;
-  color: rgba(255, 255, 255, 0.82);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--foreground);
+  border-bottom: 1px solid var(--algovia-border);
 }
 
 .agent-md__table tbody tr:last-child td { border-bottom: none; }
-
-.agent-md__table tbody tr:hover { background: rgba(255, 255, 255, 0.03); }
 
 /* ── Streaming cursor ────────────────────────────────────────────────────────── */
 
@@ -473,12 +633,15 @@
 .agent-turn--streaming .agent-md__p:last-child::after,
 .agent-turn--streaming .agent-md__ul li:last-child::after,
 .agent-turn--streaming .agent-md__ol li:last-child::after {
-  content: "▋";
+  content: "";
   display: inline-block;
-  margin-left: 1px;
-  font-size: 0.85em;
-  color: var(--algovia-green-light);
-  animation: agent-blink 0.65s step-end infinite;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-left: 0.25rem;
+  border-radius: 50%;
+  background: var(--algovia-purple);
+  vertical-align: middle;
+  animation: agent-blink 0.8s ease-in-out infinite;
 }
 
 /* ── Bottom area: chips + input ─────────────────────────────────────────────── */
@@ -528,35 +691,37 @@
   transform: translateY(-1px);
 }
 
-/* Minimal single-line follow-up prompt — no card chrome, reads like a
-   footnote under the relevant answer rather than a separate UI block. */
+/* Minimal single-line follow-up prompt — sits on the light page under the
+   thread, so it uses page colors rather than the navy card's. */
 .hero-ai__followup-line {
-  margin-top: 0.625rem;
+  margin-top: 0.25rem;
+  padding: 0;
   font-size: 0.8125rem;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--algovia-muted);
 }
 
 .hero-ai__followup-line--confirmed {
-  color: var(--algovia-green-light);
+  color: var(--algovia-green-ink);
+  font-weight: 500;
 }
 
 .hero-ai__followup-link {
   font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--algovia-green-light);
+  color: var(--algovia-green-ink);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
 .hero-ai__followup-link--muted {
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--algovia-muted);
 }
 
 .hero-ai__followup-sep {
   margin: 0 0.5rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--algovia-border-strong);
 }
 
 /* Input bar — prominent, Google-style command bar */
@@ -590,32 +755,14 @@
   background: transparent;
   font-size: 0.9375rem;
   line-height: 1.5;
-  color: var(--foreground);
+  color: #0b2426;
   outline: none;
   padding: 0;
   font-family: var(--font-sans);
 }
 
 .hero-ai__input::placeholder {
-  color: var(--algovia-muted);
-  opacity: 0.5;
-}
-
-.hero-ai__reset {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  flex-shrink: 0;
-  color: var(--algovia-muted);
-  transition: background 0.15s ease, color 0.15s ease;
-}
-
-.hero-ai__reset:hover {
-  background: var(--surface-hover);
-  color: var(--foreground);
+  color: rgba(11, 36, 38, 0.5);
 }
 
 .hero-ai__send {
@@ -637,6 +784,9 @@
   transform: scale(1.07);
   background: var(--algovia-purple);
 }
+
+.hero-ai__send--stop { background: var(--algovia-purple); color: var(--algovia-navy); }
+.hero-ai__send--stop:hover:not(:disabled) { background: var(--algovia-navy); color: #fff; }
 
 .hero-ai__send:disabled {
   opacity: 0.25;
@@ -706,8 +856,35 @@
   }
 
   .hero--active .hero-ai__convo-wrap {
-    height: calc(100dvh - 11rem);
+    height: calc(100dvh - 18.5rem);
   }
+
+  /* Mid-chat the services/network row keeps just its two pills */
+  .hero--active .hero-ai__interest { justify-content: center; }
+  .hero--active .hero-ai__interest > span:first-child { display: none; }
+
+  .hero-ai__convo { padding: 0; }
+  .user-turn { max-width: 88%; }
+  .hero-ai__convo { scrollbar-width: none; }
+  .hero-ai__convo::-webkit-scrollbar { display: none; }
+
+  /* iOS Safari zooms the page when a focused input is under 16px */
+  .hero-ai__input { font-size: 1rem; }
+
+  /* One-line rows that scroll sideways instead of stacking into tall blocks */
+  .hero-ai__suggestions,
+  .agent-trace--done {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-right: -0.25rem;
+  }
+  .hero-ai__suggestions::-webkit-scrollbar,
+  .agent-trace--done::-webkit-scrollbar { display: none; }
+  .hero-ai__suggestion,
+  .agent-trace__summary,
+  .agent-trace__source { flex-shrink: 0; white-space: nowrap; }
+  .agent-turn__icon { width: 1.5rem; height: 1.5rem; }
 
   .hero-ai__chips {
     justify-content: flex-start;
@@ -735,7 +912,7 @@
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  max-width: 640px;
+  max-width: 52rem;
   padding: 5.5rem var(--layout-gutter) 1rem;
 }
 
@@ -751,3 +928,31 @@
 /* The intro leaves the flow when a conversation starts; skip the positional
    transition so it just fades instead of sliding from its old static spot. */
 .hero--active .hero__intro { transition: opacity 0.3s ease; }
+
+/* Mobile empty state: keep the headline, CTAs and the chat input on the first
+   screen. The example Q&A is desktop-only; the starting-point chips cover it. */
+@media (max-width: 767px) {
+  .hero:not(.hero--active) .hero__intro {
+    max-height: none;
+    overflow: visible;
+    padding: 4.75rem 1.25rem 0.5rem;
+  }
+
+  .hero__lead {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .hero__actions {
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .hero__actions .hero__cta-primary,
+  .hero__actions .hero__cta-secondary {
+    padding: 0.65rem 1rem;
+    font-size: 0.8125rem;
+  }
+
+  .hero-ai__example { display: none; }
+}

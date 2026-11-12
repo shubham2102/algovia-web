@@ -63,3 +63,41 @@ export function isFollowupResolved(): boolean {
 export function markFollowupResolved(): void {
   safeSet(FOLLOWUP_RESOLVED_KEY, "1");
 }
+
+// ── Conversation snapshot ────────────────────────────────────────────────────
+// The chat lives on the homepage, so following a link from an answer unmounts
+// it. A per-tab snapshot lets the thread come back when the visitor returns
+// (sessionStorage: survives navigation and reloads, gone when the tab closes).
+
+const CHAT_KEY = "algovia_chat_v1";
+
+export interface ChatSnapshot<M> {
+  messages: M[];
+  conversationId: string | null;
+  followupState: "hidden" | "ask" | "form" | "confirmed";
+  /** A reply was still being generated when the snapshot was taken. */
+  inFlight: boolean;
+}
+
+export function loadChat<M>(): ChatSnapshot<M> | null {
+  try {
+    const raw = window.sessionStorage.getItem(CHAT_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as ChatSnapshot<M>;
+    return Array.isArray(parsed.messages) && parsed.messages.length > 0 ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveChat<M>(snapshot: ChatSnapshot<M>): void {
+  try {
+    if (snapshot.messages.length === 0) {
+      window.sessionStorage.removeItem(CHAT_KEY);
+      return;
+    }
+    window.sessionStorage.setItem(CHAT_KEY, JSON.stringify(snapshot));
+  } catch {
+    // Storage unavailable — the chat simply won't survive navigation.
+  }
+}

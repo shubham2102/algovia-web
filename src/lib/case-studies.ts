@@ -290,3 +290,11 @@ export function splitClientTitle(client: string) {
     ? { name: client, headline: "" }
     : { name: client.slice(0, idx), headline: client.slice(idx + 2) };
 }
+
+/** Photo for the case studies that have one; the rest render a sector-themed tile. */
+export const CASE_STUDY_IMAGES: Record<string, string> = {
+  talktwelve: "https://images.unsplash.com/photo-1589578228447-e1a4e481c6c8?w=800&q=80",
+  eazli: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80",
+  prohan: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?w=800&q=80",
+  kinage: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80",
+};

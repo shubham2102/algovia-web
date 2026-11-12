@@ -3,10 +3,19 @@ export type Intent =
   | "services"
   | "lead"
   | "industries"
+  | "greeting"
   | "general";
 
 export function detectIntent(query: string): Intent {
   const q = query.toLowerCase();
+
+  // Pure pleasantries ("hi", "thanks", "how are you") get a short reply, not a
+  // retrieved company overview.
+  if (
+    /^\s*(hi+|hello+|hey+|hiya|howdy|yo|good\s+(morning|afternoon|evening)|greetings|thanks?|thank\s+you|ok(ay)?|cool|great|how\s+are\s+you)(\s+(there|algovia|team|again))?\s*[!.?]*\s*$/.test(q)
+  ) {
+    return "greeting";
+  }
 
   if (
     /marketplace|architecture|microservice|roadmap|cloud|aws|saudi|fintech.*cloud|langgraph|agent|rag|vector|legacy|modernize|migrate/.test(
@@ -49,6 +58,7 @@ export function intentLabel(intent: Intent): string {
     services: "Algovia Services",
     lead: "Engagement & Discovery",
     industries: "Industry Solutions",
+    greeting: "Greeting",
     general: "General Inquiry",
   };
   return labels[intent];

@@ -106,6 +106,7 @@ export default function Menu() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [onDarkBanner, setOnDarkBanner] = useState(false);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const clearTimer = () => { if (closeTimerRef.current) clearTimeout(closeTimerRef.current); };
 
@@ -156,22 +157,27 @@ export default function Menu() {
     closeMenu(true);
   }, [pathname, closeMenu]);
 
+  // Pages that open on the dark brand banner need light nav text at the top.
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      setOnDarkBanner(!!document.querySelector(".hero, .page-hero--dark"));
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [pathname]);
+
   useEffect(() => {
     const nav = navRef.current;
     if (!nav) return;
 
-    // Only the homepage hero is tall enough to leave the nav transparent over it;
-    // on inner pages, headings scroll under the nav almost immediately, so it
-    // turns solid after a short scroll to keep text from overlapping.
-    const getHeroThreshold = () => {
-      const hero = document.querySelector(".hero") as HTMLElement | null;
-      return hero ? hero.offsetHeight * 0.9 : 24;
-    };
+    // The nav is transparent only while the page is at its very top; as soon as
+    // the user scrolls it turns solid so it never overlaps heading text.
+    const TOP_THRESHOLD = 24;
 
     const updateNavTopClass = () => {
       const scrollY = lenis?.scroll ?? window.scrollY;
-      nav.classList.toggle("top", scrollY < getHeroThreshold());
-      setIsDarkMode(scrollY < getHeroThreshold());
+      const atTop = scrollY < TOP_THRESHOLD;
+      nav.classList.toggle("top", atTop);
+      setIsDarkMode(atTop);
     };
 
     lenis?.on("scroll", updateNavTopClass);
@@ -234,7 +240,7 @@ export default function Menu() {
     <>
       <nav
         ref={navRef}
-        className={`site-nav top${menuOpen ? " menu-open" : ""}`}
+        className={`site-nav top${onDarkBanner ? " on-dark" : ""}${menuOpen ? " menu-open" : ""}`}
         aria-label="Site navigation"
       >
         <div className="container" style={{ padding: 0 }}>
@@ -242,7 +248,7 @@ export default function Menu() {
 
             {/* ── Logo ──────────────────────────────────────────────────── */}
             <div className="site-nav__logo">
-              <Logo size="lg" className="!h-8 sm:!h-9" dark={menuOpen ? false : isDarkMode} />
+              <Logo size="lg" className="!h-8 sm:!h-9" dark={menuOpen ? false : isDarkMode && !onDarkBanner} />
             </div>
 
             {/* ── Desktop nav links ─────────────────────────────────────── */}

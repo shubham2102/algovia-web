@@ -47,15 +47,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
             <p className="page-hero__eyebrow">{sector.title}</p>
             <h1 className="page-hero__title">{name}</h1>
             {headline && <p className="page-hero__lead">{headline}</p>}
-            <div className="story-partner">
-              <span>Delivered by</span>
-              <DacLogo className="story-partner__logo" />
-            </div>
           </div>
         </Container>
       </section>
 
-      <section className="page-section">
+      <section className="page-section story-body">
         <Container>
           <div className="story-detail">
             <div className="story-detail__block">
@@ -78,6 +74,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
               <p className="story-detail__label">Technology</p>
               <p className="story-detail__text story-detail__text--tech">{study.tech}</p>
             </div>
+          </div>
+
+          <div className="story-partner story-partner--footer">
+            <span>Powered by DAC Digital</span>
+            <DacLogo className="story-partner__logo" />
           </div>
         </Container>
       </section>
@@ -104,7 +105,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       <CTASection
         eyebrow="Your sector. Our expertise."
         heading="AI built for"
-        headingAccent="your industry."
+        headingAccent="your business."
         lead="Practical AI, shaped around your challenges and built to deliver value."
       />
     </>
